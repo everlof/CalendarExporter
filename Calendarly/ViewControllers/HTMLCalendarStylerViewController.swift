@@ -204,11 +204,11 @@ class HTMLCalendarStylerViewController: UIViewController,
         previewController.calendar.hasBorders = !previewController.calendar.hasBorders
 
         if previewController.calendar.hasBorders {
-            (dayFontSizeCell.accessoryView as! UIStepper).value = 1.6
-            previewController.calendar.dayFontSize = 1.6
+            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(HTMLCalendar.dateFontSizeDefaultBordered)
+            previewController.calendar.dayFontSize = Double(HTMLCalendar.dateFontSizeDefaultBordered)
         } else {
-            (dayFontSizeCell.accessoryView as! UIStepper).value = 2.0
-            previewController.calendar.dayFontSize = 2.0
+            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(HTMLCalendar.dateFontSizeDefaultNonBordered)
+            previewController.calendar.dayFontSize = Double(HTMLCalendar.dateFontSizeDefaultNonBordered)
         }
     }
 
@@ -305,8 +305,8 @@ class HTMLCalendarStylerViewController: UIViewController,
         let stepper = UIStepper(frame: .zero)
         stepper.sizeToFit()
         stepper.value = previewController.calendar.dayFontSize
-        stepper.minimumValue = 0
-        stepper.maximumValue = 14
+        stepper.minimumValue = 0.1
+        stepper.maximumValue = 3.0
         stepper.stepValue = 0.1
         stepper.isContinuous = false
         stepper.addTarget(self, action: #selector(dayFontSizeChanged), for: .valueChanged)

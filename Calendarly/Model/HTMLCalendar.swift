@@ -10,9 +10,29 @@ enum FirstDayOfWeek {
     case monday
 }
 
+struct ColorCombo {
+    let primaryColor: UIColor
+    let secondayColor: UIColor
+
+    static let black: ColorCombo = {
+        return ColorCombo(primaryColor: .black, secondayColor: .darkGray)
+    }()
+
+    static let red: ColorCombo = {
+        return ColorCombo(primaryColor: .red, secondayColor: UIColor(red: 0.7, green: 0.0, blue: 0.0, alpha: 1.0))
+    }()
+
+}
+
 class HTMLCalendar {
 
     weak var delegate: HTMLCalendarDelegate?
+
+    static let dateFontSizeDefaultBordered: CGFloat = 1.5
+
+    static let dateFontSizeDefaultNonBordered: CGFloat = 1.9
+
+    static let monthFontSizeDefault: CGFloat = 3.0
 
     // MARK: Config variables
 
@@ -28,13 +48,17 @@ class HTMLCalendar {
 
     var firstDayOfWeek: FirstDayOfWeek = .monday { didSet { delegate?.contentDidChange() } }
 
-    var dayFontSize: Double = 2.0 { didSet { delegate?.contentDidChange() } }
+    var dayFontSize: Double = Double(HTMLCalendar.dateFontSizeDefaultNonBordered) { didSet { delegate?.contentDidChange() } }
 
-    var monthFontSize: Double = 3.0 { didSet { delegate?.contentDidChange() } }
+    var monthFontSize: Double = Double(HTMLCalendar.monthFontSizeDefault) { didSet { delegate?.contentDidChange() } }
 
     var month: Int = 1 { didSet { delegate?.contentDidChange() } }
 
     var font: UIFont = UIFont(name: "ArialRoundedMTBold", size: 12)! { didSet { delegate?.contentDidChange() } }
+
+    var colors: [ColorCombo] = {
+        return (0..<12).map { i in return i % 2 == 0 ? ColorCombo.red : ColorCombo.black }
+    }()
 
     init(year: Int, locale: Locale) {
         self.year = year
@@ -75,11 +99,14 @@ class HTMLCalendar {
             tr.append(Element(tag: .th, content: .text(headerCharacter)))
         }
 
+        let nbrFormatter: NumberFormatter = NumberFormatter()
+        nbrFormatter.locale = locale
+
         for row in Calendar.current.dateMatrixFor(month: month, year: year, config: firstDayOfWeek) {
             let tr: Element = .tr
             for col in row {
                 if let col = col, col != 0 {
-                    tr.append(Element(tag: .td, content: .text(String(col))))
+                    tr.append(Element(tag: .td, content: .text(nbrFormatter.string(from: NSNumber(integerLiteral: col))!)))
                 } else {
                     tr.append(Element(tag: .td, content: .text("")))
                 }
@@ -104,7 +131,7 @@ class HTMLCalendar {
             ]),
             CSSRule(selectors: ["div.header > div"], rules: [
                 "font-size": "\(monthFontSize)rem",
-                "color": "#74cc82",
+                "color": colors[month].primaryColor.toHex(), // "#74cc82",
                 "position": "relative",
                 "transform": "translateY(-50%)",
                 "-webkit-transform": "translateY(-50%)",
@@ -129,10 +156,7 @@ class HTMLCalendar {
                 "text-align": "center",
             ]),
             CSSRule(selectors: ["th", "td"], rules: [
-                "color": "#1a4567"
-            ]),
-            CSSRule(selectors: ["td:last-child", "th:last-child"], rules: [
-                "color": "#74cc82"
+                "color": colors[month].secondayColor.toHex() // "#1a4567"
             ]),
         ]
 
@@ -148,6 +172,17 @@ class HTMLCalendar {
         } else {
             cssRules.append(CSSRule(selectors: ["td"], rules: [
                 "font-size": "\(dayFontSize)rem"
+            ]))
+        }
+
+        switch firstDayOfWeek {
+        case .monday:
+            cssRules.append(CSSRule(selectors: ["td:last-child", "th:last-child"], rules: [
+                "color": colors[month].primaryColor.toHex() // "#74cc82"
+            ]))
+        case .sunday:
+            cssRules.append(CSSRule(selectors: ["td:first-child", "th:first-child"], rules: [
+                "color": colors[month].primaryColor.toHex() // "#74cc82"
             ]))
         }
 

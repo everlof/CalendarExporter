@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		28DB19478B798FAEA3C909E3 /* Pods_Calendarly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FADF50770BD4D9A30DF8BF /* Pods_Calendarly.framework */; };
 		C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */; };
+		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
 		C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */; };
 		C4C086B9214E4BA80019F6B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B8214E4BA80019F6B8 /* ViewController.swift */; };
 		C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4C086BD214E4BA80019F6B8 /* Calendarly.xcdatamodeld */; };
 		C4C086C1214E4BAA0019F6B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4C086C0214E4BAA0019F6B8 /* Assets.xcassets */; };
 		C4C086C4214E4BAA0019F6B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4C086C2214E4BAA0019F6B8 /* LaunchScreen.storyboard */; };
 		C4C086CF214E4BAA0019F6B8 /* CalendarlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086CE214E4BAA0019F6B8 /* CalendarlyTests.swift */; };
-		C4C086DC214E4CEC0019F6B8 /* calendar2.html in Resources */ = {isa = PBXBuildFile; fileRef = C4C086DB214E4CEC0019F6B8 /* calendar2.html */; };
 		C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */; };
 		C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E02152273D0019F6B8 /* String+Extension.swift */; };
 		C4C086E4215227830019F6B8 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E3215227830019F6B8 /* Element.swift */; };
@@ -49,6 +49,7 @@
 		B57D777F6C029A312EE2BDB9 /* Pods-CalendarlyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB17E428FBD9C71CFD97C1AC /* Pods-Calendarly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calendarly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly.debug.xcconfig"; sourceTree = "<group>"; };
 		C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerViewController.swift; sourceTree = "<group>"; };
+		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		C4C086B3214E4BA80019F6B8 /* Calendarly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendarly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4C086B8214E4BA80019F6B8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,7 +60,6 @@
 		C4C086CA214E4BAA0019F6B8 /* CalendarlyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarlyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C086CE214E4BAA0019F6B8 /* CalendarlyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarlyTests.swift; sourceTree = "<group>"; };
 		C4C086D0214E4BAA0019F6B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4C086DB214E4CEC0019F6B8 /* calendar2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = calendar2.html; sourceTree = "<group>"; };
 		C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		C4C086E02152273D0019F6B8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		C4C086E3215227830019F6B8 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
@@ -144,7 +144,7 @@
 				C4C086E2215227760019F6B8 /* Model */,
 				C4C086DD215226B80019F6B8 /* Extensions */,
 				C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */,
-				C4C086DB214E4CEC0019F6B8 /* calendar2.html */,
+				C46B63CB215BDBED009EB4C4 /* StartViewController.swift */,
 				C4C086B8214E4BA80019F6B8 /* ViewController.swift */,
 				C4C086C0214E4BAA0019F6B8 /* Assets.xcassets */,
 				C4C086C2214E4BAA0019F6B8 /* LaunchScreen.storyboard */,
@@ -302,7 +302,6 @@
 			files = (
 				C4C086C4214E4BAA0019F6B8 /* LaunchScreen.storyboard in Resources */,
 				C4C086C1214E4BAA0019F6B8 /* Assets.xcassets in Resources */,
-				C4C086DC214E4CEC0019F6B8 /* calendar2.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +426,7 @@
 				C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */,
 				C4C086E4215227830019F6B8 /* Element.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
+				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
 				C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */,

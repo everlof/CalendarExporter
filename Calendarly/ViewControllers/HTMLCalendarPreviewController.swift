@@ -4,9 +4,31 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
 
     let webView = UIWebView()
 
-    var heightContraint: NSLayoutConstraint!
-
     let calendar: HTMLCalendar
+
+    var webViewInset: UIEdgeInsets = .zero {
+        didSet {
+            leftConstraint.constant = webViewInset.left
+            rightConstraint.constant = -webViewInset.right
+            topConstraint.constant = webViewInset.top
+        }
+    }
+
+    var webViewBorder: Bool = false {
+        didSet {
+            if webViewBorder {
+                webView.layer.borderWidth = 1 / UIScreen.main.scale 
+                webView.layer.borderColor = UIColor.boneConstrastDarker.cgColor
+            } else {
+                webView.layer.borderWidth = 0.0
+            }
+        }
+    }
+
+    var leftConstraint: NSLayoutConstraint!
+    var topConstraint: NSLayoutConstraint!
+    var rightConstraint: NSLayoutConstraint!
+    var heightContraint: NSLayoutConstraint!
 
     init(calendar: HTMLCalendar) {
         self.calendar = calendar
@@ -21,11 +43,23 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .boneWhiteColor // UIColor(red: 0xDD/0xFF, green: 0xDD/0xFF, blue: 0xDD/0xFF, alpha: 0xFF)
+
+        webView.isOpaque = false
+        webView.backgroundColor = .white
+
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        webView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+
+        leftConstraint = webView.leftAnchor.constraint(equalTo: view.leftAnchor)
+        leftConstraint.isActive = true
+
+        topConstraint = webView.topAnchor.constraint(equalTo: view.topAnchor)
+        topConstraint.isActive = true
+
+        rightConstraint = webView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        rightConstraint.isActive = true
+
         heightContraint = webView.heightAnchor.constraint(equalToConstant: 100)
         heightContraint.isActive = true
 
@@ -35,7 +69,8 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
     }
 
     func reload() {
-        heightContraint.constant = view.frame.width * 1.41428571
+        // heightContraint.constant = view.frame.width * 1.41428571
+        heightContraint.constant = ((view.frame.width - webViewInset.left - webViewInset.right) * 1.41428571)
         //        let url = URL(fileURLWithPath: "/Users/davideverlof/Downloads/livecal.html")
         //        let data = try! Data(contentsOf: url)
         //        let html = String(data: data, encoding: .utf8)!
