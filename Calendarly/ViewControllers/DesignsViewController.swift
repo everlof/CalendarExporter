@@ -36,6 +36,13 @@ class DesignsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { ctx in
+            self.collectionView.needUpdateSizes()
+            self.collectionView.layout.invalidateLayout()
+        }, completion: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAdd))

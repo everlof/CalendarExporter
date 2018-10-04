@@ -52,7 +52,15 @@ class DesignViewController: UIViewController {
 
     let editingContext: NSManagedObjectContext
 
-    var navigationBarHiddenInPortrait = true
+    var navigationBarVisibleInPortrait: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "navigationBarHiddenInPortrait")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "navigationBarHiddenInPortrait")
+            UserDefaults.standard.synchronize()
+        }
+    }
 
     let tapGesture = UITapGestureRecognizer()
 
@@ -82,8 +90,10 @@ class DesignViewController: UIViewController {
     }
 
     @objc func didTap() {
-        navigationBarHiddenInPortrait.toggle()
-        navigationController?.setNavigationBarHidden(navigationBarHiddenInPortrait, animated: true)
+        if UIScreen.main.bounds.height > UIScreen.main.bounds.width {
+            navigationBarVisibleInPortrait.toggle()
+            navigationController?.setNavigationBarHidden(!navigationBarVisibleInPortrait, animated: true)
+        }
     }
 
     @objc func didPressSave() {
@@ -108,18 +118,14 @@ class DesignViewController: UIViewController {
         coordinator.animate(alongsideTransition: { ctx in self.adjustLayout() }, completion: nil)
     }
 
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-
     func adjustLayout() {
         let portrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
         self.stackView.arrangedSubviews[1].isHidden = portrait
-        self.topConstraint.constant = portrait ? 50 : 0
+        self.topConstraint.constant = portrait ? 24 : 0
         tiltToPreviewView.isHidden = !portrait
 
         if portrait {
-            navigationController?.setNavigationBarHidden(navigationBarHiddenInPortrait, animated: false)
+            navigationController?.setNavigationBarHidden(!navigationBarVisibleInPortrait, animated: false)
             calendarPreviewer.webViewInset = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
             calendarPreviewer.webViewBorder = true
         } else {
@@ -199,4 +205,3 @@ class DesignViewController: UIViewController {
     }
 
 }
-

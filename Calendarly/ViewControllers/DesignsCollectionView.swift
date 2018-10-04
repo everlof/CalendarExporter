@@ -77,11 +77,7 @@ class DesignsCollectionView: UICollectionView,
 
     private var boundsObserver: NSKeyValueObservation!
 
-    var columns: Int = 3 {
-        didSet {
-            needUpdateSizes()
-        }
-    }
+    var columns: Int = 2
 
     var sectionInsets: UIEdgeInsets = .zero {
         didSet {
@@ -113,7 +109,6 @@ class DesignsCollectionView: UICollectionView,
         delegate = self
         dataSource = self
         register(CalendarDesignCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-
         try! fetchedResultController.performFetch()
         reloadData()
     }
@@ -123,6 +118,8 @@ class DesignsCollectionView: UICollectionView,
     }
 
     func needUpdateSizes() {
+        let portrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+        columns = portrait ? 2 : 3
         let interimSpacing = (CGFloat(columns) - 1) * layout.minimumInteritemSpacing
         let side =
             floor((bounds.width
@@ -157,19 +154,20 @@ class DesignsCollectionView: UICollectionView,
     // MARK: - NSFetchedResultsControllerDelegate
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if type == .insert {
+        switch type {
+        case .insert:
             blockOperations.append(BlockOperation {
                 self.insertItems(at: [newIndexPath!])
             })
-        } else if type == .update {
+        case .update:
             blockOperations.append(BlockOperation {
                 self.reloadItems(at: [indexPath!])
             })
-        } else if type == .delete {
+        case .delete:
             blockOperations.append(BlockOperation {
                 self.deleteItems(at: [indexPath!])
             })
-        } else if type == .move {
+        case .move:
             blockOperations.append(BlockOperation {
                 self.moveItem(at: indexPath!, to: newIndexPath!)
             })
@@ -181,9 +179,7 @@ class DesignsCollectionView: UICollectionView,
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        performBatchUpdates({
-            blockOperations.forEach { $0.start() }
-        }, completion: nil)
+        performBatchUpdates({ blockOperations.forEach { $0.start() } }, completion: nil)
     }
 
 }
