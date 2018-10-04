@@ -7,7 +7,10 @@ target 'Calendarly' do
 
   # Pods for Calendarly
   pod "Color-Picker-for-iOS", "~> 2.0"
-
+  pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'GBDeviceInfo', '~> 4.2'
+  pod 'BulletinBoard'
+	
   target 'CalendarlyTests' do
     inherit! :search_paths
     # Pods for testing

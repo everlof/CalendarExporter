@@ -1,23 +1,43 @@
 import UIKit
+import CoreData
+import MBProgressHUD
 
 extension UIViewController {
 
     func addContentController(_ child: UIViewController, to stackView: UIStackView) {
-        addChildViewController(child)
+        addChild(child)
         stackView.addArrangedSubview(child.view)
-        child.didMove(toParentViewController: self)
+        child.didMove(toParent: self)
     }
 
 }
 
-class ViewController: UIViewController {
+class DesignNavigationController: UINavigationController {
 
-    lazy var calendarPreviewer: HTMLCalendarPreviewController = {
-        return HTMLCalendarPreviewController(calendar: HTMLCalendar(year: 2018, locale: .current))
-    }()
+    let styleViewController: DesignViewController
 
-    lazy var styleController: HTMLCalendarStylerNavigationController = {
-        return HTMLCalendarStylerNavigationController(previewController: self.calendarPreviewer)
+    init(design: Design) {
+        self.styleViewController = DesignViewController(design: design)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setViewControllers([styleViewController], animated: true)
+    }
+
+}
+
+class DesignViewController: UIViewController {
+
+    let calendarPreviewer: HTMLCalendarPreviewController
+
+    lazy var styleController: HTMLCalendarStylerViewController = {
+        return HTMLCalendarStylerViewController(previewController: self.calendarPreviewer)
     }()
 
     let stackView = UIStackView()
@@ -27,6 +47,62 @@ class ViewController: UIViewController {
     let titltToPreviewImage = UIImageView()
 
     var topConstraint: NSLayoutConstraint!
+
+    let design: Design
+
+    let editingContext: NSManagedObjectContext
+
+    var navigationBarHiddenInPortrait = true
+
+    let tapGesture = UITapGestureRecognizer()
+
+    init(design: Design) {
+        editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
+        self.design = editingContext.object(with: design.objectID) as! Design
+        calendarPreviewer = HTMLCalendarPreviewController(calendar: HTMLCalendar(design: self.design))
+        super.init(nibName: nil, bundle: nil)
+
+        view.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(didTap))
+
+        navigationItem.title = "Inställningar"
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(didPressSave))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Export",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(didPressExport))
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func didTap() {
+        navigationBarHiddenInPortrait.toggle()
+        navigationController?.setNavigationBarHidden(navigationBarHiddenInPortrait, animated: true)
+    }
+
+    @objc func didPressSave() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func didPressExport() {
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.label.text = "Exporting PDF"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            CalendarBook(design: self.design, size: .A3).startPrinting { url in
+                DispatchQueue.main.async {
+                    MBProgressHUD.hide(for: self.view, animated: true)
+                    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                    self.present(activityVC, animated: true, completion: nil)
+                }
+            }
+        }
+    }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { ctx in self.adjustLayout() }, completion: nil)
@@ -43,9 +119,11 @@ class ViewController: UIViewController {
         tiltToPreviewView.isHidden = !portrait
 
         if portrait {
+            navigationController?.setNavigationBarHidden(navigationBarHiddenInPortrait, animated: false)
             calendarPreviewer.webViewInset = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
             calendarPreviewer.webViewBorder = true
         } else {
+            navigationController?.setNavigationBarHidden(false, animated: false)
             calendarPreviewer.webViewInset = .zero
             calendarPreviewer.webViewBorder = false
         }
@@ -61,7 +139,7 @@ class ViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(setupAnimation),
-                                               name: .UIApplicationDidBecomeActive,
+                                               name: UIApplication.didBecomeActiveNotification,
                                                object: nil)
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,10 +150,11 @@ class ViewController: UIViewController {
         view.addSubview(stackView)
 
         stackView.spacing = 1
-        stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        stackView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
 
-        topConstraint = stackView.topAnchor.constraint(equalTo: view.topAnchor)
+        stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+
+        topConstraint = stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         topConstraint.isActive = true
 
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true

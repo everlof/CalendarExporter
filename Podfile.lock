@@ -1,12 +1,23 @@
 PODS:
+  - BulletinBoard (2.0.2)
   - Color-Picker-for-iOS (2.0.2)
+  - GBDeviceInfo (4.4.0):
+    - GBDeviceInfo/Core (= 4.4.0)
+  - GBDeviceInfo/Core (4.4.0)
+  - MBProgressHUD (1.1.0)
 
 DEPENDENCIES:
+  - BulletinBoard
   - Color-Picker-for-iOS (~> 2.0)
+  - GBDeviceInfo (~> 4.2)
+  - MBProgressHUD (~> 1.1.0)
 
 SPEC CHECKSUMS:
+  BulletinBoard: a4a3022789e5202167127c3231975313c1d76c51
   Color-Picker-for-iOS: 4980589b3e3cfe7198f227dd50be9adb02d8bc0b
+  GBDeviceInfo: 2ec90c6808d063061b16773ec8e857257058dc5d
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
 
-PODFILE CHECKSUM: 227094b81b801456babf9d0c43a3d9e5b3da46c4
+PODFILE CHECKSUM: 117190f19dc7c16058829a5a80807668f104e49c
 
 COCOAPODS: 1.4.0

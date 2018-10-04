@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		28DB19478B798FAEA3C909E3 /* Pods_Calendarly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15FADF50770BD4D9A30DF8BF /* Pods_Calendarly.framework */; };
+		C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */; };
 		C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */; };
 		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
+		C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */; };
+		C46B63D0215CF928009EB4C4 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */; };
+		C46B63D2215CFACE009EB4C4 /* HTMLCalendarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */; };
+		C46B63D4215D00EC009EB4C4 /* DesignsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */; };
+		C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A53B3F2163E46600EE16FA /* Design+Extension.swift */; };
 		C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */; };
-		C4C086B9214E4BA80019F6B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B8214E4BA80019F6B8 /* ViewController.swift */; };
+		C4C086B9214E4BA80019F6B8 /* DesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */; };
 		C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C4C086BD214E4BA80019F6B8 /* Calendarly.xcdatamodeld */; };
 		C4C086C1214E4BAA0019F6B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4C086C0214E4BAA0019F6B8 /* Assets.xcassets */; };
 		C4C086C4214E4BAA0019F6B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4C086C2214E4BAA0019F6B8 /* LaunchScreen.storyboard */; };
@@ -29,6 +35,10 @@
 		C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */; };
 		C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */; };
 		C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */; };
+		C4C1A0CB21663C13001CDEF8 /* TextFieldBulletinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */; };
+		C4C1A0CD21663C23001CDEF8 /* YearPickerBLTNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */; };
+		C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */; };
+		C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */; };
 		D640355E63040C9F61517B22 /* Pods_CalendarlyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F029D770CDD661AF8A7DC57 /* Pods_CalendarlyTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,11 +58,17 @@
 		5F029D770CDD661AF8A7DC57 /* Pods_CalendarlyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarlyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57D777F6C029A312EE2BDB9 /* Pods-CalendarlyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB17E428FBD9C71CFD97C1AC /* Pods-Calendarly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calendarly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly.debug.xcconfig"; sourceTree = "<group>"; };
+		C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extension.swift"; sourceTree = "<group>"; };
 		C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerViewController.swift; sourceTree = "<group>"; };
 		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsViewController.swift; sourceTree = "<group>"; };
+		C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarRenderer.swift; sourceTree = "<group>"; };
+		C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsCollectionView.swift; sourceTree = "<group>"; };
+		C4A53B3F2163E46600EE16FA /* Design+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Design+Extension.swift"; sourceTree = "<group>"; };
 		C4C086B3214E4BA80019F6B8 /* Calendarly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendarly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C4C086B8214E4BA80019F6B8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignViewController.swift; sourceTree = "<group>"; };
 		C4C086BE214E4BA80019F6B8 /* Calendarly.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Calendarly.xcdatamodel; sourceTree = "<group>"; };
 		C4C086C0214E4BAA0019F6B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4C086C3214E4BAA0019F6B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,6 +89,10 @@
 		C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendar.swift; sourceTree = "<group>"; };
 		C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Extension.swift"; sourceTree = "<group>"; };
 		C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBulletinPage.swift; sourceTree = "<group>"; };
+		C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearPickerBLTNItem.swift; sourceTree = "<group>"; };
+		C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPageBLTNItem.swift; sourceTree = "<group>"; };
+		C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionFeedbackGenerator.swift; sourceTree = "<group>"; };
 		F9377C889190DEBD9E0845B8 /* Pods-CalendarlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +136,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C41A90DA2165F79B00352940 /* CreateOrEdit */ = {
+			isa = PBXGroup;
+			children = (
+				C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */,
+				C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */,
+				C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */,
+			);
+			path = CreateOrEdit;
+			sourceTree = "<group>";
+		};
+		C4A53B3621638AA100EE16FA /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				C4A53B3F2163E46600EE16FA /* Design+Extension.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		C4C086AA214E4BA80019F6B8 = {
 			isa = PBXGroup;
 			children = (
@@ -139,13 +177,14 @@
 		C4C086B5214E4BA80019F6B8 /* Calendarly */ = {
 			isa = PBXGroup;
 			children = (
+				C4C1A0C921663BFF001CDEF8 /* BulletinBoard */,
+				C4A53B3621638AA100EE16FA /* CoreData */,
 				C4C086EE21527B980019F6B8 /* ViewControllers */,
 				C4C086E72152288A0019F6B8 /* Render */,
 				C4C086E2215227760019F6B8 /* Model */,
 				C4C086DD215226B80019F6B8 /* Extensions */,
 				C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */,
 				C46B63CB215BDBED009EB4C4 /* StartViewController.swift */,
-				C4C086B8214E4BA80019F6B8 /* ViewController.swift */,
 				C4C086C0214E4BAA0019F6B8 /* Assets.xcassets */,
 				C4C086C2214E4BAA0019F6B8 /* LaunchScreen.storyboard */,
 				C4C086C5214E4BAA0019F6B8 /* Info.plist */,
@@ -172,6 +211,8 @@
 				C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */,
 				C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */,
 				C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */,
+				C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */,
+				C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -182,6 +223,7 @@
 				C4C086E3215227830019F6B8 /* Element.swift */,
 				C4C086E5215227A40019F6B8 /* CSSRule.swift */,
 				C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */,
+				C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -197,9 +239,10 @@
 		C4C086EE21527B980019F6B8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C41A90DA2165F79B00352940 /* CreateOrEdit */,
 				C4C086F321529DF80019F6B8 /* Pickers */,
-				C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */,
-				C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */,
+				C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */,
+				C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -211,6 +254,17 @@
 				C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */,
 			);
 			path = Pickers;
+			sourceTree = "<group>";
+		};
+		C4C1A0C921663BFF001CDEF8 /* BulletinBoard */ = {
+			isa = PBXGroup;
+			children = (
+				C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */,
+				C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */,
+				C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */,
+				C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */,
+			);
+			path = BulletinBoard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,9 +323,11 @@
 				TargetAttributes = {
 					C4C086B2214E4BA80019F6B8 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1000;
 					};
 					C4C086C9214E4BAA0019F6B8 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1000;
 						TestTargetID = C4C086B2214E4BA80019F6B8;
 					};
 				};
@@ -340,11 +396,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BulletinBoard/BLTNBoard.framework",
 				"${BUILT_PRODUCTS_DIR}/Color-Picker-for-iOS/Color_Picker_for_iOS.framework",
+				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BLTNBoard.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Color_Picker_for_iOS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -421,8 +483,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4C086B9214E4BA80019F6B8 /* ViewController.swift in Sources */,
+				C4C086B9214E4BA80019F6B8 /* DesignViewController.swift in Sources */,
 				C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */,
+				C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */,
 				C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */,
 				C4C086E4215227830019F6B8 /* Element.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
@@ -430,7 +493,11 @@
 				C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */,
+				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,
+				C46B63D4215D00EC009EB4C4 /* DesignsCollectionView.swift in Sources */,
 				C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */,
+				C4C1A0CB21663C13001CDEF8 /* TextFieldBulletinPage.swift in Sources */,
+				C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
 				C4C086E6215227A40019F6B8 /* CSSRule.swift in Sources */,
@@ -438,7 +505,12 @@
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
 				C4C086EB2152298B0019F6B8 /* UIWebView+Extension.swift in Sources */,
 				C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */,
+				C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */,
+				C4C1A0CD21663C23001CDEF8 /* YearPickerBLTNItem.swift in Sources */,
+				C46B63D0215CF928009EB4C4 /* UIView+Extension.swift in Sources */,
 				C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */,
+				C46B63D2215CFACE009EB4C4 /* HTMLCalendarRenderer.swift in Sources */,
+				C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,7 +672,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.Calendarly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -619,7 +691,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.Calendarly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -640,7 +712,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.CalendarlyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calendarly.app/Calendarly";
 			};
@@ -662,7 +734,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.CalendarlyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calendarly.app/Calendarly";
 			};

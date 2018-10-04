@@ -1,37 +1,36 @@
 import UIKit
 
-protocol FontPickerViewControllerDelegate: class {
-    func didSelect(font: UIFont)
-}
-
 class FontPickerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView(frame: .zero, style: .grouped)
 
-    var currentFont: UIFont {
-        didSet {
-            if oldValue != currentFont {
-                for section in 0..<tableView.numberOfSections {
-                    for row in 0..<tableView.numberOfRows(inSection: section) {
-                        let indexPath = IndexPath(row: row, section: section)
-                        if let cell = tableView.cellForRow(at: indexPath) {
-                            updateCheckmark(cell: cell, indexPath: indexPath)
-                        }
-                    }
-                }
-            }
-            print("Current => \(currentFont)")
-        }
-    }
+    var currFont: ReferenceWritableKeyPath<Design, UIFont>
 
-    weak var delegate: FontPickerViewControllerDelegate?
+    var object: Design
+
+//    var currentFont: UIFont {
+//        didSet {
+//            if oldValue != currentFont {
+//                for section in 0..<tableView.numberOfSections {
+//                    for row in 0..<tableView.numberOfRows(inSection: section) {
+//                        let indexPath = IndexPath(row: row, section: section)
+//                        if let cell = tableView.cellForRow(at: indexPath) {
+//                            updateCheckmark(cell: cell, indexPath: indexPath)
+//                        }
+//                    }
+//                }
+//            }
+//            print("Current => \(currentFont)")
+//        }
+//    }
 
     let fontNames: [String] = {
         return UIFont.familyNames.map { UIFont.fontNames(forFamilyName: $0) }.flatMap { $0 }.sorted()
     }()
 
-    init(currentFont: UIFont) {
-        self.currentFont = currentFont
+    init(object: Design, keyPath: ReferenceWritableKeyPath<Design, UIFont>) {
+        self.object = object
+        self.currFont = keyPath
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -72,12 +71,13 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     func updateCheckmark(cell: UITableViewCell, indexPath: IndexPath) {
-        cell.accessoryType = fontNames[indexPath.row] == currentFont.fontName ? .checkmark : .none
+//        cell.accessoryType = fontNames[indexPath.row] == currentFont.fontName ? .checkmark : .none
     }
 
     func _didSelect(font: UIFont) {
-        currentFont = font
-        delegate?.didSelect(font: currentFont)
+        self.object[keyPath: self.currFont] = font
+//        currentFont = font
+//        delegate?.didSelect(font: currentFont)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -34,6 +34,7 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
         self.calendar = calendar
         super.init(nibName: nil, bundle: nil)
         self.calendar.delegate = self
+        webView.isUserInteractionEnabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -62,20 +63,10 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
 
         heightContraint = webView.heightAnchor.constraint(equalToConstant: 100)
         heightContraint.isActive = true
-
-//        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-//            self.reload()
-//        }
     }
 
     func reload() {
-        // heightContraint.constant = view.frame.width * 1.41428571
         heightContraint.constant = ((view.frame.width - webViewInset.left - webViewInset.right) * 1.41428571)
-        //        let url = URL(fileURLWithPath: "/Users/davideverlof/Downloads/livecal.html")
-        //        let data = try! Data(contentsOf: url)
-        //        let html = String(data: data, encoding: .utf8)!
-        //        webView.loadHTMLString(html, baseURL: nil)
-
         webView.loadHTMLString(calendar.export(), baseURL: nil)
     }
 
@@ -85,15 +76,12 @@ class HTMLCalendarPreviewController: UIViewController, HTMLCalendarDelegate {
         reload()
     }
 
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//
-//        guard let outputURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("output").appendingPathExtension("pdf")
-//            else { fatalError("Destination URL not created") }
-//
-//        webView.export(size: .A3).write(to: outputURL, atomically: true)
-//        print("open \(outputURL.path)") // command to open the generated file
-//    }
+    var renderer: HTMLCalendarRenderer!
 
+    override func didReceiveMemoryWarning() {
+//        renderer = HTMLCalendarRenderer(calendar: calendar)
+//        renderer.snap(completed: { image in
+//            try! image?.data?.write(to: URL(fileURLWithPath: "/tmp/test2.png"), options: .atomic)
+//        })
+    }
 }

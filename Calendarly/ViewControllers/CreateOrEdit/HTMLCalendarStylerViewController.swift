@@ -1,30 +1,9 @@
 import UIKit
 
-class HTMLCalendarStylerNavigationController: UINavigationController {
-
-    let styleViewController: HTMLCalendarStylerViewController
-
-    init(previewController: HTMLCalendarPreviewController) {
-        self.styleViewController = HTMLCalendarStylerViewController(previewController: previewController)
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setViewControllers([styleViewController], animated: true)
-    }
-
-}
-
 class HTMLCalendarStylerViewController: UIViewController,
     UITableViewDataSource,
     UITableViewDelegate,
-    LocalePickerViewControllerDelegate,
-    FontPickerViewControllerDelegate {
+    LocalePickerViewControllerDelegate {
 
     enum Section: Int {
         case title
@@ -35,15 +14,16 @@ class HTMLCalendarStylerViewController: UIViewController,
         case textualMonth
         case locale
         case sampleMonth
-        case monthFontSize
-        case font
+        case monthFontsize
+        case monthFont
     }
 
     enum BodyRow: Int {
         case border
         case weekdayStyle
         case firstDayOfWeek
-        case dayFontSize
+        case dateFontsize
+        case dateFont
     }
 
     let previewController: HTMLCalendarPreviewController
@@ -61,9 +41,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.title = "Inställningar"
-
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
@@ -79,11 +57,14 @@ class HTMLCalendarStylerViewController: UIViewController,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        (localeCell.accessoryView as! UILabel).text = Locale.localizedDescription(for: previewController.calendar.locale.identifier)
+        (localeCell.accessoryView as! UILabel).text = Locale.localizedDescription(for: previewController.calendar.design.locale.identifier)
         (localeCell.accessoryView as! UILabel).sizeToFit()
 
-        (fontCell.accessoryView as! UILabel).text = previewController.calendar.font.fontName
-        (fontCell.accessoryView as! UILabel).sizeToFit()
+        (monthFontCell.accessoryView as! UILabel).text = previewController.calendar.design.monthFontname
+        (monthFontCell.accessoryView as! UILabel).sizeToFit()
+
+        (dateFontCell.accessoryView as! UILabel).text = previewController.calendar.design.dateFontname
+        (dateFontCell.accessoryView as! UILabel).sizeToFit()
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -100,15 +81,22 @@ class HTMLCalendarStylerViewController: UIViewController,
 
         if let section = Section(rawValue: indexPath.section), section == .title,
             let row = TitleRow(rawValue: indexPath.row), row == .locale {
-            let pickerController = LocalePickerViewController(currentLocale: previewController.calendar.locale)
+            let pickerController = LocalePickerViewController(currentLocale: previewController.calendar.design.locale)
             pickerController.delegate = self
             navigationController?.pushViewController(pickerController, animated: true)
         }
 
         if let section = Section(rawValue: indexPath.section), section == .title,
-            let row = TitleRow(rawValue: indexPath.row), row == .font {
-            let pickerController = FontPickerViewController(currentFont: previewController.calendar.font)
-            pickerController.delegate = self
+            let row = TitleRow(rawValue: indexPath.row), row == .monthFont {
+            let pickerController = FontPickerViewController(object: previewController.calendar.design,
+                                                            keyPath: \Design.monthFont)
+            navigationController?.pushViewController(pickerController, animated: true)
+        }
+
+        if let section = Section(rawValue: indexPath.section), section == .body,
+            let row = BodyRow(rawValue: indexPath.row), row == .dateFont {
+            let pickerController = FontPickerViewController(object: previewController.calendar.design,
+                                                            keyPath: \Design.dateFont)
             navigationController?.pushViewController(pickerController, animated: true)
         }
     }
@@ -143,12 +131,12 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return textualMonthCell
             case .locale:
                 return localeCell
-            case .monthFontSize:
+            case .monthFontsize:
                 return monthFontSizeCell
             case .sampleMonth:
                 return sampleMonthStepperCell
-            case .font:
-                return fontCell
+            case .monthFont:
+                return monthFontCell
             }
         case .body:
             switch BodyRow(rawValue: indexPath.row)! {
@@ -158,8 +146,10 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return weekdayPrefixToggleCell
             case .firstDayOfWeek:
                 return firstDayOfWeekToggleCell
-            case .dayFontSize:
+            case .dateFontsize:
                 return dayFontSizeCell
+            case .dateFont:
+                return dateFontCell
             }
         }
     }
@@ -167,7 +157,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     // MARK: - LocalePickerViewControllerDelegate
 
     func didSelect(locale: Locale) {
-        previewController.calendar.locale = locale
+        previewController.calendar.design.locale = locale
     }
 
     // MARK: Locale Cell
@@ -177,7 +167,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.textLabel?.text = "Language"
 
         let label = UILabel()
-        label.text = Locale.localizedDescription(for: previewController.calendar.locale.identifier)
+        label.text = Locale.localizedDescription(for: previewController.calendar.design.locale.identifier)
         label.textColor = .secondaryTextColor
         label.sizeToFit()
 
@@ -193,7 +183,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
-        borderSwitch.isOn = previewController.calendar.hasBorders
+        borderSwitch.isOn = previewController.calendar.design.hasBorders
         borderSwitch.addTarget(self, action: #selector(toggleBorderSwitch), for: .valueChanged)
 
         cell.accessoryView = borderSwitch
@@ -201,14 +191,14 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func toggleBorderSwitch() {
-        previewController.calendar.hasBorders = !previewController.calendar.hasBorders
+        previewController.calendar.design.hasBorders = !previewController.calendar.design.hasBorders
 
-        if previewController.calendar.hasBorders {
-            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(HTMLCalendar.dateFontSizeDefaultBordered)
-            previewController.calendar.dayFontSize = Double(HTMLCalendar.dateFontSizeDefaultBordered)
+        if previewController.calendar.design.hasBorders {
+            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(Design.dateFontSizeDefaultBordered)
+            previewController.calendar.design.dateFontsize = Float(Design.dateFontSizeDefaultBordered)
         } else {
-            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(HTMLCalendar.dateFontSizeDefaultNonBordered)
-            previewController.calendar.dayFontSize = Double(HTMLCalendar.dateFontSizeDefaultNonBordered)
+            (dayFontSizeCell.accessoryView as! UIStepper).value = Double(Design.dateFontSizeDefaultNonBordered)
+            previewController.calendar.design.dateFontsize = Float(Design.dateFontSizeDefaultNonBordered)
         }
     }
 
@@ -220,7 +210,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
-        borderSwitch.isOn = previewController.calendar.textualMonth
+        borderSwitch.isOn = !previewController.calendar.design.numericMonthText
         borderSwitch.addTarget(self, action: #selector(textualMonthToggle), for: .valueChanged)
 
         cell.accessoryView = borderSwitch
@@ -228,7 +218,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func textualMonthToggle() {
-        previewController.calendar.textualMonth = !previewController.calendar.textualMonth
+        previewController.calendar.design.numericMonthText = !previewController.calendar.design.numericMonthText
     }
 
     // MARK: - Weekday prefix toggle cell
@@ -239,7 +229,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
-        borderSwitch.isOn = previewController.calendar.firstCharOfWeekday
+        borderSwitch.isOn = true
         borderSwitch.addTarget(self, action: #selector(toggleWeekdaystyle), for: .valueChanged)
 
         cell.accessoryView = borderSwitch
@@ -247,7 +237,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func toggleWeekdaystyle() {
-        previewController.calendar.firstCharOfWeekday = !previewController.calendar.firstCharOfWeekday
+        // previewController.calendar.firstCharOfWeekday = !previewController.calendar.firstCharOfWeekday
     }
 
     // MARK: - First day of week cell
@@ -258,7 +248,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
-        borderSwitch.isOn = previewController.calendar.firstDayOfWeek == .monday
+        borderSwitch.isOn = previewController.calendar.design.firstDayOfWeek == .monday
         borderSwitch.addTarget(self, action: #selector(firstDayOfWeekToggle), for: .valueChanged)
 
         cell.accessoryView = borderSwitch
@@ -266,10 +256,10 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func firstDayOfWeekToggle() {
-        if previewController.calendar.firstDayOfWeek == .monday {
-            previewController.calendar.firstDayOfWeek = .sunday
+        if previewController.calendar.design.firstDayOfWeek == .monday {
+            previewController.calendar.design.firstDayOfWeek = .sunday
         } else {
-            previewController.calendar.firstDayOfWeek = .monday
+            previewController.calendar.design.firstDayOfWeek = .monday
         }
     }
 
@@ -292,7 +282,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func sampleMonthStepped() {
-        previewController.calendar.month = 1 + Int((sampleMonthStepperCell.accessoryView as! UIStepper).value) % 12
+        previewController.calendar.design.previewMonth = 1 + Int16((sampleMonthStepperCell.accessoryView as! UIStepper).value) % 12
     }
 
     // MARK: - Date font-size cell
@@ -304,7 +294,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
         let stepper = UIStepper(frame: .zero)
         stepper.sizeToFit()
-        stepper.value = previewController.calendar.dayFontSize
+        stepper.value = Double(previewController.calendar.design.dateFontsize)
         stepper.minimumValue = 0.1
         stepper.maximumValue = 3.0
         stepper.stepValue = 0.1
@@ -316,7 +306,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func dayFontSizeChanged() {
-        previewController.calendar.dayFontSize = (dayFontSizeCell.accessoryView as! UIStepper).value
+        previewController.calendar.design.dateFontsize = Float((dayFontSizeCell.accessoryView as! UIStepper).value)
     }
 
     // MARK: - Month font-size cell
@@ -328,7 +318,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
         let stepper = UIStepper(frame: .zero)
         stepper.sizeToFit()
-        stepper.value = previewController.calendar.monthFontSize
+        stepper.value = Double(previewController.calendar.design.monthFontsize)
         stepper.minimumValue = 2
         stepper.maximumValue = 8
         stepper.stepValue = 0.1
@@ -340,17 +330,17 @@ class HTMLCalendarStylerViewController: UIViewController,
     }()
 
     @objc func monthFontSizeChanged() {
-        previewController.calendar.monthFontSize = (monthFontSizeCell.accessoryView as! UIStepper).value
+        previewController.calendar.design.monthFontsize = Float((monthFontSizeCell.accessoryView as! UIStepper).value)
     }
 
     // MARK: - Month font-size cell
 
-    lazy var fontCell: UITableViewCell = {
+    lazy var monthFontCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
         cell.textLabel?.text = "Font"
 
         let label = UILabel()
-        label.text = previewController.calendar.font.fontName
+        label.text = previewController.calendar.design.monthFontname
         label.textColor = .secondaryTextColor
         label.sizeToFit()
 
@@ -358,8 +348,19 @@ class HTMLCalendarStylerViewController: UIViewController,
         return cell
     }()
 
-    func didSelect(font: UIFont) {
-        previewController.calendar.font = font
-    }
+    // MARK: - Day font-size cell
+
+    lazy var dateFontCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Font"
+
+        let label = UILabel()
+        label.text = previewController.calendar.design.dateFontname
+        label.textColor = .secondaryTextColor
+        label.sizeToFit()
+
+        cell.accessoryView = label
+        return cell
+    }()
 
 }

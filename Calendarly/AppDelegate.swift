@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  Calendarly
-//
-//  Created by David Everlöf on 2018-09-16.
-//  Copyright © 2018 David Everlöf. All rights reserved.
-//
-
 import UIKit
 import CoreData
 
@@ -14,9 +6,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = StartViewController()
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+        window?.rootViewController = StartViewController(persistentContainer: persistentContainer)
+        window?.tintColor = UIColor.boneConstrastDarkest
         window?.makeKeyAndVisible()
         return true
     }
@@ -64,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
                  * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
+                 * The device is out of space.  
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */

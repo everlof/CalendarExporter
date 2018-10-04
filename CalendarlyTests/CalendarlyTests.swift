@@ -1,11 +1,3 @@
-//
-//  CalendarlyTests.swift
-//  CalendarlyTests
-//
-//  Created by David Everlöf on 2018-09-16.
-//  Copyright © 2018 David Everlöf. All rights reserved.
-//
-
 import XCTest
 @testable import Calendarly
 

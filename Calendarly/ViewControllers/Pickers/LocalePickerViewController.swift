@@ -27,6 +27,7 @@ class LocalePickerViewController: UIViewController, UITableViewDataSource, UITab
     weak var delegate: LocalePickerViewControllerDelegate?
 
     let preferredIdentifiers = [
+        Locale.autoupdatingCurrent.identifier,
         "en",
         "fr",
         "zh_Hans",
@@ -35,8 +36,8 @@ class LocalePickerViewController: UIViewController, UITableViewDataSource, UITab
 
     let identifiers: [String] = Locale.availableIdentifiers.sorted { s1, s2 in
         return
-            (Locale.autoupdatingCurrent as NSLocale).displayName(forKey: .identifier, value: s1)! <
-            (Locale.autoupdatingCurrent as NSLocale).displayName(forKey: .identifier, value: s2)!
+            (Locale.autoupdatingCurrent as NSLocale).displayName(forKey: .identifier, value: s1) ?? s1 <
+            (Locale.autoupdatingCurrent as NSLocale).displayName(forKey: .identifier, value: s2) ?? s2
     }
 
     init(currentLocale: Locale) {

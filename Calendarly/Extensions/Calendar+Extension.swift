@@ -25,7 +25,7 @@ extension Calendar {
 
         var dateComponents = DateComponents()
         dateComponents.timeZone = TimeZone(secondsFromGMT: 0)
-        dateComponents.year = 2018
+        dateComponents.year = year
         dateComponents.weekdayOrdinal = config == .monday ? 1 : 0
 
         return (0...6).map { i in
