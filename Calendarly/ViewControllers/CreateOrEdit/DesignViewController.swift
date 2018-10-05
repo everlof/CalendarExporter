@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class DesignViewController: UIViewController, UITextFieldDelegate {
+class DesignViewController: UIViewController {
 
     let calendarView: CalendarView
 
@@ -37,43 +37,6 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
 
     let tapGesture = UITapGestureRecognizer()
 
-    @objc func tap() {
-        let textField = UITextField(frame: .zero)
-        textField.text = design.name?.trimmingCharacters(in: .whitespaces)
-        textField.sizeToFit()
-        textField.returnKeyType = .done
-        navigationItem.titleView = textField
-        textField.delegate = self
-        textField.becomeFirstResponder()
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        textField.sizeToFit()
-        return true
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        if let text = textField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
-            design.name = textField.text
-            titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
-        }
-        navigationItem.titleView = titleButtonItem
-        return false
-    }
-
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-
-    lazy var titleButtonItem: UIButton = {
-        let titleButtonItem = UIButton(type: .system)
-        titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
-        titleButtonItem.sizeToFit()
-        titleButtonItem.addTarget(self, action: #selector(tap), for: .touchUpInside)
-        return titleButtonItem
-    }()
-
     init(design: Design) {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
         self.design = editingContext.object(with: design.objectID) as! Design
@@ -82,8 +45,6 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
 
         //view.addGestureRecognizer(tapGesture)
         //tapGesture.addTarget(self, action: #selector(didTap))
-
-        navigationItem.titleView = titleButtonItem
     }
 
     required init?(coder aDecoder: NSCoder) {

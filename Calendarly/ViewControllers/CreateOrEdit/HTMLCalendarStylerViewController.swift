@@ -21,7 +21,8 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 class HTMLCalendarStylerViewController: UIViewController,
     UITableViewDataSource,
     UITableViewDelegate,
-    LocalePickerViewControllerDelegate {
+    LocalePickerViewControllerDelegate,
+    UITextFieldDelegate {
 
     enum Section: Int {
         case title
@@ -54,6 +55,47 @@ class HTMLCalendarStylerViewController: UIViewController,
     let editingContext: NSManagedObjectContext
 
     let calendarView: CalendarView
+
+    @objc func tap() {
+        let textField = UITextField(frame: .zero)
+        textField.text = design.name?.trimmingCharacters(in: .whitespaces)
+        textField.sizeToFit()
+        textField.textColor = UIColor.boneConstrastDarkest
+        textField.returnKeyType = .done
+        navigationItem.titleView = textField
+        textField.delegate = self
+        textField.becomeFirstResponder()
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        textField.sizeToFit()
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let text = textField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
+            design.name = textField.text
+            UIView.setAnimationsEnabled(false)
+            titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
+            UIView.setAnimationsEnabled(true)
+        }
+        navigationItem.titleView = titleButtonItem
+        return false
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+
+    lazy var titleButtonItem: UIButton = {
+        let titleButtonItem = UIButton(type: .custom)
+        titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
+        titleButtonItem.setTitleColor(UIColor.boneConstrastDarkest, for: .normal)
+        titleButtonItem.sizeToFit()
+        titleButtonItem.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        return titleButtonItem
+    }()
 
     init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
         self.design = design
@@ -88,6 +130,8 @@ class HTMLCalendarStylerViewController: UIViewController,
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(didPressExport))
+
+        navigationItem.titleView = titleButtonItem
     }
 
     @objc func didPressExport() {

@@ -72,8 +72,6 @@ extension Calendar {
             result.append(row)
         }
 
-        print(result)
-
         return result
     }
 
