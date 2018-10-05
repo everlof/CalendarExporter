@@ -12,6 +12,8 @@ extension Design {
 
     static let dateFontSizeDefaultNonBordered: CGFloat = 1.9
 
+    static let headerFontSizeDefault: CGFloat = 1.9
+
     static let monthFontSizeDefault: CGFloat = 3.0
 
     static func createIn(context: NSManagedObjectContext) -> Design {
@@ -24,6 +26,9 @@ extension Design {
 
         design.monthFontname = "ArialRoundedMTBold"
         design.monthFontsize = Float(monthFontSizeDefault)
+
+        design.headerFontname = "ArialRoundedMTBold"
+        design.headerFontsize = Float(headerFontSizeDefault)
 
         design.previewMonth = 1
         design.snapshotFilename = String(format: "%@.png", UUID().uuidString)

@@ -32,12 +32,14 @@ class DesignNavigationController: UINavigationController {
 
 }
 
-class DesignViewController: UIViewController {
+class DesignViewController: UIViewController, UITextFieldDelegate {
 
-    let calendarPreviewer: HTMLCalendarPreviewController
+    let calendarViewInStackView: CalendarView
+
+    let freeFloatingCalendarView: CalendarView
 
     lazy var styleController: HTMLCalendarStylerViewController = {
-        return HTMLCalendarStylerViewController(previewController: self.calendarPreviewer)
+        return HTMLCalendarStylerViewController(design: self.design)
     }()
 
     let stackView = UIStackView()
@@ -45,8 +47,6 @@ class DesignViewController: UIViewController {
     let tiltToPreviewView = UIStackView()
 
     let titltToPreviewImage = UIImageView()
-
-    var topConstraint: NSLayoutConstraint!
 
     let design: Design
 
@@ -64,16 +64,54 @@ class DesignViewController: UIViewController {
 
     let tapGesture = UITapGestureRecognizer()
 
+    @objc func tap() {
+        let textField = UITextField(frame: .zero)
+        textField.text = design.name?.trimmingCharacters(in: .whitespaces)
+        textField.sizeToFit()
+        textField.returnKeyType = .done
+        navigationItem.titleView = textField
+        textField.delegate = self
+        textField.becomeFirstResponder()
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        textField.sizeToFit()
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let text = textField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
+            design.name = textField.text
+            titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
+        }
+        navigationItem.titleView = titleButtonItem
+        return false
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+
+    lazy var titleButtonItem: UIButton = {
+        let titleButtonItem = UIButton(type: .system)
+        titleButtonItem.setTitle((design.name?.trimmingCharacters(in: .whitespaces)).map { "\($0), \(design.year)" }, for: .normal)
+        titleButtonItem.sizeToFit()
+        titleButtonItem.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        return titleButtonItem
+    }()
+
     init(design: Design) {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
         self.design = editingContext.object(with: design.objectID) as! Design
-        calendarPreviewer = HTMLCalendarPreviewController(calendar: HTMLCalendar(design: self.design))
+        calendarViewInStackView = CalendarView(design: self.design)
+        freeFloatingCalendarView = CalendarView(design: self.design)
         super.init(nibName: nil, bundle: nil)
 
-        view.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self, action: #selector(didTap))
+        //view.addGestureRecognizer(tapGesture)
+        //tapGesture.addTarget(self, action: #selector(didTap))
 
-        navigationItem.title = "Inställningar"
+        navigationItem.titleView = titleButtonItem
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                            target: self,
@@ -120,18 +158,17 @@ class DesignViewController: UIViewController {
 
     func adjustLayout() {
         let portrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-        self.stackView.arrangedSubviews[1].isHidden = portrait
-        self.topConstraint.constant = portrait ? 24 : 0
+
+        stackView.arrangedSubviews[0].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+        stackView.arrangedSubviews[1].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+        freeFloatingCalendarView.isHidden = !(UIScreen.main.bounds.height > UIScreen.main.bounds.width)
+
         tiltToPreviewView.isHidden = !portrait
 
         if portrait {
             navigationController?.setNavigationBarHidden(!navigationBarVisibleInPortrait, animated: false)
-            calendarPreviewer.webViewInset = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
-            calendarPreviewer.webViewBorder = true
         } else {
             navigationController?.setNavigationBarHidden(false, animated: false)
-            calendarPreviewer.webViewInset = .zero
-            calendarPreviewer.webViewBorder = false
         }
     }
 
@@ -143,31 +180,33 @@ class DesignViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(setupAnimation),
-                                               name: UIApplication.didBecomeActiveNotification,
-                                               object: nil)
-
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
 
         view.backgroundColor = .boneWhiteColor
         view.addSubview(stackView)
+        view.addSubview(freeFloatingCalendarView)
+
+        freeFloatingCalendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
+        freeFloatingCalendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8 * sqrt(2)).isActive = true
+
+        freeFloatingCalendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        freeFloatingCalendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
         stackView.spacing = 1
 
         stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        topConstraint = stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        topConstraint.isActive = true
-
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-
-        addContentController(calendarPreviewer, to: stackView)
+        stackView.addArrangedSubview(calendarViewInStackView)
         addContentController(styleController, to: stackView)
+
+        stackView.arrangedSubviews[0].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
         stackView.arrangedSubviews[1].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+        freeFloatingCalendarView.isHidden = !(UIScreen.main.bounds.height > UIScreen.main.bounds.width)
 
         let tiltToPreviewInstructionLabel = UILabel()
         tiltToPreviewInstructionLabel.text = "Rotate to edit"
@@ -200,7 +239,6 @@ class DesignViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        calendarPreviewer.reload()
         setupAnimation()
     }
 

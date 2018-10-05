@@ -20,7 +20,6 @@ class HTMLCalendarRenderer: NSObject, UIWebViewDelegate {
     var retainCycle: HTMLCalendarRenderer!
 
     func snap(completed: @escaping ((UIImage?) -> Void)) {
-        print("Snap")
         let width: CGFloat = 300
         let rect = CGRect(x: 0, y: 0, width: width, height: width * 1.41428571)
 
@@ -36,12 +35,9 @@ class HTMLCalendarRenderer: NSObject, UIWebViewDelegate {
         retainCycle = nil
     }
 
-    func webViewDidStartLoad(_ webView: UIWebView) {
-        print("Start load!")
-    }
+    func webViewDidStartLoad(_ webView: UIWebView) { }
 
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        print("Finish load!")
         self.completed(webView.snapshot)
         self.webView = nil
         retainCycle = nil

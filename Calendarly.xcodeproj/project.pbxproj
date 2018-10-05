@@ -39,6 +39,7 @@
 		C4C1A0CD21663C23001CDEF8 /* YearPickerBLTNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */; };
 		C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */; };
 		C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */; };
+		C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A103216660E0001CDEF8 /* CalendarView.swift */; };
 		D640355E63040C9F61517B22 /* Pods_CalendarlyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F029D770CDD661AF8A7DC57 /* Pods_CalendarlyTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,7 @@
 		C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearPickerBLTNItem.swift; sourceTree = "<group>"; };
 		C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPageBLTNItem.swift; sourceTree = "<group>"; };
 		C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionFeedbackGenerator.swift; sourceTree = "<group>"; };
+		C4C1A103216660E0001CDEF8 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F9377C889190DEBD9E0845B8 /* Pods-CalendarlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -224,6 +226,7 @@
 				C4C086E5215227A40019F6B8 /* CSSRule.swift */,
 				C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */,
 				C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */,
+				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				C4C086E4215227830019F6B8 /* Element.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
 				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
+				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
 				C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */,
