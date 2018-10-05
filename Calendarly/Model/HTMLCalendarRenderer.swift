@@ -26,7 +26,7 @@ class HTMLCalendarRenderer: NSObject, UIWebViewDelegate {
         self.completed = completed
         webView = UIWebView(frame: rect)
         webView.delegate = self
-        webView.loadHTMLString(calendar.export(month: page), baseURL: nil)
+        // webView.loadHTMLString(calendar.export(month: page), baseURL: nil)
     }
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {

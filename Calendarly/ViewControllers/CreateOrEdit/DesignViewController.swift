@@ -1,38 +1,25 @@
 import UIKit
 import CoreData
-import MBProgressHUD
-
-class DesignNavigationController: UINavigationController {
-
-    let styleViewController: DesignViewController
-
-    init(design: Design) {
-        self.styleViewController = DesignViewController(design: design)
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setViewControllers([styleViewController], animated: true)
-    }
-
-}
 
 class DesignViewController: UIViewController, UITextFieldDelegate {
 
     let calendarView: CalendarView
 
-    lazy var styleController: HTMLCalendarStylerViewController = {
-        return HTMLCalendarStylerViewController(design: self.design)
+    lazy var styleController: HTMLCalendarStylerNavigationController = {
+        return HTMLCalendarStylerNavigationController(design: self.design, editingContext: self.editingContext, calendarView: self.calendarView)
     }()
 
     let tiltToPreviewView = UIStackView()
 
     let titltToPreviewImage = UIImageView()
+
+    class SeparatorView: UIView {
+        override var intrinsicContentSize: CGSize {
+            return CGSize(width: 1/UIScreen.main.scale, height: UIView.noIntrinsicMetric)
+        }
+    }
+
+    let separatorView = SeparatorView()
 
     let design: Design
 
@@ -97,15 +84,6 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
         //tapGesture.addTarget(self, action: #selector(didTap))
 
         navigationItem.titleView = titleButtonItem
-
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                           target: self,
-                                                           action: #selector(didPressSave))
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Export",
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(didPressExport))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -119,24 +97,6 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @objc func didPressSave() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    @objc func didPressExport() {
-        let hud = MBProgressHUD.showAdded(to: view, animated: true)
-        hud.label.text = "Exporting PDF"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            CalendarBook(design: self.design, size: .A3).startPrinting { url in
-                DispatchQueue.main.async {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                    self.present(activityVC, animated: true, completion: nil)
-                }
-            }
-        }
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { ctx in self.adjustLayout() }, completion: nil)
     }
@@ -145,9 +105,11 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
         let portrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
 
         if portrait {
+            calendarView.hasBorder = true
             landscapeConstraints.forEach { $0.isActive = false }
             portraitConstraints.forEach { $0.isActive = true }
         } else {
+            calendarView.hasBorder = false
             portraitConstraints.forEach { $0.isActive = false }
             landscapeConstraints.forEach { $0.isActive = true }
         }
@@ -179,26 +141,33 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
 
         addChild(styleController)
         view.addSubview(styleController.view)
+
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(separatorView)
+
         styleController.didMove(toParent: self)
         styleController.view.translatesAutoresizingMaskIntoConstraints = false
 
         portraitConstraints.append(contentsOf: [
-            calendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            calendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8 * sqrt(2)),
+            calendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
+            calendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85 * sqrt(2)),
 
             calendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             calendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         landscapeConstraints.append(contentsOf: [
-            calendarView.heightAnchor.constraint(equalTo: view.heightAnchor),
             calendarView.widthAnchor.constraint(equalTo: calendarView.heightAnchor, multiplier: 1/sqrt(2)),
-
             calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             calendarView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             calendarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            styleController.view.leftAnchor.constraint(equalTo: calendarView.rightAnchor),
+            calendarView.rightAnchor.constraint(equalTo: separatorView.leftAnchor),
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            styleController.view.leftAnchor.constraint(equalTo: separatorView.rightAnchor),
+
             styleController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             styleController.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             styleController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -206,8 +175,12 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
 
         if UIScreen.main.bounds.height > UIScreen.main.bounds.width {
             NSLayoutConstraint.activate(portraitConstraints)
+            calendarView.hasBorder = true
+            separatorView.isHidden = false
         } else {
             NSLayoutConstraint.activate(landscapeConstraints)
+            calendarView.hasBorder = false
+            separatorView.isHidden = true
         }
 
         let tiltToPreviewInstructionLabel = UILabel()

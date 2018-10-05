@@ -66,9 +66,14 @@ extension Calendar {
 
         let emptyTrailing = 7 - row.count
 
-        (0..<emptyTrailing).forEach { _ in row.append(nil) }
+        // Fill up empty - but check we that we don't just fill up 7 empty slots
+        if emptyTrailing < 7 {
+            (0..<emptyTrailing).forEach { _ in row.append(nil) }
+            result.append(row)
+        }
 
-        result.append(row)
+        print(result)
+
         return result
     }
 

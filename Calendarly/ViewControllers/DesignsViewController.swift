@@ -134,7 +134,8 @@ class DesignsViewController: UIViewController {
                 let design = Design.createIn(context: ctx)
                 design.name = name
                 design.year = Int16(year!)
-                try? ctx.save()
+                try! ctx.save()
+                print("Saved: \(design)")
             })
             manager.dismissBulletin(animated: true)
         }
@@ -151,7 +152,7 @@ class DesignsViewController: UIViewController {
 extension DesignsViewController: DesignsCollectionViewDelegate {
 
     func present(design: Design) {
-        present(DesignNavigationController(design: design), animated: true, completion: nil)
+        present(DesignViewController(design: design), animated: true, completion: nil)
     }
 
 }

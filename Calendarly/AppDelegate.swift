@@ -12,6 +12,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = StartViewController(persistentContainer: persistentContainer)
         window?.tintColor = UIColor.boneConstrastDarkest
         window?.makeKeyAndVisible()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // Preload fonts-array
+            _ = FontPickerViewController.fontNames
+        }
+
         return true
     }
 

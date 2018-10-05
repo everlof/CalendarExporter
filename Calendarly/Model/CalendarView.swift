@@ -23,12 +23,18 @@ class CalendarView: UIView {
         return formatter
     }()
 
+    var timer: Timer!
+
+    var hasBorder: Bool = false {
+        didSet {
+            layer.borderWidth = hasBorder ? 1/UIScreen.main.scale : 0
+            layer.borderColor = UIColor.boneConstrastDarkest.cgColor
+        }
+    }
+
     init(design: Design, frame: CGRect = .zero) {
         self.design = design
         super.init(frame: frame)
-
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.boneConstrastDarkest.cgColor
 
         backgroundColor = .white
         translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +48,7 @@ class CalendarView: UIView {
         addSubview(headingContainer)
         addSubview(contentContainer)
 
-        headingContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1.0/3.0).isActive = true
+        headingContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
         headingContainer.topAnchor.constraint(equalTo: topAnchor).isActive = true
         headingContainer.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         headingContainer.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -58,6 +64,11 @@ class CalendarView: UIView {
         titleLabel.centerXAnchor.constraint(equalTo: headingContainer.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: headingContainer.centerYAnchor).isActive = true
 
+        if Environment.current.drawDebugColors {
+            headingContainer.backgroundColor = UIColor.red.withAlphaComponent(0.5)
+            contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
+        }
+
         update()
 
         NotificationCenter.default.addObserver(self,
@@ -65,11 +76,17 @@ class CalendarView: UIView {
                                                name: .NSManagedObjectContextObjectsDidChange,
                                                object: design.managedObjectContext)
 
-        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
             self.titleLabel.font = self.aggregatedMonthFont
+            self.titleLabel.sizeToFit()
             self.recursive(self.contentContainer, font: self.aggregatedHeaderFont, type: HeaderLabel.self)
             self.recursive(self.contentContainer, font: self.aggregatedDateFont, type: DateLabel.self)
         }
+    }
+
+    func cleanUp() {
+        timer.invalidate()
+        timer = nil
     }
 
     var unit: CGFloat {
@@ -106,6 +123,12 @@ class CalendarView: UIView {
     func recursive<T: UILabel>(_ view: UIView, font: UIFont, type: T.Type) {
         if let label = view as? T {
             label.font = font
+            if type is DateLabel.Type {
+                label.attributedText = NSAttributedString(string: label.text ?? "", attributes: [
+                    NSAttributedString.Key.kern: self.unit * CGFloat(design.dateKerning)
+                ])
+            }
+            label.sizeToFit()
         }
         view.subviews.forEach { recursive($0, font: font, type: type) }
     }
@@ -141,6 +164,10 @@ class CalendarView: UIView {
             let dateLabel = HeaderLabel(frame: .zero)
             dateLabel.font = aggregatedHeaderFont
 
+            if Environment.current.drawDebugColors {
+                dateLabel.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+            }
+
             cellView.addSubview(dateLabel)
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
             dateLabel.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
@@ -161,8 +188,16 @@ class CalendarView: UIView {
 
             for col in row {
                 let cellView = CellView(frame: .zero)
+                cellView.backgroundColor = .clear
+
                 let dateLabel = DateLabel(frame: .zero)
                 dateLabel.font = aggregatedDateFont
+
+                if Environment.current.drawDebugColors {
+                    dateLabel.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+                } else {
+                    dateLabel.backgroundColor = .clear
+                }
 
                 cellView.addSubview(dateLabel)
                 dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -170,7 +205,10 @@ class CalendarView: UIView {
                 dateLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
 
                 if let col = col, col != 0 {
-                    dateLabel.text = nbrFormatter.string(from: NSNumber(integerLiteral: col))!
+                    let text = nbrFormatter.string(from: NSNumber(integerLiteral: col))!
+                    dateLabel.attributedText = NSAttributedString(string: text, attributes: [
+                        NSAttributedString.Key.kern: self.unit * CGFloat(design.dateKerning)
+                    ])
                 }
 
                 rowView.addArrangedSubview(cellView)

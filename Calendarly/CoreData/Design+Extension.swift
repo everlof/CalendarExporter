@@ -54,6 +54,15 @@ extension Design {
         }
     }
 
+    var headerFont: UIFont {
+        get {
+            return UIFont(name: headerFontname!, size: CGFloat(headerFontsize))!
+        }
+        set {
+            headerFontname = newValue.fontName
+        }
+    }
+
     var locale: Locale {
         get {
             return Locale(identifier: localeIdentifier ?? Locale.autoupdatingCurrent.identifier)

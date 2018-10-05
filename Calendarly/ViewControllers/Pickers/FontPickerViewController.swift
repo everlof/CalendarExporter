@@ -24,7 +24,7 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
 //        }
 //    }
 
-    let fontNames: [String] = {
+    static let fontNames: [String] = {
         return UIFont.familyNames.map { UIFont.fontNames(forFamilyName: $0) }.flatMap { $0 }.sorted()
     }()
 
@@ -55,7 +55,7 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        _didSelect(font: UIFont(name: fontNames[indexPath.row], size: 15)!)
+        _didSelect(font: UIFont(name: FontPickerViewController.fontNames[indexPath.row], size: 15)!)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -63,7 +63,7 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fontNames.count
+        return FontPickerViewController.fontNames.count
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -82,7 +82,7 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let value = fontNames[indexPath.row]
+        let value = FontPickerViewController.fontNames[indexPath.row]
         cell.textLabel?.text = value
         cell.textLabel?.font = UIFont(name: value, size: 15)
         return cell

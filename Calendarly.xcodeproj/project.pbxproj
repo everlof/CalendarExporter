@@ -40,6 +40,7 @@
 		C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */; };
 		C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */; };
 		C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A103216660E0001CDEF8 /* CalendarView.swift */; };
+		C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A1052167D690001CDEF8 /* Environment.swift */; };
 		D640355E63040C9F61517B22 /* Pods_CalendarlyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F029D770CDD661AF8A7DC57 /* Pods_CalendarlyTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,7 @@
 		C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPageBLTNItem.swift; sourceTree = "<group>"; };
 		C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionFeedbackGenerator.swift; sourceTree = "<group>"; };
 		C4C1A103216660E0001CDEF8 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		C4C1A1052167D690001CDEF8 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		F9377C889190DEBD9E0845B8 /* Pods-CalendarlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -191,6 +193,7 @@
 				C4C086C2214E4BAA0019F6B8 /* LaunchScreen.storyboard */,
 				C4C086C5214E4BAA0019F6B8 /* Info.plist */,
 				C4C086BD214E4BA80019F6B8 /* Calendarly.xcdatamodeld */,
+				C4C1A1052167D690001CDEF8 /* Environment.swift */,
 			);
 			path = Calendarly;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
 				C4C086E6215227A40019F6B8 /* CSSRule.swift in Sources */,
+				C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */,
 				C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */,
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
 				C4C086EB2152298B0019F6B8 /* UIWebView+Extension.swift in Sources */,

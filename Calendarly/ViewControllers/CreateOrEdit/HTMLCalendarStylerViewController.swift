@@ -1,4 +1,22 @@
 import UIKit
+import CoreData
+import MBProgressHUD
+
+class HTMLCalendarStylerNavigationController: UINavigationController {
+
+    let viewController: HTMLCalendarStylerViewController
+
+    init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
+        viewController = HTMLCalendarStylerViewController(design: design, editingContext: editingContext, calendarView: calendarView)
+        super.init(nibName: nil, bundle: nil)
+        setViewControllers([viewController], animated: false)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
 
 class HTMLCalendarStylerViewController: UIViewController,
     UITableViewDataSource,
@@ -24,6 +42,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         case firstDayOfWeek
         case dateFontsize
         case dateFont
+        case dateKerning
         case headerFontsize
         case headerFont
     }
@@ -32,8 +51,14 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     let design: Design
 
-    init(design: Design) {
+    let editingContext: NSManagedObjectContext
+
+    let calendarView: CalendarView
+
+    init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
         self.design = design
+        self.editingContext = editingContext
+        self.calendarView = calendarView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -54,6 +79,35 @@ class HTMLCalendarStylerViewController: UIViewController,
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(didPressSave))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Export",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(didPressExport))
+    }
+
+    @objc func didPressExport() {
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.label.text = "Exporting PDF"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            CalendarBook(design: self.design, size: .A3).startPrinting { url in
+                DispatchQueue.main.async {
+                    MBProgressHUD.hide(for: self.view, animated: true)
+                    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                    self.present(activityVC, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
+    @objc func didPressSave() {
+        calendarView.cleanUp()
+        try? editingContext.save()
+        dismiss(animated: true, completion: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +152,13 @@ class HTMLCalendarStylerViewController: UIViewController,
             let row = BodyRow(rawValue: indexPath.row), row == .dateFont {
             let pickerController = FontPickerViewController(object: design,
                                                             keyPath: \Design.dateFont)
+            navigationController?.pushViewController(pickerController, animated: true)
+        }
+
+        if let section = Section(rawValue: indexPath.section), section == .body,
+            let row = BodyRow(rawValue: indexPath.row), row == .headerFont {
+            let pickerController = FontPickerViewController(object: design,
+                                                            keyPath: \Design.headerFont)
             navigationController?.pushViewController(pickerController, animated: true)
         }
     }
@@ -151,6 +212,8 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return dayFontSizeCell
             case .dateFont:
                 return dateFontCell
+            case .dateKerning:
+                return dateKerningCell
             case .headerFontsize:
                 return headerFontSizeCell
             case .headerFont:
@@ -249,7 +312,8 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var firstDayOfWeekToggleCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Week start: Sunday"
+        cell.textLabel?.text = "Sunday"
+        cell.detailTextLabel?.text = "Week start"
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
@@ -294,7 +358,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var dayFontSizeCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Day font-size"
+        cell.textLabel?.text = "Date font-size"
         cell.selectionStyle = .none
 
         let stepper = UIStepper(frame: .zero)
@@ -312,6 +376,31 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     @objc func dayFontSizeChanged() {
         design.dateFontsize = Float((dayFontSizeCell.accessoryView as! UIStepper).value)
+    }
+
+    // MARK: - Date font-size cell
+
+    lazy var dateKerningCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Date kerning"
+        cell.selectionStyle = .none
+
+        let stepper = UIStepper(frame: .zero)
+        stepper.sizeToFit()
+        stepper.value = Double(design.dateKerning)
+        stepper.minimumValue = -100
+        stepper.maximumValue = 100
+        stepper.stepValue = 0.1
+        stepper.isContinuous = false
+        stepper.addTarget(self, action: #selector(kerningChanged), for: .valueChanged)
+
+        cell.accessoryView = stepper
+        return cell
+    }()
+
+    @objc func kerningChanged() {
+        design.dateKerning = Float((dateKerningCell.accessoryView as! UIStepper).value)
+        print(design.dateKerning)
     }
 
     // MARK: - Month font-size cell
