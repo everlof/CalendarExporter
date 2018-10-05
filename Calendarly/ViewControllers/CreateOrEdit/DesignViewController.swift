@@ -2,16 +2,6 @@ import UIKit
 import CoreData
 import MBProgressHUD
 
-extension UIViewController {
-
-    func addContentController(_ child: UIViewController, to stackView: UIStackView) {
-        addChild(child)
-        stackView.addArrangedSubview(child.view)
-        child.didMove(toParent: self)
-    }
-
-}
-
 class DesignNavigationController: UINavigationController {
 
     let styleViewController: DesignViewController
@@ -34,15 +24,11 @@ class DesignNavigationController: UINavigationController {
 
 class DesignViewController: UIViewController, UITextFieldDelegate {
 
-    let calendarViewInStackView: CalendarView
-
-    let freeFloatingCalendarView: CalendarView
+    let calendarView: CalendarView
 
     lazy var styleController: HTMLCalendarStylerViewController = {
         return HTMLCalendarStylerViewController(design: self.design)
     }()
-
-    let stackView = UIStackView()
 
     let tiltToPreviewView = UIStackView()
 
@@ -104,8 +90,7 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
     init(design: Design) {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
         self.design = editingContext.object(with: design.objectID) as! Design
-        calendarViewInStackView = CalendarView(design: self.design)
-        freeFloatingCalendarView = CalendarView(design: self.design)
+        calendarView = CalendarView(design: self.design)
         super.init(nibName: nil, bundle: nil)
 
         //view.addGestureRecognizer(tapGesture)
@@ -159,9 +144,13 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
     func adjustLayout() {
         let portrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
 
-        stackView.arrangedSubviews[0].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-        stackView.arrangedSubviews[1].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-        freeFloatingCalendarView.isHidden = !(UIScreen.main.bounds.height > UIScreen.main.bounds.width)
+        if portrait {
+            landscapeConstraints.forEach { $0.isActive = false }
+            portraitConstraints.forEach { $0.isActive = true }
+        } else {
+            portraitConstraints.forEach { $0.isActive = false }
+            landscapeConstraints.forEach { $0.isActive = true }
+        }
 
         tiltToPreviewView.isHidden = !portrait
 
@@ -177,36 +166,49 @@ class DesignViewController: UIViewController, UITextFieldDelegate {
         adjustLayout()
     }
 
+    var portraitConstraints = [NSLayoutConstraint]()
+
+    var landscapeConstraints = [NSLayoutConstraint]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-
         view.backgroundColor = .boneWhiteColor
-        view.addSubview(stackView)
-        view.addSubview(freeFloatingCalendarView)
 
-        freeFloatingCalendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
-        freeFloatingCalendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8 * sqrt(2)).isActive = true
+        view.addSubview(calendarView)
 
-        freeFloatingCalendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        freeFloatingCalendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        addChild(styleController)
+        view.addSubview(styleController.view)
+        styleController.didMove(toParent: self)
+        styleController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        stackView.spacing = 1
+        portraitConstraints.append(contentsOf: [
+            calendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            calendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8 * sqrt(2)),
 
-        stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            calendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            calendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
 
-        stackView.addArrangedSubview(calendarViewInStackView)
-        addContentController(styleController, to: stackView)
+        landscapeConstraints.append(contentsOf: [
+            calendarView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            calendarView.widthAnchor.constraint(equalTo: calendarView.heightAnchor, multiplier: 1/sqrt(2)),
 
-        stackView.arrangedSubviews[0].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-        stackView.arrangedSubviews[1].isHidden = UIScreen.main.bounds.height > UIScreen.main.bounds.width
-        freeFloatingCalendarView.isHidden = !(UIScreen.main.bounds.height > UIScreen.main.bounds.width)
+            calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            calendarView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            calendarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            styleController.view.leftAnchor.constraint(equalTo: calendarView.rightAnchor),
+            styleController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            styleController.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            styleController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+
+        if UIScreen.main.bounds.height > UIScreen.main.bounds.width {
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
 
         let tiltToPreviewInstructionLabel = UILabel()
         tiltToPreviewInstructionLabel.text = "Rotate to edit"
