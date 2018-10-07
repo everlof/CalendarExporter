@@ -350,11 +350,11 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var textualMonthCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Textual month"
+        cell.textLabel?.text = "Numeric month"
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
-        borderSwitch.isOn = !design.numericMonthText
+        borderSwitch.isOn = design.numericMonthText
         borderSwitch.addTarget(self, action: #selector(textualMonthToggle), for: .valueChanged)
 
         cell.accessoryView = borderSwitch
@@ -412,7 +412,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var sampleMonthStepperCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Preview month"
+        cell.textLabel?.text = "Month previewed"
         cell.selectionStyle = .none
 
         let stepper = UIStepper(frame: .zero)
@@ -432,29 +432,11 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     // MARK: - Date font-size cell
 
-    lazy var dayFontSizeCell: UITableViewCell = {
-        let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Date font-size"
-        cell.selectionStyle = .none
-
-        let stepper = UIStepper(frame: .zero)
-        stepper.sizeToFit()
-        stepper.value = Double(design.dateFontsize)
-//        stepper.minimumValue = 0.1
-//        stepper.maximumValue = 3.0
-        stepper.stepValue = 0.1
-        stepper.isContinuous = false
-        stepper.addTarget(self, action: #selector(dayFontSizeChanged), for: .valueChanged)
-
-        cell.accessoryView = stepper
-        return cell
+    lazy var dayFontSizeCell: FontsizeCell = {
+        return FontsizeCell(design: self.design, keyPath: \Design.dateFontsize, stepValue: 0.1, maximumFractionDigits: 1)
     }()
 
-    @objc func dayFontSizeChanged() {
-        design.dateFontsize = Float((dayFontSizeCell.accessoryView as! UIStepper).value)
-    }
-
-    // MARK: - Date font-size cell
+    // MARK: - Date kerning-size cell
 
     lazy var dateKerningCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
@@ -481,51 +463,21 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     // MARK: - Month font-size cell
 
-    lazy var monthFontSizeCell: UITableViewCell = {
-        let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Month font-size"
-        cell.selectionStyle = .none
-
-        let stepper = UIStepper(frame: .zero)
-        stepper.sizeToFit()
-        stepper.value = Double(design.monthFontsize)
-        // stepper.minimumValue = 0
-        // stepper.maximumValue = 20
-        stepper.stepValue = 0.25
-        stepper.isContinuous = false
-        stepper.addTarget(self, action: #selector(monthFontSizeChanged), for: .valueChanged)
-
-        cell.accessoryView = stepper
-        return cell
+    lazy var monthFontSizeCell: FontsizeCell = {
+        return FontsizeCell(design: self.design, keyPath: \Design.monthFontsize, stepValue: 0.25, maximumFractionDigits: 2)
     }()
 
     @objc func monthFontSizeChanged() {
-        print(Float((monthFontSizeCell.accessoryView as! UIStepper).value))
         design.monthFontsize = Float((monthFontSizeCell.accessoryView as! UIStepper).value)
     }
 
     // MARK: - Header font-size cell
 
     lazy var headerFontSizeCell: UITableViewCell = {
-        let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Header font-size"
-        cell.selectionStyle = .none
-
-        let stepper = UIStepper(frame: .zero)
-        stepper.sizeToFit()
-        stepper.value = Double(design.headerFontsize)
-        // stepper.minimumValue = 0
-        // stepper.maximumValue = 20
-        stepper.stepValue = 0.25
-        stepper.isContinuous = false
-        stepper.addTarget(self, action: #selector(headerFontSizeChanged), for: .valueChanged)
-
-        cell.accessoryView = stepper
-        return cell
+        return FontsizeCell(design: self.design, keyPath: \Design.headerFontsize, stepValue: 0.25, maximumFractionDigits: 2)
     }()
 
     @objc func headerFontSizeChanged() {
-        print(Float((headerFontSizeCell.accessoryView as! UIStepper).value))
         design.headerFontsize = Float((headerFontSizeCell.accessoryView as! UIStepper).value)
     }
 

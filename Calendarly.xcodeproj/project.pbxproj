@@ -41,6 +41,7 @@
 		C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */; };
 		C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A103216660E0001CDEF8 /* CalendarView.swift */; };
 		C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A1052167D690001CDEF8 /* Environment.swift */; };
+		C4C1A109216A248B001CDEF8 /* FontsizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A108216A248B001CDEF8 /* FontsizeCell.swift */; };
 		D640355E63040C9F61517B22 /* Pods_CalendarlyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F029D770CDD661AF8A7DC57 /* Pods_CalendarlyTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionFeedbackGenerator.swift; sourceTree = "<group>"; };
 		C4C1A103216660E0001CDEF8 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C4C1A1052167D690001CDEF8 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		C4C1A108216A248B001CDEF8 /* FontsizeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsizeCell.swift; sourceTree = "<group>"; };
 		F9377C889190DEBD9E0845B8 /* Pods-CalendarlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarlyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +145,7 @@
 		C41A90DA2165F79B00352940 /* CreateOrEdit */ = {
 			isa = PBXGroup;
 			children = (
+				C4C1A107216A2457001CDEF8 /* Cells */,
 				C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */,
 				C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */,
 				C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */,
@@ -271,6 +274,14 @@
 				C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */,
 			);
 			path = BulletinBoard;
+			sourceTree = "<group>";
+		};
+		C4C1A107216A2457001CDEF8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C4C1A108216A248B001CDEF8 /* FontsizeCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -519,6 +530,7 @@
 				C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */,
 				C46B63D2215CFACE009EB4C4 /* HTMLCalendarRenderer.swift in Sources */,
 				C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */,
+				C4C1A109216A248B001CDEF8 /* FontsizeCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
