@@ -11,6 +11,8 @@ class CalendarView: UIView {
 
     let contentContainer = UIStackView(frame: .zero)
 
+    let fixedMonth: Int?
+
     override var intrinsicContentSize: CGSize {
         return CGSize(width: bounds.width, height: bounds.width * sqrt(2))
     }
@@ -39,8 +41,13 @@ class CalendarView: UIView {
     var rightHeadingConstraints: NSLayoutConstraint!
     var rightContentConstraints: NSLayoutConstraint!
 
-    init(design: Design, frame: CGRect = .zero) {
+    var month: Int {
+        return fixedMonth ?? Int(design.previewMonth)
+    }
+
+    init(design: Design, frame: CGRect = .zero, fixedMonth: Int? = nil) {
         self.design = design
+        self.fixedMonth = fixedMonth
         super.init(frame: frame)
 
         backgroundColor = .white
@@ -126,7 +133,7 @@ class CalendarView: UIView {
     var unit: CGFloat {
         return self.bounds.size.height / 100
     }
-
+    
     var aggregatedMonthFont: UIFont {
         return UIFont(name: design.monthFontname!, size: unit * CGFloat(design.monthFontsize))!
     }
@@ -174,17 +181,17 @@ class CalendarView: UIView {
     func update() {
         var comp = DateComponents()
         comp.year = Int(design.year)
-        comp.month = Int(design.previewMonth)
+        comp.month = month
 
         // SET CORRECT MONTH NUMBER OR NAME
         titleLabel.font = aggregatedMonthFont
-        titleLabel.text = design.numericMonthText ? "\(design.previewMonth)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
+        titleLabel.text = design.numericMonthText ? "\(month)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
 
         // CLEAR PREVIOUS CELLS
         contentContainer.subviews.forEach { $0.removeFromSuperview() }
 
         // GET ARRAY OF WEEKNAME
-        var weekdayPrefixes = Calendar.current.weekdayPrefixes(month: Int(design.previewMonth), year: Int(design.year), locale: design.locale, config: design.firstDayOfWeek)
+        var weekdayPrefixes = Calendar.current.weekdayPrefixes(month: month, year: Int(design.year), locale: design.locale, config: design.firstDayOfWeek)
 
         // TAKE FIRST CHAR OF WEENKNAME
         weekdayPrefixes = weekdayPrefixes.map { String($0[0]) }
@@ -215,7 +222,7 @@ class CalendarView: UIView {
         nbrFormatter.locale = design.locale
 
         // INSERT REST OF ROWS, FOR DATES
-        for row in Calendar.current.dateMatrixFor(month: Int(design.previewMonth), year: Int(design.year), config: design.firstDayOfWeek) {
+        for row in Calendar.current.dateMatrixFor(month: month, year: Int(design.year), config: design.firstDayOfWeek) {
             let rowView = UIStackView(frame: .zero)
             rowView.axis = .horizontal
             rowView.distribution = .fillEqually

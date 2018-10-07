@@ -112,7 +112,7 @@ class CalendarBook: NSObject, UIWebViewDelegate {
 
     var retainSelf: CalendarBook!
 
-    var webView: UIWebView!
+//    var webView: UIWebView!
 
     var cal: HTMLCalendar!
 
@@ -131,42 +131,9 @@ class CalendarBook: NSObject, UIWebViewDelegate {
         fullPDFExportedPath = (workfolder as NSString).appendingPathComponent("\(prefix)-final-month.pdf")
         super.init()
         retainSelf = self
-        cal = HTMLCalendar(design: design)
-        webView = UIWebView(frame: .zero)
-        webView.delegate = self
     }
 
-    func startPrinting(done: @escaping ((URL) -> Void)) {
-        self.done = done
-        startPrinting(page: currentPage)
-    }
-
-    private func startPrinting(page: Int) {
-        if page == 13 {
-            combine()
-            done(URL(fileURLWithPath: fullPDFExportedPath))
-            retainSelf = nil
-        } else {
-            webView.loadHTMLString(cal.export(month: currentPage, forPDF: true), baseURL: nil)
-        }
-    }
-
-    func webViewDidStartLoad(_ webView: UIWebView) { }
-
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        print("Error with: \(error.localizedDescription)")
-    }
-
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        let path = (workfolder as NSString).appendingPathComponent("\(prefix)-\(currentPage)-month.pdf")
-        try! webView.export(size: size).write(to: URL(fileURLWithPath: path), options: .atomicWrite)
-        print("Export to \(path)")
-
-        currentPage += 1
-        startPrinting(page: currentPage)
-    }
-
-    func combine() {
+    func export() -> URL {
         let paper = CGRect(origin: .zero, size: size)
 
         UIGraphicsBeginPDFContextToFile(fullPDFExportedPath, paper, nil)
@@ -177,13 +144,15 @@ class CalendarBook: NSObject, UIWebViewDelegate {
                 context.translateBy(x: 0, y: paper.size.height)
                 context.scaleBy(x: 1.0, y: -1.0)
 
-                let path = (workfolder as NSString).appendingPathComponent("\(prefix)-\(page)-month.pdf")
-                let document = CGPDFDocument(URL(fileURLWithPath: path) as CFURL)
-                context.drawPDFPage(document!.page(at: 1)!)
+                let calendarView = CalendarView(design: design, frame: paper, fixedMonth: page)
+                calendarView.layoutIfNeeded()
+                context.draw(calendarView.snapshot!.cgImage!, in: paper)
+                calendarView.cleanUp()
             }
         }
 
         UIGraphicsEndPDFContext()
+        return URL(fileURLWithPath: fullPDFExportedPath)
     }
 
 }

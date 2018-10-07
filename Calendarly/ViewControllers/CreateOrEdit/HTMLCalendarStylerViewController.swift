@@ -146,13 +146,10 @@ class HTMLCalendarStylerViewController: UIViewController,
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.label.text = "Exporting PDF"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            CalendarBook(design: self.design, size: .A3).startPrinting { url in
-                DispatchQueue.main.async {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                    self.present(activityVC, animated: true, completion: nil)
-                }
-            }
+            let url = CalendarBook(design: self.design, size: .A3).export()
+            MBProgressHUD.hide(for: self.view, animated: true)
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
         }
     }
 
@@ -350,7 +347,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var textualMonthCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Numeric month"
+        cell.textLabel?.text = "Numeric"
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
@@ -369,7 +366,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var weekdayPrefixToggleCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Short weekday-name"
+        cell.textLabel?.text = "1 letter weekday"
         cell.selectionStyle = .none
 
         let borderSwitch = UISwitch(frame: .zero)
@@ -422,6 +419,9 @@ class HTMLCalendarStylerViewController: UIViewController,
         stepper.isContinuous = false
         stepper.addTarget(self, action: #selector(sampleMonthStepped), for: .valueChanged)
 
+        stepper.setDecrementImage(UIImage(named: "ic_prev"), for: .normal)
+        stepper.setIncrementImage(UIImage(named: "ic_next"), for: .normal)
+
         cell.accessoryView = stepper
         return cell
     }()
@@ -440,7 +440,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var dateKerningCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Date kerning"
+        cell.textLabel?.text = "Letter spacing"
         cell.selectionStyle = .none
 
         let stepper = UIStepper(frame: .zero)
@@ -500,7 +500,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var dateFontCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Date font"
+        cell.textLabel?.text = "Font"
 
         let label = UILabel()
         label.text = design.dateFontname
@@ -515,7 +515,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     lazy var headerFontCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
-        cell.textLabel?.text = "Header font"
+        cell.textLabel?.text = "Font"
 
         let label = UILabel()
         label.text = design.headerFontname
