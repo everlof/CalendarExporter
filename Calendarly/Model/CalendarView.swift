@@ -32,6 +32,13 @@ class CalendarView: UIView {
         }
     }
 
+    var topConstraints: NSLayoutConstraint!
+    var bottomConstraints: NSLayoutConstraint!
+    var leftHeadingConstraints: NSLayoutConstraint!
+    var leftContentConstraints: NSLayoutConstraint!
+    var rightHeadingConstraints: NSLayoutConstraint!
+    var rightContentConstraints: NSLayoutConstraint!
+
     init(design: Design, frame: CGRect = .zero) {
         self.design = design
         super.init(frame: frame)
@@ -49,15 +56,26 @@ class CalendarView: UIView {
         addSubview(contentContainer)
 
         headingContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
-        headingContainer.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        headingContainer.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        headingContainer.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+
+        topConstraints = headingContainer.topAnchor.constraint(equalTo: topAnchor)
+        topConstraints.isActive = true
+
+        leftHeadingConstraints = headingContainer.leftAnchor.constraint(equalTo: leftAnchor)
+        leftHeadingConstraints.isActive = true
+
+        rightHeadingConstraints = headingContainer.rightAnchor.constraint(equalTo: rightAnchor)
+        rightHeadingConstraints.isActive = true
 
         headingContainer.bottomAnchor.constraint(equalTo: contentContainer.topAnchor).isActive = true
 
-        contentContainer.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        contentContainer.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        leftContentConstraints = contentContainer.leftAnchor.constraint(equalTo: leftAnchor)
+        leftContentConstraints.isActive = true
+
+        rightContentConstraints = contentContainer.rightAnchor.constraint(equalTo: rightAnchor)
+        rightContentConstraints.isActive = true
+
+        bottomConstraints = contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
+        bottomConstraints.isActive = true
 
         headingContainer.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -68,6 +86,15 @@ class CalendarView: UIView {
             headingContainer.backgroundColor = UIColor.red.withAlphaComponent(0.5)
             contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         }
+
+        layoutMargins = UIEdgeInsets(top: 5, left: 3, bottom: 7, right: 3)
+
+        self.topConstraints.constant = self.unit * layoutMargins.top
+        self.bottomConstraints.constant = self.unit * -layoutMargins.bottom
+        self.leftHeadingConstraints.constant = self.unit * layoutMargins.left
+        self.leftContentConstraints.constant = self.unit * layoutMargins.left
+        self.rightHeadingConstraints.constant = self.unit * -layoutMargins.right
+        self.rightContentConstraints.constant = self.unit * -layoutMargins.right
 
         update()
 
@@ -81,6 +108,13 @@ class CalendarView: UIView {
             self.titleLabel.sizeToFit()
             self.recursive(self.contentContainer, font: self.aggregatedHeaderFont, type: HeaderLabel.self)
             self.recursive(self.contentContainer, font: self.aggregatedDateFont, type: DateLabel.self)
+
+            self.topConstraints.constant = self.unit * self.layoutMargins.top
+            self.bottomConstraints.constant = self.unit * -self.layoutMargins.bottom
+            self.leftHeadingConstraints.constant = self.unit * self.layoutMargins.left
+            self.leftContentConstraints.constant = self.unit * self.layoutMargins.left
+            self.rightHeadingConstraints.constant = self.unit * -self.layoutMargins.right
+            self.rightContentConstraints.constant = self.unit * -self.layoutMargins.right
         }
     }
 

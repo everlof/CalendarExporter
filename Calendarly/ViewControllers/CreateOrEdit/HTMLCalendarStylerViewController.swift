@@ -25,27 +25,35 @@ class HTMLCalendarStylerViewController: UIViewController,
     UITextFieldDelegate {
 
     enum Section: Int {
+        case general
         case title
-        case body
+        case weekdays
+        case dates
+    }
+
+    enum GeneralRow: Int {
+        case sampleMonth
     }
 
     enum TitleRow: Int {
         case textualMonth
         case locale
-        case sampleMonth
         case monthFontsize
         case monthFont
     }
 
-    enum BodyRow: Int {
+    enum WeekdayRow: Int {
+        case headerFontsize
+        case headerFont
+    }
+
+    enum DateRow: Int {
         case border
         case weekdayStyle
         case firstDayOfWeek
         case dateFontsize
         case dateFont
         case dateKerning
-        case headerFontsize
-        case headerFont
     }
 
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -151,11 +159,13 @@ class HTMLCalendarStylerViewController: UIViewController,
     @objc func didPressSave() {
         calendarView.cleanUp()
         try? editingContext.save()
+        try? editingContext.parent?.save()
         dismiss(animated: true, completion: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         (localeCell.accessoryView as! UILabel).text = Locale.localizedDescription(for: design.locale.identifier)
         (localeCell.accessoryView as! UILabel).sizeToFit()
 
@@ -164,14 +174,21 @@ class HTMLCalendarStylerViewController: UIViewController,
 
         (dateFontCell.accessoryView as! UILabel).text = design.dateFontname
         (dateFontCell.accessoryView as! UILabel).sizeToFit()
+
+        (headerFontCell.accessoryView as! UILabel).text = design.headerFontname
+        (headerFontCell.accessoryView as! UILabel).sizeToFit()
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         switch Section(rawValue: indexPath.section)! {
+        case .general:
+            return GeneralRow(rawValue: indexPath.row) != nil ? indexPath : nil
         case .title:
             return TitleRow(rawValue: indexPath.row) != nil ? indexPath : nil
-        case .body:
-            return BodyRow(rawValue: indexPath.row) != nil ? indexPath : nil
+        case .weekdays:
+            return WeekdayRow(rawValue: indexPath.row) != nil ? indexPath : nil
+        case .dates:
+            return DateRow(rawValue: indexPath.row) != nil ? indexPath : nil
         }
     }
 
@@ -192,15 +209,15 @@ class HTMLCalendarStylerViewController: UIViewController,
             navigationController?.pushViewController(pickerController, animated: true)
         }
 
-        if let section = Section(rawValue: indexPath.section), section == .body,
-            let row = BodyRow(rawValue: indexPath.row), row == .dateFont {
+        if let section = Section(rawValue: indexPath.section), section == .dates,
+            let row = DateRow(rawValue: indexPath.row), row == .dateFont {
             let pickerController = FontPickerViewController(object: design,
                                                             keyPath: \Design.dateFont)
             navigationController?.pushViewController(pickerController, animated: true)
         }
 
-        if let section = Section(rawValue: indexPath.section), section == .body,
-            let row = BodyRow(rawValue: indexPath.row), row == .headerFont {
+        if let section = Section(rawValue: indexPath.section), section == .weekdays,
+            let row = WeekdayRow(rawValue: indexPath.row), row == .headerFont {
             let pickerController = FontPickerViewController(object: design,
                                                             keyPath: \Design.headerFont)
             navigationController?.pushViewController(pickerController, animated: true)
@@ -208,29 +225,42 @@ class HTMLCalendarStylerViewController: UIViewController,
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 4
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
+        case .general:
+            return (0..<Int.max).lazy.map({ GeneralRow(rawValue: $0) }).index(of: nil)!
         case .title:
             return (0..<Int.max).lazy.map({ TitleRow(rawValue: $0) }).index(of: nil)!
-        case .body:
-            return (0..<Int.max).lazy.map({ BodyRow(rawValue: $0) }).index(of: nil)!
+        case .weekdays:
+            return (0..<Int.max).lazy.map({ WeekdayRow(rawValue: $0) }).index(of: nil)!
+        case .dates:
+            return (0..<Int.max).lazy.map({ DateRow(rawValue: $0) }).index(of: nil)!
         }
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section(rawValue: section)! {
+        case .general:
+            return "General"
         case .title:
-            return "Heading"
-        case .body:
-            return "Body"
+            return "Title"
+        case .weekdays:
+            return "Weekdays"
+        case .dates:
+            return "Dates"
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section)! {
+        case .general:
+            switch  GeneralRow(rawValue: indexPath.row)! {
+            case .sampleMonth:
+                return sampleMonthStepperCell
+            }
         case .title:
             switch TitleRow(rawValue: indexPath.row)! {
             case .textualMonth:
@@ -239,13 +269,19 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return localeCell
             case .monthFontsize:
                 return monthFontSizeCell
-            case .sampleMonth:
-                return sampleMonthStepperCell
+
             case .monthFont:
                 return monthFontCell
             }
-        case .body:
-            switch BodyRow(rawValue: indexPath.row)! {
+        case .weekdays:
+            switch WeekdayRow(rawValue: indexPath.row)! {
+            case .headerFontsize:
+                return headerFontSizeCell
+            case .headerFont:
+                return headerFontCell
+            }
+        case .dates:
+            switch DateRow(rawValue: indexPath.row)! {
             case .border:
                 return borderToggleCell
             case .weekdayStyle:
@@ -258,10 +294,6 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return dateFontCell
             case .dateKerning:
                 return dateKerningCell
-            case .headerFontsize:
-                return headerFontSizeCell
-            case .headerFont:
-                return headerFontCell
             }
         }
     }
