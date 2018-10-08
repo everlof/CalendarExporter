@@ -59,10 +59,10 @@ class DesignsViewController: UIViewController {
                                                     bottom: collectionView.layout.minimumInteritemSpacing,
                                                     right: collectionView.layout.minimumInteritemSpacing)
 
-        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
     }
 
@@ -152,7 +152,7 @@ class DesignsViewController: UIViewController {
 extension DesignsViewController: DesignsCollectionViewDelegate {
 
     func present(design: Design) {
-        present(DesignViewController(design: design), animated: true, completion: nil)
+        present(DesignNavigationController(design: design), animated: true, completion: nil)
     }
 
 }

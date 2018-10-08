@@ -1,5 +1,22 @@
 import UIKit
 import CoreData
+import MBProgressHUD
+
+class DesignNavigationController: UINavigationController {
+
+    let designViewController: DesignViewController
+
+    init(design: Design) {
+        designViewController = DesignViewController(design: design)
+        super.init(nibName: nil, bundle: nil)
+        setViewControllers([designViewController], animated: false)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
 
 class DesignViewController: UIViewController {
 
@@ -43,12 +60,38 @@ class DesignViewController: UIViewController {
         calendarView = CalendarView(design: self.design)
         super.init(nibName: nil, bundle: nil)
 
-        //view.addGestureRecognizer(tapGesture)
-        //tapGesture.addTarget(self, action: #selector(didTap))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(didPressSave))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Export",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(didPressExport))
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func didPressExport() {
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.label.text = "Exporting PDF"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            let calendar = CalendarBook(design: self.design, size: .A6)
+            calendar.export(completed: { url in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                self.present(activityVC, animated: true, completion: nil)
+            })
+        }
+    }
+
+    @objc func didPressSave() {
+        calendarView.cleanUp()
+        try? editingContext.save()
+        try? editingContext.parent?.save()
+        dismiss(animated: true, completion: nil)
     }
 
     @objc func didTap() {
@@ -78,10 +121,13 @@ class DesignViewController: UIViewController {
         tiltToPreviewView.isHidden = !portrait
 
         if portrait {
-            navigationController?.setNavigationBarHidden(!navigationBarVisibleInPortrait, animated: false)
+            view.addGestureRecognizer(tapGesture)
+            tapGesture.addTarget(self, action: #selector(didTap))
         } else {
-            navigationController?.setNavigationBarHidden(false, animated: false)
+            view.removeGestureRecognizer(tapGesture)
         }
+
+        navigationController?.setNavigationBarHidden(!(navigationBarVisibleInPortrait && portrait), animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -121,7 +167,7 @@ class DesignViewController: UIViewController {
             calendarView.widthAnchor.constraint(equalTo: calendarView.heightAnchor, multiplier: 1/sqrt(2)),
             calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             calendarView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            calendarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             calendarView.rightAnchor.constraint(equalTo: separatorView.leftAnchor),
             separatorView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -131,17 +177,21 @@ class DesignViewController: UIViewController {
 
             styleController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             styleController.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            styleController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            styleController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
         if UIScreen.main.bounds.height > UIScreen.main.bounds.width {
             NSLayoutConstraint.activate(portraitConstraints)
             calendarView.hasBorder = true
             separatorView.isHidden = false
+
+            view.addGestureRecognizer(tapGesture)
+            tapGesture.addTarget(self, action: #selector(didTap))
         } else {
             NSLayoutConstraint.activate(landscapeConstraints)
             calendarView.hasBorder = false
             separatorView.isHidden = true
+            navigationController?.setNavigationBarHidden(!navigationBarVisibleInPortrait, animated: false)
         }
 
         let tiltToPreviewInstructionLabel = UILabel()

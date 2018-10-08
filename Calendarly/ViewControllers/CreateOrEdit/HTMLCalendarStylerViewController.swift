@@ -143,23 +143,15 @@ class HTMLCalendarStylerViewController: UIViewController,
     }
 
     @objc func didPressExport() {
-        let hud = MBProgressHUD.showAdded(to: view, animated: true)
-        hud.label.text = "Exporting PDF"
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            let calendar = CalendarBook(design: self.design, size: .A6)
-            calendar.export(completed: { url in
-                MBProgressHUD.hide(for: self.view, animated: true)
-                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                self.present(activityVC, animated: true, completion: nil)
-            })
+        if let designViewController = parent?.parent as? DesignViewController {
+            designViewController.didPressExport()
         }
     }
 
     @objc func didPressSave() {
-        calendarView.cleanUp()
-        try? editingContext.save()
-        try? editingContext.parent?.save()
-        dismiss(animated: true, completion: nil)
+        if let designViewController = parent?.parent as? DesignViewController {
+            designViewController.didPressSave()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

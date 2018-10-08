@@ -8,22 +8,6 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
 
     var object: Design
 
-//    var currentFont: UIFont {
-//        didSet {
-//            if oldValue != currentFont {
-//                for section in 0..<tableView.numberOfSections {
-//                    for row in 0..<tableView.numberOfRows(inSection: section) {
-//                        let indexPath = IndexPath(row: row, section: section)
-//                        if let cell = tableView.cellForRow(at: indexPath) {
-//                            updateCheckmark(cell: cell, indexPath: indexPath)
-//                        }
-//                    }
-//                }
-//            }
-//            print("Current => \(currentFont)")
-//        }
-//    }
-
     static let fontNames: [String] = {
         return UIFont.familyNames.map { UIFont.fontNames(forFamilyName: $0) }.flatMap { $0 }.sorted()
     }()
@@ -71,13 +55,14 @@ class FontPickerViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     func updateCheckmark(cell: UITableViewCell, indexPath: IndexPath) {
-//        cell.accessoryType = fontNames[indexPath.row] == currentFont.fontName ? .checkmark : .none
+        cell.accessoryType = FontPickerViewController.fontNames[indexPath.row] == self.object[keyPath: self.currFont].fontName ?
+            .checkmark :
+            .none
     }
 
     func _didSelect(font: UIFont) {
         self.object[keyPath: self.currFont] = font
-//        currentFont = font
-//        delegate?.didSelect(font: currentFont)
+        tableView.reloadData()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

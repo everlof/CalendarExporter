@@ -103,10 +103,13 @@ class CalendarView: UIView {
 
     var watermarkView: WatermarkView?
 
+    let margins: UIEdgeInsets
+
     init(design: Design, isWatermarked: Bool = true, frame: CGRect = .zero, fixedMonth: Int? = nil) {
         self.design = design
         self.isWatermarked = isWatermarked
         self.fixedMonth = fixedMonth
+        margins = UIEdgeInsets(top: 5, left: 3, bottom: 7, right: 3)
         super.init(frame: frame)
 
         backgroundColor = .white
@@ -153,14 +156,12 @@ class CalendarView: UIView {
             contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         }
 
-        layoutMargins = UIEdgeInsets(top: 5, left: 3, bottom: 7, right: 3)
-
-        self.topConstraints.constant = self.unit * layoutMargins.top
-        self.bottomConstraints.constant = self.unit * -layoutMargins.bottom
-        self.leftHeadingConstraints.constant = self.unit * layoutMargins.left
-        self.leftContentConstraints.constant = self.unit * layoutMargins.left
-        self.rightHeadingConstraints.constant = self.unit * -layoutMargins.right
-        self.rightContentConstraints.constant = self.unit * -layoutMargins.right
+        self.topConstraints.constant = self.unit * margins.top
+        self.bottomConstraints.constant = self.unit * -margins.bottom
+        self.leftHeadingConstraints.constant = self.unit * margins.left
+        self.leftContentConstraints.constant = self.unit * margins.left
+        self.rightHeadingConstraints.constant = self.unit * -margins.right
+        self.rightContentConstraints.constant = self.unit * -margins.right
 
         update()
 
@@ -175,15 +176,12 @@ class CalendarView: UIView {
             self.recursive(self.contentContainer, font: self.aggregatedHeaderFont, type: HeaderLabel.self)
             self.recursive(self.contentContainer, font: self.aggregatedDateFont, type: DateLabel.self)
 
-            self.topConstraints.constant = self.unit * self.layoutMargins.top
-            self.bottomConstraints.constant = self.unit * -self.layoutMargins.bottom
-            self.leftHeadingConstraints.constant = self.unit * self.layoutMargins.left
-            self.leftContentConstraints.constant = self.unit * self.layoutMargins.left
-            self.rightHeadingConstraints.constant = self.unit * -self.layoutMargins.right
-            self.rightContentConstraints.constant = self.unit * -self.layoutMargins.right
-
-//            self.watermarkView?.dropLabel.font = UIFont(name: "AvenirNext-Regular", size: self.unit * 15)!
-//            self.watermarkView?.textLabel.font =  UIFont(name: "AvenirNext-Regular", size: self.unit * 3)!
+            self.topConstraints.constant = self.unit * self.margins.top
+            self.bottomConstraints.constant = self.unit * -self.margins.bottom
+            self.leftHeadingConstraints.constant = self.unit * self.margins.left
+            self.leftContentConstraints.constant = self.unit * self.margins.left
+            self.rightHeadingConstraints.constant = self.unit * -self.margins.right
+            self.rightContentConstraints.constant = self.unit * -self.margins.right
         }
 
         if isWatermarked {
@@ -256,6 +254,7 @@ class CalendarView: UIView {
         comp.month = month
 
         // SET CORRECT MONTH NUMBER OR NAME
+        titleFormatter.locale = design.locale
         titleLabel.font = aggregatedMonthFont
         titleLabel.text = design.numericMonthText ? "\(month)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
 
