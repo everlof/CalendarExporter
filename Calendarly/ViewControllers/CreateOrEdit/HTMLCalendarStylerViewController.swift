@@ -21,7 +21,6 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 class HTMLCalendarStylerViewController: UIViewController,
     UITableViewDataSource,
     UITableViewDelegate,
-    LocalePickerViewControllerDelegate,
     UITextFieldDelegate {
 
     enum Section: Int {
@@ -188,8 +187,7 @@ class HTMLCalendarStylerViewController: UIViewController,
 
         if let section = Section(rawValue: indexPath.section), section == .title,
             let row = TitleRow(rawValue: indexPath.row), row == .locale {
-            let pickerController = LocalePickerViewController(currentLocale: design.locale)
-            pickerController.delegate = self
+            let pickerController = LocalePickerViewController(design: design, keyPath: \Design.locale)
             navigationController?.pushViewController(pickerController, animated: true)
         }
 
@@ -287,12 +285,6 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return dateKerningCell
             }
         }
-    }
-
-    // MARK: - LocalePickerViewControllerDelegate
-
-    func didSelect(locale: Locale) {
-        design.locale = locale
     }
 
     // MARK: Locale Cell

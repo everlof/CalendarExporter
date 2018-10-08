@@ -1,38 +1,20 @@
 import UIKit
 
-protocol LocalePickerViewControllerDelegate: class {
-    func didSelect(locale: Locale)
-}
-
 class LocalePickerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView(frame: .zero, style: .grouped)
 
-    var currentLocale: Locale {
-        didSet {
-            if oldValue != currentLocale {
-                for section in 0..<tableView.numberOfSections {
-                    for row in 0..<tableView.numberOfRows(inSection: section) {
-                        let indexPath = IndexPath(row: row, section: section)
-                        if let cell = tableView.cellForRow(at: indexPath) {
-                            updateCheckmark(cell: cell, indexPath: indexPath)
-                        }
-                    }
-                }
-            }
-            print("Current => \(currentLocale.identifier)")
-        }
-    }
+    var design: Design
 
-    weak var delegate: LocalePickerViewControllerDelegate?
+    var keyPath: ReferenceWritableKeyPath<Design, Locale>
 
     let commonIdentifiers: [String] = {
         var preferred = Locale.preferredLanguages
         preferred.append(contentsOf: [
             "en",
             "fr",
-            "zh_Hans",
-            "zh_Hant"
+            "zh-Hans",
+            "zh-Hant"
         ])
         return Array(Set(preferred.sorted()))
     }()
@@ -43,8 +25,9 @@ class LocalePickerViewController: UIViewController, UITableViewDataSource, UITab
             (Locale.autoupdatingCurrent as NSLocale).displayName(forKey: .identifier, value: s2) ?? s2
     }
 
-    init(currentLocale: Locale) {
-        self.currentLocale = currentLocale
+    init(design: Design, keyPath: ReferenceWritableKeyPath<Design, Locale>) {
+        self.design = design
+        self.keyPath = keyPath
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -86,30 +69,25 @@ class LocalePickerViewController: UIViewController, UITableViewDataSource, UITab
         return section == 0 ? commonIdentifiers.count : identifiers.count
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        updateCheckmark(cell: cell, indexPath: indexPath)
-    }
-
     func updateCheckmark(cell: UITableViewCell, indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            cell.accessoryType = commonIdentifiers[indexPath.row] == currentLocale.identifier ? .checkmark : .none
+            cell.accessoryType = commonIdentifiers[indexPath.row] == design[keyPath: keyPath].identifier ? .checkmark : .none
         default:
-            cell.accessoryType = identifiers[indexPath.row] == currentLocale.identifier ? .checkmark : .none
+            cell.accessoryType = identifiers[indexPath.row] == design[keyPath: keyPath].identifier ? .checkmark : .none
         }
     }
 
-
-
     func _didSelect(locale: Locale) {
-        currentLocale = locale
-        delegate?.didSelect(locale: locale)
+        design[keyPath: keyPath] = locale
+        tableView.reloadData()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let value = indexPath.section == 0 ? commonIdentifiers[indexPath.row] : identifiers[indexPath.row]
         cell.textLabel?.text = Locale.localizedDescription(for: value)
+        updateCheckmark(cell: cell, indexPath: indexPath)
         return cell
     }
 
