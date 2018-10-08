@@ -1,4 +1,6 @@
 import UIKit
+import MBProgressHUD
+import Foundation
 import CoreData
 
 enum FirstDayOfWeek {
@@ -8,13 +10,13 @@ enum FirstDayOfWeek {
 
 extension Design {
 
-    static let dateFontSizeDefaultBordered: CGFloat = 1.5
+    static let dateFontSizeDefaultBordered: CGFloat = 5.4
 
-    static let dateFontSizeDefaultNonBordered: CGFloat = 1.9
+    static let dateFontSizeDefaultNonBordered: CGFloat = 5.4
 
     static let headerFontSizeDefault: CGFloat = 1.9
 
-    static let monthFontSizeDefault: CGFloat = 3.0
+    static let monthFontSizeDefault: CGFloat = 8.0
 
     static func createIn(context: NSManagedObjectContext) -> Design {
         let design = NSEntityDescription.insertNewObject(forEntityName: Design.self.description(), into: context) as! Design
@@ -29,6 +31,8 @@ extension Design {
 
         design.headerFontname = "ArialRoundedMTBold"
         design.headerFontsize = Float(headerFontSizeDefault)
+
+        design.dateKerning = -0.3
 
         design.previewMonth = 1
         design.snapshotFilename = String(format: "%@.png", UUID().uuidString)
@@ -112,8 +116,6 @@ class CalendarBook: NSObject, UIWebViewDelegate {
 
     var retainSelf: CalendarBook!
 
-//    var webView: UIWebView!
-
     var cal: HTMLCalendar!
 
     var currentPage: Int = 1
@@ -133,26 +135,45 @@ class CalendarBook: NSObject, UIWebViewDelegate {
         retainSelf = self
     }
 
-    func export() -> URL {
+    static func createProgress() -> Progress {
+        return Progress(totalUnitCount: 12)
+    }
+
+    func export(completed: @escaping ((URL) -> Void)) {
         let paper = CGRect(origin: .zero, size: size)
 
         UIGraphicsBeginPDFContextToFile(fullPDFExportedPath, paper, nil)
 
-        for page in 1..<13 {
-            UIGraphicsBeginPDFPageWithInfo(paper, nil)
-            if let context = UIGraphicsGetCurrentContext() {
-                context.translateBy(x: 0, y: paper.size.height)
-                context.scaleBy(x: 1.0, y: -1.0)
+        var operations = [Operation]()
 
-                let calendarView = CalendarView(design: design, frame: paper, fixedMonth: page)
-                calendarView.layoutIfNeeded()
-                context.draw(calendarView.snapshot!.cgImage!, in: paper)
-                calendarView.cleanUp()
+        for page in 1..<13 {
+            let block = BlockOperation {
+                UIGraphicsBeginPDFPageWithInfo(paper, nil)
+                print("Performing page: \(page)")
+                if let context = UIGraphicsGetCurrentContext() {
+                    context.translateBy(x: 0, y: paper.size.height)
+                    context.scaleBy(x: 1.0, y: -1.0)
+
+                    let calendarView = CalendarView(design: self.design, frame: paper, fixedMonth: page)
+                    calendarView.layoutIfNeeded()
+                    context.draw(calendarView.snapshot!.cgImage!, in: paper)
+                    calendarView.cleanUp()
+                }
             }
+
+            operations.last.map { block.addDependency($0) }
+            operations.append(block)
         }
 
-        UIGraphicsEndPDFContext()
-        return URL(fileURLWithPath: fullPDFExportedPath)
+        let lastBlock = BlockOperation(block: {
+            UIGraphicsEndPDFContext()
+            completed(URL(fileURLWithPath: self.fullPDFExportedPath))
+            self.retainSelf = nil
+        })
+
+        operations.last.map { lastBlock.addDependency($0) }
+        operations.append(lastBlock)
+        operations.forEach { op in DispatchQueue.main.async { op.start() } }
     }
 
 }

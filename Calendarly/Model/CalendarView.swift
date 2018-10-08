@@ -1,6 +1,60 @@
 import UIKit
 import CoreData
 
+//class WatermarkView: UIStackView {
+//
+//    let dropLabel = UILabel()
+//
+//    let textLabel = UILabel()
+//
+//    init() {
+//        super.init(frame: .zero)
+//        axis = .vertical
+//        spacing = 12
+//
+//        dropLabel.text = "💧"
+//        dropLabel.textAlignment = .right
+//        textLabel.text = "Sorry for the water /Mark"
+//
+//        addArrangedSubview(textLabel)
+//        addArrangedSubview(dropLabel)
+//    }
+//
+//    required init(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
+//}
+
+class WatermarkView: UIStackView {
+
+
+    init() {
+        super.init(frame: .zero)
+
+        axis = .vertical
+        distribution = .fillEqually
+
+        for row in 0..<10 {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.distribution = .fillEqually
+            for col in 0..<10 {
+                let lbl = UILabel()
+                lbl.text = "💧"
+                stackView.addArrangedSubview(lbl)
+            }
+            addArrangedSubview(stackView)
+        }
+    }
+
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+
 class CalendarView: UIView {
 
     let design: Design
@@ -45,8 +99,13 @@ class CalendarView: UIView {
         return fixedMonth ?? Int(design.previewMonth)
     }
 
-    init(design: Design, frame: CGRect = .zero, fixedMonth: Int? = nil) {
+    let isWatermarked: Bool
+
+    var watermarkView: WatermarkView?
+
+    init(design: Design, isWatermarked: Bool = true, frame: CGRect = .zero, fixedMonth: Int? = nil) {
         self.design = design
+        self.isWatermarked = isWatermarked
         self.fixedMonth = fixedMonth
         super.init(frame: frame)
 
@@ -122,6 +181,19 @@ class CalendarView: UIView {
             self.leftContentConstraints.constant = self.unit * self.layoutMargins.left
             self.rightHeadingConstraints.constant = self.unit * -self.layoutMargins.right
             self.rightContentConstraints.constant = self.unit * -self.layoutMargins.right
+
+//            self.watermarkView?.dropLabel.font = UIFont(name: "AvenirNext-Regular", size: self.unit * 15)!
+//            self.watermarkView?.textLabel.font =  UIFont(name: "AvenirNext-Regular", size: self.unit * 3)!
+        }
+
+        if isWatermarked {
+//            watermarkView = WatermarkView()
+//            addSubview(watermarkView!)
+//            watermarkView?.translatesAutoresizingMaskIntoConstraints = false
+//            watermarkView?.topAnchor.constraint(equalTo: topAnchor, constant: 100).isActive = true
+//            watermarkView?.rightAnchor.constraint(equalTo: rightAnchor, constant: -100).isActive = true
+//            watermarkView?.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100).isActive = true
+//            watermarkView?.leftAnchor.constraint(equalTo: leftAnchor, constant: 100).isActive = true
         }
     }
 

@@ -145,11 +145,13 @@ class HTMLCalendarStylerViewController: UIViewController,
     @objc func didPressExport() {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.label.text = "Exporting PDF"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            let url = CalendarBook(design: self.design, size: .A3).export()
-            MBProgressHUD.hide(for: self.view, animated: true)
-            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-            self.present(activityVC, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            let calendar = CalendarBook(design: self.design, size: .A6)
+            calendar.export(completed: { url in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                self.present(activityVC, animated: true, completion: nil)
+            })
         }
     }
 
