@@ -85,10 +85,6 @@ extension Design {
         }
     }
 
-    var colors: [ColorCombo] {
-        return (0..<13).map { i in return i % 2 == 0 ? ColorCombo.red : ColorCombo.black }
-    }
-
     var snapshotURL: URL {
         let path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
         let fullPath = (path as NSString).appendingPathComponent(snapshotFilename!)
@@ -116,7 +112,7 @@ class CalendarBook: NSObject, UIWebViewDelegate {
 
     var retainSelf: CalendarBook!
 
-    var cal: HTMLCalendar!
+//    var cal: HTMLCalendar!
 
     var currentPage: Int = 1
 

@@ -35,11 +35,11 @@ class WatermarkView: UIStackView {
         axis = .vertical
         distribution = .fillEqually
 
-        for row in 0..<10 {
+        for _ in 0..<10 {
             let stackView = UIStackView()
             stackView.axis = .horizontal
             stackView.distribution = .fillEqually
-            for col in 0..<10 {
+            for _ in 0..<10 {
                 let lbl = UILabel()
                 lbl.text = "💧"
                 stackView.addArrangedSubview(lbl)
@@ -221,7 +221,7 @@ class CalendarView: UIView {
 
         print("Chaaaange!")
 
-        if let design = updates.first(where: { $0.objectID == self.design.objectID }) as? Design {
+        if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design {
             self.update()
         }
     }
@@ -253,10 +253,14 @@ class CalendarView: UIView {
         comp.year = Int(design.year)
         comp.month = month
 
+        let primaryColor = (design.primaryColors as? [Int: UIColor])?[month] ?? UIColor.black
+        let secondaryColor = (design.secondaryColors as? [Int: UIColor])?[month] ?? UIColor.darkGray
+
         // SET CORRECT MONTH NUMBER OR NAME
         titleFormatter.locale = design.locale
         titleLabel.font = aggregatedMonthFont
         titleLabel.text = design.numericMonthText ? "\(month)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
+        titleLabel.textColor = secondaryColor
 
         // CLEAR PREVIOUS CELLS
         contentContainer.subviews.forEach { $0.removeFromSuperview() }
@@ -271,6 +275,8 @@ class CalendarView: UIView {
         let rowView = UIStackView(frame: .zero)
         rowView.axis = .horizontal
         rowView.distribution = .fillEqually
+
+        var isFirst = true
         for headerCharacter in weekdayPrefixes {
             let cellView = CellView(frame: .zero)
             let dateLabel = HeaderLabel(frame: .zero)
@@ -286,6 +292,10 @@ class CalendarView: UIView {
             dateLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
             dateLabel.text = headerCharacter
             rowView.addArrangedSubview(cellView)
+
+            dateLabel.textColor = isFirst ? secondaryColor : primaryColor
+
+            isFirst = false
         }
         contentContainer.addArrangedSubview(rowView)
 
@@ -298,12 +308,14 @@ class CalendarView: UIView {
             rowView.axis = .horizontal
             rowView.distribution = .fillEqually
 
+            isFirst = true
             for col in row {
                 let cellView = CellView(frame: .zero)
                 cellView.backgroundColor = .clear
 
                 let dateLabel = DateLabel(frame: .zero)
                 dateLabel.font = aggregatedDateFont
+                dateLabel.textColor = isFirst ? secondaryColor : primaryColor
 
                 if Environment.current.drawDebugColors {
                     dateLabel.backgroundColor = UIColor.green.withAlphaComponent(0.5)
@@ -324,6 +336,7 @@ class CalendarView: UIView {
                 }
 
                 rowView.addArrangedSubview(cellView)
+                isFirst = false
             }
             contentContainer.addArrangedSubview(rowView)
         }

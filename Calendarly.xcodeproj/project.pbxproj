@@ -13,7 +13,6 @@
 		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
 		C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */; };
 		C46B63D0215CF928009EB4C4 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */; };
-		C46B63D2215CFACE009EB4C4 /* HTMLCalendarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */; };
 		C46B63D4215D00EC009EB4C4 /* DesignsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */; };
 		C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A53B3F2163E46600EE16FA /* Design+Extension.swift */; };
 		C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */; };
@@ -27,7 +26,6 @@
 		C4C086E4215227830019F6B8 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E3215227830019F6B8 /* Element.swift */; };
 		C4C086E6215227A40019F6B8 /* CSSRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E5215227A40019F6B8 /* CSSRule.swift */; };
 		C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E8215228A20019F6B8 /* PRV300DPIPrintRenderer.swift */; };
-		C4C086EB2152298B0019F6B8 /* UIWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EA2152298B0019F6B8 /* UIWebView+Extension.swift */; };
 		C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */; };
 		C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */; };
 		C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */; };
@@ -66,7 +64,6 @@
 		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsViewController.swift; sourceTree = "<group>"; };
 		C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarRenderer.swift; sourceTree = "<group>"; };
 		C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsCollectionView.swift; sourceTree = "<group>"; };
 		C4A53B3F2163E46600EE16FA /* Design+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Design+Extension.swift"; sourceTree = "<group>"; };
 		C4C086B3214E4BA80019F6B8 /* Calendarly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendarly.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,7 +81,6 @@
 		C4C086E3215227830019F6B8 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		C4C086E5215227A40019F6B8 /* CSSRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSRule.swift; sourceTree = "<group>"; };
 		C4C086E8215228A20019F6B8 /* PRV300DPIPrintRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRV300DPIPrintRenderer.swift; sourceTree = "<group>"; };
-		C4C086EA2152298B0019F6B8 /* UIWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWebView+Extension.swift"; sourceTree = "<group>"; };
 		C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+PaperSizes.swift"; sourceTree = "<group>"; };
 		C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarPreviewController.swift; sourceTree = "<group>"; };
 		C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarStylerViewController.swift; sourceTree = "<group>"; };
@@ -215,7 +211,6 @@
 			children = (
 				C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */,
 				C4C086E02152273D0019F6B8 /* String+Extension.swift */,
-				C4C086EA2152298B0019F6B8 /* UIWebView+Extension.swift */,
 				C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */,
 				C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */,
 				C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */,
@@ -231,7 +226,6 @@
 				C4C086E3215227830019F6B8 /* Element.swift */,
 				C4C086E5215227A40019F6B8 /* CSSRule.swift */,
 				C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */,
-				C46B63D1215CFACE009EB4C4 /* HTMLCalendarRenderer.swift */,
 				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
 			);
 			path = Model;
@@ -296,7 +290,6 @@
 				C4C086B0214E4BA80019F6B8 /* Frameworks */,
 				C4C086B1214E4BA80019F6B8 /* Resources */,
 				2D6DCF558FB4F94460CD0073 /* [CP] Embed Pods Frameworks */,
-				89E27422269A41061AD5FDAD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -315,8 +308,6 @@
 				C4C086C6214E4BAA0019F6B8 /* Sources */,
 				C4C086C7214E4BAA0019F6B8 /* Frameworks */,
 				C4C086C8214E4BAA0019F6B8 /* Resources */,
-				B9577AD8AF6161A1C507A5CB /* [CP] Embed Pods Frameworks */,
-				B65DD453BCBFADB529B01681 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -414,16 +405,16 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BulletinBoard/BLTNBoard.framework",
-				"${BUILT_PRODUCTS_DIR}/Color-Picker-for-iOS/Color_Picker_for_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/PickColor/PickColor.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BLTNBoard.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Color_Picker_for_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PickColor.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -446,51 +437,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		89E27422269A41061AD5FDAD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B65DD453BCBFADB529B01681 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B9577AD8AF6161A1C507A5CB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CalendarlyTests/Pods-CalendarlyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -522,13 +468,11 @@
 				C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */,
 				C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */,
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
-				C4C086EB2152298B0019F6B8 /* UIWebView+Extension.swift in Sources */,
 				C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */,
 				C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */,
 				C4C1A0CD21663C23001CDEF8 /* YearPickerBLTNItem.swift in Sources */,
 				C46B63D0215CF928009EB4C4 /* UIView+Extension.swift in Sources */,
 				C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */,
-				C46B63D2215CFACE009EB4C4 /* HTMLCalendarRenderer.swift in Sources */,
 				C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */,
 				C4C1A109216A248B001CDEF8 /* FontsizeCell.swift in Sources */,
 			);
@@ -686,6 +630,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
 				INFOPLIST_FILE = Calendarly/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -705,6 +650,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
 				INFOPLIST_FILE = Calendarly/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

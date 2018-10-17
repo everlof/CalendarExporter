@@ -14,11 +14,13 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numericMonthText" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="previewMonth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="primaryColors" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="secondaryColors" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="snapshotFilename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weekStartSunday" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Design" positionX="-63" positionY="-18" width="128" height="285"/>
+        <element name="Design" positionX="-63" positionY="-18" width="128" height="315"/>
     </elements>
 </model>

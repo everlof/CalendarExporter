@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import MBProgressHUD
+import PickColor
 
 class HTMLCalendarStylerNavigationController: UINavigationController {
 
@@ -14,6 +15,34 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+class ColorPickerViewController: UIViewController, PickColorViewDelegate {
+
+    let pickerView = PickColorView(initialColor: UIColor(red: 1.0, green: 0.0, blue: 0.4, alpha: 1.0))
+
+    let completed: ((UIColor) -> Void)
+
+    init(completed: @escaping ((UIColor) -> Void)) {
+        self.completed = completed
+        super.init(nibName: nil, bundle: nil)
+        view.addSubview(pickerView)
+        pickerView.delegate = self
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        pickerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        pickerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        pickerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        pickerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func pickColorView(_: PickColorView, didPickColor color: UIColor) {
+        completed(color)
     }
 
 }
@@ -32,6 +61,8 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     enum GeneralRow: Int {
         case sampleMonth
+        case primaryColor
+        case secondaryColor
     }
 
     enum TitleRow: Int {
@@ -211,6 +242,34 @@ class HTMLCalendarStylerViewController: UIViewController,
                                                             keyPath: \Design.headerFont)
             navigationController?.pushViewController(pickerController, animated: true)
         }
+
+        if let section = Section(rawValue: indexPath.section), section == .general,
+            let row = GeneralRow(rawValue: indexPath.row), row == .primaryColor {
+            let colorPicker = ColorPickerViewController { color in
+                if var colors = self.design.primaryColors as? [Int: UIColor] {
+                    colors[Int(self.design.previewMonth)] = color
+                    self.design.primaryColors = colors as NSObject
+                } else {
+                    self.design.primaryColors = [Int(self.design.previewMonth): color] as NSObject
+                }
+                self.updateColorCells()
+            }
+            navigationController?.pushViewController(colorPicker, animated: true)
+        }
+
+        if let section = Section(rawValue: indexPath.section), section == .general,
+            let row = GeneralRow(rawValue: indexPath.row), row == .secondaryColor {
+            let colorPicker = ColorPickerViewController { color in
+                if var colors = self.design.secondaryColors as? [Int: UIColor] {
+                    colors[Int(self.design.previewMonth)] = color
+                    self.design.secondaryColors = colors as NSObject
+                } else {
+                    self.design.secondaryColors = [Int(self.design.previewMonth): color] as NSObject
+                }
+                self.updateColorCells()
+            }
+            navigationController?.pushViewController(colorPicker, animated: true)
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -249,6 +308,10 @@ class HTMLCalendarStylerViewController: UIViewController,
             switch  GeneralRow(rawValue: indexPath.row)! {
             case .sampleMonth:
                 return sampleMonthStepperCell
+            case .primaryColor:
+                return primaryColorCell
+            case .secondaryColor:
+                return secondaryColorCell
             }
         case .title:
             switch TitleRow(rawValue: indexPath.row)! {
@@ -401,6 +464,7 @@ class HTMLCalendarStylerViewController: UIViewController,
         let stepper = UIStepper(frame: .zero)
         stepper.sizeToFit()
         stepper.minimumValue = 0
+        stepper.value = Double(design.previewMonth)
         stepper.maximumValue = 11
         stepper.isContinuous = false
         stepper.addTarget(self, action: #selector(sampleMonthStepped), for: .valueChanged)
@@ -414,6 +478,14 @@ class HTMLCalendarStylerViewController: UIViewController,
 
     @objc func sampleMonthStepped() {
         design.previewMonth = 1 + Int16((sampleMonthStepperCell.accessoryView as! UIStepper).value) % 12
+        updateColorCells()
+    }
+
+    func updateColorCells() {
+        primaryColorCell.accessoryView?.backgroundColor =
+            (design.primaryColors as? [Int: UIColor])?[Int(design.previewMonth)] ?? UIColor.black
+        secondaryColorCell.accessoryView?.backgroundColor =
+            (design.secondaryColors as? [Int: UIColor])?[Int(design.previewMonth)] ?? UIColor.darkGray
     }
 
     // MARK: - Date font-size cell
@@ -509,6 +581,30 @@ class HTMLCalendarStylerViewController: UIViewController,
         label.sizeToFit()
 
         cell.accessoryView = label
+        return cell
+    }()
+
+    lazy var primaryColorCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Primary color"
+        let view = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 30, height: 30)))
+        view.layer.cornerRadius = 15
+        view.layer.borderWidth = 1/UIScreen.main.scale
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.backgroundColor = (design.primaryColors as? [Int: UIColor])?[Int(design.previewMonth)] ?? UIColor.black
+        cell.accessoryView = view
+        return cell
+    }()
+
+    lazy var secondaryColorCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Secondary color"
+        let view = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 30, height: 30)))
+        view.layer.cornerRadius = 15
+        view.layer.borderWidth = 1/UIScreen.main.scale
+        view.backgroundColor = (design.secondaryColors as? [Int: UIColor])?[Int(design.previewMonth)] ?? UIColor.darkGray
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        cell.accessoryView = view
         return cell
     }()
 
