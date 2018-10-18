@@ -21,16 +21,24 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 
 class ColorPickerViewController: UIViewController, PickColorViewDelegate {
 
-    let pickerView = PickColorView(initialColor: UIColor(red: 1.0, green: 0.0, blue: 0.4, alpha: 1.0))
+    lazy var pickerView: PickColorView = {
+        return PickColorView(initialColor: UIColor(red: 1.0, green: 0.0, blue: 0.4, alpha: 1.0))
+    }()
 
     let completed: ((UIColor) -> Void)
 
     init(completed: @escaping ((UIColor) -> Void)) {
         self.completed = completed
         super.init(nibName: nil, bundle: nil)
-        view.addSubview(pickerView)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         pickerView.delegate = self
         pickerView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(pickerView)
         pickerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         pickerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         pickerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
@@ -41,7 +49,15 @@ class ColorPickerViewController: UIViewController, PickColorViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func pickColorView(_: PickColorView, didPickColor color: UIColor) {
+    func pickColorView(_: PickColorView, didManuallyEnterColor color: UIColor) {
+        completed(color)
+    }
+
+    func pickColorView(_: PickColorView, didPickRecentColor color: UIColor) {
+        completed(color)
+    }
+
+    func pickColorView(_: PickColorView, didTapSelectedColor color: UIColor) {
         completed(color)
     }
 
