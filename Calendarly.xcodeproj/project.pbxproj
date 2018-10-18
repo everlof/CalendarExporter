@@ -23,14 +23,10 @@
 		C4C086CF214E4BAA0019F6B8 /* CalendarlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086CE214E4BAA0019F6B8 /* CalendarlyTests.swift */; };
 		C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */; };
 		C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E02152273D0019F6B8 /* String+Extension.swift */; };
-		C4C086E4215227830019F6B8 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E3215227830019F6B8 /* Element.swift */; };
-		C4C086E6215227A40019F6B8 /* CSSRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E5215227A40019F6B8 /* CSSRule.swift */; };
-		C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E8215228A20019F6B8 /* PRV300DPIPrintRenderer.swift */; };
 		C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */; };
 		C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */; };
 		C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */; };
 		C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */; };
-		C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */; };
 		C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */; };
 		C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */; };
 		C4C1A0CB21663C13001CDEF8 /* TextFieldBulletinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */; };
@@ -78,14 +74,10 @@
 		C4C086D0214E4BAA0019F6B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		C4C086E02152273D0019F6B8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		C4C086E3215227830019F6B8 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
-		C4C086E5215227A40019F6B8 /* CSSRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSRule.swift; sourceTree = "<group>"; };
-		C4C086E8215228A20019F6B8 /* PRV300DPIPrintRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRV300DPIPrintRenderer.swift; sourceTree = "<group>"; };
 		C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+PaperSizes.swift"; sourceTree = "<group>"; };
 		C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarPreviewController.swift; sourceTree = "<group>"; };
 		C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarStylerViewController.swift; sourceTree = "<group>"; };
 		C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalePickerViewController.swift; sourceTree = "<group>"; };
-		C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendar.swift; sourceTree = "<group>"; };
 		C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Extension.swift"; sourceTree = "<group>"; };
 		C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBulletinPage.swift; sourceTree = "<group>"; };
@@ -183,7 +175,6 @@
 				C4C1A0C921663BFF001CDEF8 /* BulletinBoard */,
 				C4A53B3621638AA100EE16FA /* CoreData */,
 				C4C086EE21527B980019F6B8 /* ViewControllers */,
-				C4C086E72152288A0019F6B8 /* Render */,
 				C4C086E2215227760019F6B8 /* Model */,
 				C4C086DD215226B80019F6B8 /* Extensions */,
 				C4C086B6214E4BA80019F6B8 /* AppDelegate.swift */,
@@ -223,20 +214,9 @@
 		C4C086E2215227760019F6B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C4C086E3215227830019F6B8 /* Element.swift */,
-				C4C086E5215227A40019F6B8 /* CSSRule.swift */,
-				C4C086F62153ABF30019F6B8 /* HTMLCalendar.swift */,
 				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		C4C086E72152288A0019F6B8 /* Render */ = {
-			isa = PBXGroup;
-			children = (
-				C4C086E8215228A20019F6B8 /* PRV300DPIPrintRenderer.swift */,
-			);
-			path = Render;
 			sourceTree = "<group>";
 		};
 		C4C086EE21527B980019F6B8 /* ViewControllers */ = {
@@ -450,13 +430,10 @@
 				C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */,
 				C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */,
 				C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */,
-				C4C086E4215227830019F6B8 /* Element.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
 				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
 				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
-				C4C086F72153ABF30019F6B8 /* HTMLCalendar.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
-				C4C086E9215228A20019F6B8 /* PRV300DPIPrintRenderer.swift in Sources */,
 				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,
 				C46B63D4215D00EC009EB4C4 /* DesignsCollectionView.swift in Sources */,
 				C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */,
@@ -464,7 +441,6 @@
 				C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
-				C4C086E6215227A40019F6B8 /* CSSRule.swift in Sources */,
 				C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */,
 				C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */,
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
