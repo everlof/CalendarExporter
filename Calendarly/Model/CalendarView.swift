@@ -1,65 +1,15 @@
 import UIKit
 import CoreData
 
-//class WatermarkView: UIStackView {
-//
-//    let dropLabel = UILabel()
-//
-//    let textLabel = UILabel()
-//
-//    init() {
-//        super.init(frame: .zero)
-//        axis = .vertical
-//        spacing = 12
-//
-//        dropLabel.text = "💧"
-//        dropLabel.textAlignment = .right
-//        textLabel.text = "Sorry for the water /Mark"
-//
-//        addArrangedSubview(textLabel)
-//        addArrangedSubview(dropLabel)
-//    }
-//
-//    required init(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//}
-
-class WatermarkView: UIStackView {
-
-
-    init() {
-        super.init(frame: .zero)
-
-        axis = .vertical
-        distribution = .fillEqually
-
-        for _ in 0..<10 {
-            let stackView = UIStackView()
-            stackView.axis = .horizontal
-            stackView.distribution = .fillEqually
-            for _ in 0..<10 {
-                let lbl = UILabel()
-                lbl.text = "💧"
-                stackView.addArrangedSubview(lbl)
-            }
-            addArrangedSubview(stackView)
-        }
-    }
-
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-}
-
-
 class CalendarView: UIView {
+
+    class CellView: UIView {}
+    class HeaderLabel: UILabel {}
+    class DateLabel: UILabel {}
 
     let design: Design
 
-    let titleLabel = UILabel()
+    private let titleLabel = UILabel()
 
     let headingContainer = UIView(frame: .zero)
 
@@ -100,8 +50,6 @@ class CalendarView: UIView {
     }
 
     let isWatermarked: Bool
-
-    var watermarkView: WatermarkView?
 
     let margins: UIEdgeInsets
 
@@ -156,12 +104,12 @@ class CalendarView: UIView {
             contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         }
 
-        self.topConstraints.constant = self.unit * margins.top
-        self.bottomConstraints.constant = self.unit * -margins.bottom
-        self.leftHeadingConstraints.constant = self.unit * margins.left
-        self.leftContentConstraints.constant = self.unit * margins.left
-        self.rightHeadingConstraints.constant = self.unit * -margins.right
-        self.rightContentConstraints.constant = self.unit * -margins.right
+        topConstraints.constant = self.unit * margins.top
+        bottomConstraints.constant = self.unit * -margins.bottom
+        leftHeadingConstraints.constant = self.unit * margins.left
+        leftContentConstraints.constant = self.unit * margins.left
+        rightHeadingConstraints.constant = self.unit * -margins.right
+        rightContentConstraints.constant = self.unit * -margins.right
 
         update()
 
@@ -169,61 +117,31 @@ class CalendarView: UIView {
                                                selector: #selector(contextChanged),
                                                name: .NSManagedObjectContextObjectsDidChange,
                                                object: design.managedObjectContext)
-
-        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-            self.titleLabel.font = self.aggregatedMonthFont
-            self.titleLabel.sizeToFit()
-            self.recursive(self.contentContainer, font: self.aggregatedHeaderFont, type: HeaderLabel.self)
-            self.recursive(self.contentContainer, font: self.aggregatedDateFont, type: DateLabel.self)
-
-            self.topConstraints.constant = self.unit * self.margins.top
-            self.bottomConstraints.constant = self.unit * -self.margins.bottom
-            self.leftHeadingConstraints.constant = self.unit * self.margins.left
-            self.leftContentConstraints.constant = self.unit * self.margins.left
-            self.rightHeadingConstraints.constant = self.unit * -self.margins.right
-            self.rightContentConstraints.constant = self.unit * -self.margins.right
-        }
-
-        if isWatermarked {
-//            watermarkView = WatermarkView()
-//            addSubview(watermarkView!)
-//            watermarkView?.translatesAutoresizingMaskIntoConstraints = false
-//            watermarkView?.topAnchor.constraint(equalTo: topAnchor, constant: 100).isActive = true
-//            watermarkView?.rightAnchor.constraint(equalTo: rightAnchor, constant: -100).isActive = true
-//            watermarkView?.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100).isActive = true
-//            watermarkView?.leftAnchor.constraint(equalTo: leftAnchor, constant: 100).isActive = true
-        }
     }
 
-    func cleanUp() {
-        timer.invalidate()
-        timer = nil
-    }
-
-    var unit: CGFloat {
+    private var unit: CGFloat {
         return self.bounds.size.height / 100
     }
-    
-    var aggregatedMonthFont: UIFont {
+
+    private var largerAggregatedMonthFont: UIFont {
+        return UIFont(name: design.monthFontname!, size: 1.5 * unit * CGFloat(design.monthFontsize))!
+    }
+
+    private var aggregatedMonthFont: UIFont {
         return UIFont(name: design.monthFontname!, size: unit * CGFloat(design.monthFontsize))!
     }
 
-    var aggregatedDateFont: UIFont {
+    private var aggregatedDateFont: UIFont {
         return UIFont(name: design.dateFontname!, size: unit * CGFloat(design.dateFontsize))!
     }
 
-    var aggregatedHeaderFont: UIFont {
+    private var aggregatedHeaderFont: UIFont {
         return UIFont(name: design.headerFontname!, size: unit * CGFloat(design.headerFontsize))!
     }
 
     @objc func contextChanged(notification: NSNotification) {
         guard let updates = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>  else { return }
-
-        print("Chaaaange!")
-
-        if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design {
-            self.update()
-        }
+        if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design { self.update() }
     }
 
     func firstCellView(_ view: UIView) -> UIView? {
@@ -244,11 +162,14 @@ class CalendarView: UIView {
         view.subviews.forEach { recursive($0, font: font, type: type) }
     }
 
-    class CellView: UIView {}
-    class HeaderLabel: UILabel {}
-    class DateLabel: UILabel {}
-
     func update() {
+        topConstraints.constant = self.unit * self.margins.top
+        bottomConstraints.constant = self.unit * -self.margins.bottom
+        leftHeadingConstraints.constant = self.unit * self.margins.left
+        leftContentConstraints.constant = self.unit * self.margins.left
+        rightHeadingConstraints.constant = self.unit * -self.margins.right
+        rightContentConstraints.constant = self.unit * -self.margins.right
+
         var comp = DateComponents()
         comp.year = Int(design.year)
         comp.month = month
@@ -259,8 +180,28 @@ class CalendarView: UIView {
         // SET CORRECT MONTH NUMBER OR NAME
         titleFormatter.locale = design.locale
         titleLabel.font = aggregatedMonthFont
-        titleLabel.text = design.numericMonthText ? "\(month)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
         titleLabel.textColor = secondaryColor
+        let titleText = design.numericMonthText ? "\(month)" : titleFormatter.string(from: Calendar.current.date(from: comp)!)
+
+        switch design.headerStyle {
+        case .regular:
+            titleLabel.text = titleText
+        case .firstLarger:
+            let uppercased = titleText.uppercased(with: design.locale)
+            guard let first = uppercased.first else { return }
+            let attributedString = NSMutableAttributedString(string: String(first), attributes: [
+                NSAttributedString.Key.font: largerAggregatedMonthFont,
+                NSAttributedString.Key.foregroundColor: secondaryColor
+                ])
+            attributedString.append(
+                NSAttributedString(string: String(uppercased.dropFirst()), attributes: [
+                    NSAttributedString.Key.font: aggregatedMonthFont,
+                    NSAttributedString.Key.foregroundColor: secondaryColor
+                    ]))
+            titleLabel.attributedText = attributedString
+        case .allCase:
+            titleLabel.text = titleText.uppercased(with: design.locale)
+        }
 
         // CLEAR PREVIOUS CELLS
         contentContainer.subviews.forEach { $0.removeFromSuperview() }

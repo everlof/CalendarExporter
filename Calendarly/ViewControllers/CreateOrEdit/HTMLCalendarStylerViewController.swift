@@ -19,50 +19,6 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 
 }
 
-class ColorPickerViewController: UIViewController, PickColorViewDelegate {
-
-    lazy var pickerView: PickColorView = {
-        return PickColorView(initialColor: UIColor(red: 1.0, green: 0.0, blue: 0.4, alpha: 1.0))
-    }()
-
-    let completed: ((UIColor) -> Void)
-
-    init(completed: @escaping ((UIColor) -> Void)) {
-        self.completed = completed
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        pickerView.delegate = self
-        pickerView.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(pickerView)
-        pickerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        pickerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        pickerView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        pickerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func pickColorView(_: PickColorView, didManuallyEnterColor color: UIColor) {
-        completed(color)
-    }
-
-    func pickColorView(_: PickColorView, didPickRecentColor color: UIColor) {
-        completed(color)
-    }
-
-    func pickColorView(_: PickColorView, didTapSelectedColor color: UIColor) {
-        completed(color)
-    }
-
-}
-
 class HTMLCalendarStylerViewController: UIViewController,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -84,6 +40,7 @@ class HTMLCalendarStylerViewController: UIViewController,
     enum TitleRow: Int {
         case textualMonth
         case locale
+        case headingStyle
         case monthFontsize
         case monthFont
     }
@@ -259,6 +216,12 @@ class HTMLCalendarStylerViewController: UIViewController,
             navigationController?.pushViewController(pickerController, animated: true)
         }
 
+        if let section = Section(rawValue: indexPath.section), section == .title,
+            let row = TitleRow(rawValue: indexPath.row), row == .headingStyle {
+            let pickerController = HeaderStylePickerViewController(object: design, keyPath: \Design.headerStyle)
+            navigationController?.pushViewController(pickerController, animated: true)
+        }
+
         if let section = Section(rawValue: indexPath.section), section == .general,
             let row = GeneralRow(rawValue: indexPath.row), row == .primaryColor {
             let colorPicker = ColorPickerViewController { color in
@@ -335,9 +298,10 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return textualMonthCell
             case .locale:
                 return localeCell
+            case .headingStyle:
+                return headingStyleCell
             case .monthFontsize:
                 return monthFontSizeCell
-
             case .monthFont:
                 return monthFontCell
             }
@@ -600,6 +564,23 @@ class HTMLCalendarStylerViewController: UIViewController,
         return cell
     }()
 
+    // MARK: - Primary color cell
+
+    lazy var headingStyleCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Heading style"
+
+        let label = UILabel()
+        label.text = design.headerStyle.description
+        label.textColor = .secondaryTextColor
+        label.sizeToFit()
+
+        cell.accessoryView = label
+        return cell
+    }()
+
+    // MARK: - Primary color cell
+
     lazy var primaryColorCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
         cell.textLabel?.text = "Primary color"
@@ -611,6 +592,8 @@ class HTMLCalendarStylerViewController: UIViewController,
         cell.accessoryView = view
         return cell
     }()
+
+    // MARK: - Secondary color cell
 
     lazy var secondaryColorCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)

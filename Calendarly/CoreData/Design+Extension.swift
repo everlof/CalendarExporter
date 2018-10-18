@@ -8,6 +8,37 @@ enum FirstDayOfWeek {
     case monday
 }
 
+enum HeaderStyle: String {
+    case regular
+    case firstLarger
+    case allCase
+
+    static var all: [HeaderStyle] = [.regular, .firstLarger, .allCase]
+}
+
+extension HeaderStyle: Equatable {
+
+    public static func == (lhs: HeaderStyle, rhs: HeaderStyle) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+
+}
+
+extension HeaderStyle: CustomStringConvertible {
+
+    var description: String {
+        switch self {
+        case .regular:
+            return "Regular"
+        case .allCase:
+            return "All case"
+        case .firstLarger:
+            return "First larger"
+        }
+    }
+
+}
+
 extension Design {
 
     static let dateFontSizeDefaultBordered: CGFloat = 5.4
@@ -36,8 +67,19 @@ extension Design {
 
         design.previewMonth = 1
         design.snapshotFilename = String(format: "%@.png", UUID().uuidString)
+        design.headerStyle = .regular
 
         return design
+    }
+
+    var headerStyle: HeaderStyle {
+        get {
+            guard let string = headerStyleString else { return .regular }
+            return HeaderStyle(rawValue: string) ?? .regular
+        }
+        set {
+            headerStyleString = newValue.rawValue
+        }
     }
 
     var dateFont: UIFont {
@@ -97,7 +139,7 @@ extension Design {
         let view = CalendarView(design: self, frame: CGRect(origin: .zero, size: CGSize(width: height*(1/sqrt(2)), height: height)))
         view.layoutIfNeeded()
         callback(view.snapshot)
-        view.cleanUp()
+        // view.cleanUp()
     }
 
 }
@@ -111,8 +153,6 @@ class CalendarBook: NSObject, UIWebViewDelegate {
     var done: ((URL) -> Void)!
 
     var retainSelf: CalendarBook!
-
-//    var cal: HTMLCalendar!
 
     var currentPage: Int = 1
 
@@ -153,7 +193,7 @@ class CalendarBook: NSObject, UIWebViewDelegate {
                     let calendarView = CalendarView(design: self.design, frame: paper, fixedMonth: page)
                     calendarView.layoutIfNeeded()
                     context.draw(calendarView.snapshot!.cgImage!, in: paper)
-                    calendarView.cleanUp()
+//                    calendarView.cleanUp()
                 }
             }
 

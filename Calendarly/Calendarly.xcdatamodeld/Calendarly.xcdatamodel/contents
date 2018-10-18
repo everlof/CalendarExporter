@@ -8,6 +8,7 @@
         <attribute name="hasBorders" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="headerFontname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="headerFontsize" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="headerStyleString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localeIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthFontname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthFontsize" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -21,6 +22,6 @@
         <attribute name="year" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Design" positionX="-63" positionY="-18" width="128" height="315"/>
+        <element name="Design" positionX="-63" positionY="-18" width="128" height="330"/>
     </elements>
 </model>
