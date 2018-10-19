@@ -94,7 +94,7 @@ class CalendarView: UIView,
     }
 
     var largerAggregatedMonthFont: UIFont {
-        return UIFont(name: design.monthFontname!, size: 1.5 * unit * CGFloat(design.monthFontsize))!
+        return UIFont(name: design.monthFontname!, size: 1.35 * unit * CGFloat(design.monthFontsize))!
     }
 
     var aggregatedMonthFont: UIFont {
