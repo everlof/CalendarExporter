@@ -11,6 +11,7 @@
 		C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */; };
 		C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */; };
 		C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF792178779F00851939 /* ColorPickerViewController.swift */; };
+		C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */; };
 		C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */; };
 		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
 		C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */; };
@@ -60,6 +61,7 @@
 		C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extension.swift"; sourceTree = "<group>"; };
 		C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStylePickerViewController.swift; sourceTree = "<group>"; };
 		C445EF792178779F00851939 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerViewController.swift; sourceTree = "<group>"; };
 		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
+				C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */,
 				C4C086B9214E4BA80019F6B8 /* DesignViewController.swift in Sources */,
 				C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */,
 				C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */,

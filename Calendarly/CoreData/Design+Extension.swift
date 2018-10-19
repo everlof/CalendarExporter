@@ -72,6 +72,13 @@ extension Design {
         return design
     }
 
+    func primaryColor(for month: Int) -> UIColor {
+        return (primaryColors as? [Int: UIColor])?[month] ?? UIColor.black
+    }
+    func secondaryColor(for month: Int) -> UIColor{
+        return (secondaryColors as? [Int: UIColor])?[month] ?? UIColor.darkGray
+    }
+
     var headerStyle: HeaderStyle {
         get {
             guard let string = headerStyleString else { return .regular }

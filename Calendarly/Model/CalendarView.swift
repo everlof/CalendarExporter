@@ -1,25 +1,28 @@
 import UIKit
 import CoreData
 
-class CalendarView: UIView {
+class CalendarView: UIView,
+    UICollectionViewDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout {
 
-    class CellView: UIView {}
-    class HeaderLabel: UILabel {}
-    class DateLabel: UILabel {}
-
+    /// The design being rendered in the calendar
     let design: Design
 
+    /// The month
     private let titleLabel = UILabel()
 
-    let headingContainer = UIView(frame: .zero)
+    /// Container
+    private let headingContainer = UIView(frame: .zero)
 
-    let contentContainer = UIStackView(frame: .zero)
+    /// Container
+    private let contentContainer = UIView(frame: .zero)
 
+    /// A fixed month has been set to render (instead of using the one in `design`
     let fixedMonth: Int?
 
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: bounds.width, height: bounds.width * sqrt(2))
-    }
+    /// The border for each date item
+    var borderWidth: CGFloat = 1
 
     lazy var titleFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -29,8 +32,6 @@ class CalendarView: UIView {
         return formatter
     }()
 
-    var timer: Timer!
-
     var hasBorder: Bool = false {
         didSet {
             layer.borderWidth = hasBorder ? 1/UIScreen.main.scale : 0
@@ -38,20 +39,75 @@ class CalendarView: UIView {
         }
     }
 
+    // MARK: - Various constraints
+
     var topConstraints: NSLayoutConstraint!
+
     var bottomConstraints: NSLayoutConstraint!
+
     var leftHeadingConstraints: NSLayoutConstraint!
+
     var leftContentConstraints: NSLayoutConstraint!
+
     var rightHeadingConstraints: NSLayoutConstraint!
+
     var rightContentConstraints: NSLayoutConstraint!
 
     var month: Int {
         return fixedMonth ?? Int(design.previewMonth)
     }
 
+    var matrix = Calendar.current.dateMatrixFor(month: 1, year: 2017, config: .monday)
+
+    var weekdayPrefixes = [String]()
+
+    // MARK: - CollectionView
+
+    lazy var collectionViewLayout: UICollectionViewFlowLayout = {
+        return UICollectionViewFlowLayout()
+    }()
+
+    lazy var collectionView: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        cv.delegate = self
+        cv.dataSource = self
+        cv.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: "CalendarCollectionViewCell")
+        return cv
+    }()
+
+
     let isWatermarked: Bool
 
     let margins: UIEdgeInsets
+
+    var size: CGSize = .zero {
+        didSet {
+            if oldValue != size {
+                update()
+            }
+        }
+    }
+
+    /// Unit that is proportional to the height of the view's bounds
+    var unit: CGFloat {
+        return self.bounds.size.height / 100
+    }
+
+    var largerAggregatedMonthFont: UIFont {
+        return UIFont(name: design.monthFontname!, size: 1.5 * unit * CGFloat(design.monthFontsize))!
+    }
+
+    var aggregatedMonthFont: UIFont {
+        return UIFont(name: design.monthFontname!, size: unit * CGFloat(design.monthFontsize))!
+    }
+
+    var aggregatedDateFont: UIFont {
+        return UIFont(name: design.dateFontname!, size: unit * CGFloat(design.dateFontsize))!
+    }
+
+    var aggregatedHeaderFont: UIFont {
+        return UIFont(name: design.headerFontname!, size: unit * CGFloat(design.headerFontsize))!
+    }
 
     init(design: Design, isWatermarked: Bool = true, frame: CGRect = .zero, fixedMonth: Int? = nil) {
         self.design = design
@@ -65,9 +121,6 @@ class CalendarView: UIView {
 
         headingContainer.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.translatesAutoresizingMaskIntoConstraints = false
-
-        contentContainer.distribution = .fillEqually
-        contentContainer.axis = .vertical
 
         addSubview(headingContainer)
         addSubview(contentContainer)
@@ -99,6 +152,13 @@ class CalendarView: UIView {
         titleLabel.centerXAnchor.constraint(equalTo: headingContainer.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: headingContainer.centerYAnchor).isActive = true
 
+        contentContainer.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: contentContainer.topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: contentContainer.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: contentContainer.rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor).isActive = true
+
         if Environment.current.drawDebugColors {
             headingContainer.backgroundColor = UIColor.red.withAlphaComponent(0.5)
             contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
@@ -111,32 +171,25 @@ class CalendarView: UIView {
         rightHeadingConstraints.constant = self.unit * -margins.right
         rightContentConstraints.constant = self.unit * -margins.right
 
-        update()
-
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(contextChanged),
                                                name: .NSManagedObjectContextObjectsDidChange,
                                                object: design.managedObjectContext)
+
+        update()
     }
 
-    private var unit: CGFloat {
-        return self.bounds.size.height / 100
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    private var largerAggregatedMonthFont: UIFont {
-        return UIFont(name: design.monthFontname!, size: 1.5 * unit * CGFloat(design.monthFontsize))!
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        size = bounds.size
     }
 
-    private var aggregatedMonthFont: UIFont {
-        return UIFont(name: design.monthFontname!, size: unit * CGFloat(design.monthFontsize))!
-    }
-
-    private var aggregatedDateFont: UIFont {
-        return UIFont(name: design.dateFontname!, size: unit * CGFloat(design.dateFontsize))!
-    }
-
-    private var aggregatedHeaderFont: UIFont {
-        return UIFont(name: design.headerFontname!, size: unit * CGFloat(design.headerFontsize))!
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: bounds.width, height: bounds.width * sqrt(2))
     }
 
     @objc func contextChanged(notification: NSNotification) {
@@ -144,25 +197,15 @@ class CalendarView: UIView {
         if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design { self.update() }
     }
 
-    func firstCellView(_ view: UIView) -> UIView? {
-        if view is CellView { return view }
-        return view.subviews.compactMap { firstCellView($0) }.first
-    }
-
-    func recursive<T: UILabel>(_ view: UIView, font: UIFont, type: T.Type) {
-        if let label = view as? T {
-            label.font = font
-            if type is DateLabel.Type {
-                label.attributedText = NSAttributedString(string: label.text ?? "", attributes: [
-                    NSAttributedString.Key.kern: self.unit * CGFloat(design.dateKerning)
-                ])
-            }
-            label.sizeToFit()
-        }
-        view.subviews.forEach { recursive($0, font: font, type: type) }
-    }
-
     func update() {
+        matrix = Calendar.current.dateMatrixFor(month: month, year: Int(design.year), config: design.firstDayOfWeek)
+
+        // GET ARRAY OF WEEKNAME
+        weekdayPrefixes = Calendar.current.weekdayPrefixes(month: month, year: Int(design.year), locale: design.locale, config: design.firstDayOfWeek)
+
+        // TAKE FIRST CHAR OF WEENKNAME
+        weekdayPrefixes = weekdayPrefixes.map { String($0[0]) }
+
         topConstraints.constant = self.unit * self.margins.top
         bottomConstraints.constant = self.unit * -self.margins.bottom
         leftHeadingConstraints.constant = self.unit * self.margins.left
@@ -197,94 +240,80 @@ class CalendarView: UIView {
                 NSAttributedString(string: String(uppercased.dropFirst()), attributes: [
                     NSAttributedString.Key.font: aggregatedMonthFont,
                     NSAttributedString.Key.foregroundColor: secondaryColor
-                    ]))
+                ]))
             titleLabel.attributedText = attributedString
         case .allCase:
             titleLabel.text = titleText.uppercased(with: design.locale)
         }
 
-        // CLEAR PREVIOUS CELLS
-        contentContainer.subviews.forEach { $0.removeFromSuperview() }
-
-        // GET ARRAY OF WEEKNAME
-        var weekdayPrefixes = Calendar.current.weekdayPrefixes(month: month, year: Int(design.year), locale: design.locale, config: design.firstDayOfWeek)
-
-        // TAKE FIRST CHAR OF WEENKNAME
-        weekdayPrefixes = weekdayPrefixes.map { String($0[0]) }
-
-        // INSERT FIRST ROW, CONTAINING OF WEEKNAMES
-        let rowView = UIStackView(frame: .zero)
-        rowView.axis = .horizontal
-        rowView.distribution = .fillEqually
-
-        var isFirst = true
-        for headerCharacter in weekdayPrefixes {
-            let cellView = CellView(frame: .zero)
-            let dateLabel = HeaderLabel(frame: .zero)
-            dateLabel.font = aggregatedHeaderFont
-
-            if Environment.current.drawDebugColors {
-                dateLabel.backgroundColor = UIColor.green.withAlphaComponent(0.5)
-            }
-
-            cellView.addSubview(dateLabel)
-            dateLabel.translatesAutoresizingMaskIntoConstraints = false
-            dateLabel.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-            dateLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
-            dateLabel.text = headerCharacter
-            rowView.addArrangedSubview(cellView)
-
-            dateLabel.textColor = isFirst ? secondaryColor : primaryColor
-
-            isFirst = false
+        if design.hasBorders {
+            collectionView.backgroundColor = .lightGray
+        } else {
+            collectionView.backgroundColor = .white
         }
-        contentContainer.addArrangedSubview(rowView)
 
-        let nbrFormatter: NumberFormatter = NumberFormatter()
-        nbrFormatter.locale = design.locale
-
-        // INSERT REST OF ROWS, FOR DATES
-        for row in Calendar.current.dateMatrixFor(month: month, year: Int(design.year), config: design.firstDayOfWeek) {
-            let rowView = UIStackView(frame: .zero)
-            rowView.axis = .horizontal
-            rowView.distribution = .fillEqually
-
-            isFirst = true
-            for col in row {
-                let cellView = CellView(frame: .zero)
-                cellView.backgroundColor = .clear
-
-                let dateLabel = DateLabel(frame: .zero)
-                dateLabel.font = aggregatedDateFont
-                dateLabel.textColor = isFirst ? secondaryColor : primaryColor
-
-                if Environment.current.drawDebugColors {
-                    dateLabel.backgroundColor = UIColor.green.withAlphaComponent(0.5)
-                } else {
-                    dateLabel.backgroundColor = .clear
-                }
-
-                cellView.addSubview(dateLabel)
-                dateLabel.translatesAutoresizingMaskIntoConstraints = false
-                dateLabel.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-                dateLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
-
-                if let col = col, col != 0 {
-                    let text = nbrFormatter.string(from: NSNumber(integerLiteral: col))!
-                    dateLabel.attributedText = NSAttributedString(string: text, attributes: [
-                        NSAttributedString.Key.kern: self.unit * CGFloat(design.dateKerning)
-                    ])
-                }
-
-                rowView.addArrangedSubview(cellView)
-                isFirst = false
-            }
-            contentContainer.addArrangedSubview(rowView)
-        }
+        collectionView.reloadData()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // MARK: - UICollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let flowLayout  = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
+
+        guard design.hasBorders else {
+            flowLayout.minimumInteritemSpacing = 0
+            flowLayout.minimumLineSpacing = 0
+            return CGSize(width: floor(collectionView.frame.width / 7),
+                          height: floor(collectionView.frame.height / (CGFloat(collectionView.numberOfItems(inSection: 0)) / 7)))
+        }
+
+        flowLayout.minimumInteritemSpacing = borderWidth
+        flowLayout.minimumLineSpacing = borderWidth
+
+        flowLayout.sectionInset.bottom = borderWidth
+        flowLayout.sectionInset.top = borderWidth
+        flowLayout.sectionInset.right = borderWidth
+        flowLayout.sectionInset.left = borderWidth
+
+        let nbrInterItemSpaces: CGFloat = 7
+        let totalInterItemSpace = flowLayout.minimumInteritemSpacing * nbrInterItemSpaces
+
+        let nbrItems = CGFloat(collectionView.numberOfItems(inSection: 0))
+        let nbrLineSpaces: CGFloat = (nbrItems / 7) - 1
+        let totalLineSpace = flowLayout.minimumLineSpacing * nbrLineSpaces
+
+        let availableWidth = (collectionView.frame.width - totalInterItemSpace - flowLayout.sectionInset.left - flowLayout.sectionInset.right)
+        let widthPerItem = availableWidth / 7
+
+        let availableHeight = (collectionView.frame.height - totalLineSpace - flowLayout.sectionInset.top - flowLayout.sectionInset.bottom)
+        let heightPerItem = availableHeight / (nbrItems / 7)
+
+        return CGSize(width: widthPerItem, height: heightPerItem)
+    }
+
+    // MARK: - UICollectionViewDelegate
+
+    
+
+    // MARK: - UICollectionViewDataSource
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 7 + matrix.count * matrix[0].count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarCollectionViewCell
+        let modifiedIndexPath = indexPath.row - 7
+        if indexPath.row < 7 {
+            cell.set(date: weekdayPrefixes[indexPath.row], design: design, indexPath: indexPath, calendarView: self)
+        } else if let i = matrix[modifiedIndexPath / 7][modifiedIndexPath % 7], i > 0 {
+            cell.set(date: "\(i)", design: design, indexPath: indexPath, calendarView: self)
+        } else {
+            cell.set(date: "", design: design, indexPath: indexPath, calendarView: self)
+        }
+        return cell
     }
 
 }
+
+
