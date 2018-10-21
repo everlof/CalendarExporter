@@ -12,6 +12,17 @@
 		C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */; };
 		C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF792178779F00851939 /* ColorPickerViewController.swift */; };
 		C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */; };
+		C445EF842179C3D300851939 /* BirthdaysViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF832179C3D300851939 /* BirthdaysViewController.swift */; };
+		C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF87217A091100851939 /* PageViewControllerChild.swift */; };
+		C445EF8A217A21A400851939 /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF89217A21A400851939 /* ContactListViewController.swift */; };
+		C445EF8C217A410C00851939 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF8B217A410C00851939 /* ContactCell.swift */; };
+		C445EF8F217AF92900851939 /* FetchedResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF8E217AF92900851939 /* FetchedResultController.swift */; };
+		C445EF94217B1D8E00851939 /* CAAnimation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF93217B1D8E00851939 /* CAAnimation+Extension.swift */; };
+		C445EF97217B40F800851939 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF96217B40F800851939 /* ContactModel.swift */; };
+		C445EF9A217B413C00851939 /* BirthdayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF99217B413C00851939 /* BirthdayListViewController.swift */; };
+		C445EF9D217B41D700851939 /* BirthdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9C217B41D700851939 /* BirthdayCell.swift */; };
+		C445EF9F217B656900851939 /* BirthdaysPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */; };
+		C445EFA2217B846900851939 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA1217B846900851939 /* ProfileImageView.swift */; };
 		C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */; };
 		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
 		C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */; };
@@ -62,6 +73,17 @@
 		C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStylePickerViewController.swift; sourceTree = "<group>"; };
 		C445EF792178779F00851939 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		C445EF832179C3D300851939 /* BirthdaysViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdaysViewController.swift; sourceTree = "<group>"; };
+		C445EF87217A091100851939 /* PageViewControllerChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewControllerChild.swift; sourceTree = "<group>"; };
+		C445EF89217A21A400851939 /* ContactListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
+		C445EF8B217A410C00851939 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		C445EF8E217AF92900851939 /* FetchedResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultController.swift; sourceTree = "<group>"; };
+		C445EF93217B1D8E00851939 /* CAAnimation+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAAnimation+Extension.swift"; sourceTree = "<group>"; };
+		C445EF96217B40F800851939 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
+		C445EF99217B413C00851939 /* BirthdayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayListViewController.swift; sourceTree = "<group>"; };
+		C445EF9C217B41D700851939 /* BirthdayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayCell.swift; sourceTree = "<group>"; };
+		C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdaysPageViewController.swift; sourceTree = "<group>"; };
+		C445EFA1217B846900851939 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerViewController.swift; sourceTree = "<group>"; };
 		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsViewController.swift; sourceTree = "<group>"; };
@@ -147,9 +169,76 @@
 			path = CreateOrEdit;
 			sourceTree = "<group>";
 		};
+		C445EF812179C34300851939 /* Designs */ = {
+			isa = PBXGroup;
+			children = (
+				C41A90DA2165F79B00352940 /* CreateOrEdit */,
+				C4C086F321529DF80019F6B8 /* Pickers */,
+				C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */,
+				C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */,
+			);
+			path = Designs;
+			sourceTree = "<group>";
+		};
+		C445EF822179C35700851939 /* Birthdays */ = {
+			isa = PBXGroup;
+			children = (
+				C445EF9B217B41AC00851939 /* Cells */,
+				C445EF98217B412A00851939 /* Lists */,
+				C445EF95217B40EF00851939 /* Model */,
+				C445EF832179C3D300851939 /* BirthdaysViewController.swift */,
+				C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */,
+			);
+			path = Birthdays;
+			sourceTree = "<group>";
+		};
+		C445EF8D217AF91F00851939 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C445EF8E217AF92900851939 /* FetchedResultController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		C445EF95217B40EF00851939 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C445EF96217B40F800851939 /* ContactModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C445EF98217B412A00851939 /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				C445EF99217B413C00851939 /* BirthdayListViewController.swift */,
+				C445EF89217A21A400851939 /* ContactListViewController.swift */,
+			);
+			path = Lists;
+			sourceTree = "<group>";
+		};
+		C445EF9B217B41AC00851939 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C445EFA0217B844B00851939 /* Views */,
+				C445EF8B217A410C00851939 /* ContactCell.swift */,
+				C445EF9C217B41D700851939 /* BirthdayCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		C445EFA0217B844B00851939 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C445EFA1217B846900851939 /* ProfileImageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C4A53B3621638AA100EE16FA /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C445EF8D217AF91F00851939 /* UI */,
 				C4A53B3F2163E46600EE16FA /* Design+Extension.swift */,
 			);
 			path = CoreData;
@@ -213,6 +302,7 @@
 				C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */,
 				C46B63CF215CF928009EB4C4 /* UIView+Extension.swift */,
 				C41A90D821648DF100352940 /* NSManagedObjectContext+Extension.swift */,
+				C445EF93217B1D8E00851939 /* CAAnimation+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -229,10 +319,9 @@
 		C4C086EE21527B980019F6B8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C41A90DA2165F79B00352940 /* CreateOrEdit */,
-				C4C086F321529DF80019F6B8 /* Pickers */,
-				C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */,
-				C46B63D3215D00EC009EB4C4 /* DesignsCollectionView.swift */,
+				C445EF87217A091100851939 /* PageViewControllerChild.swift */,
+				C445EF822179C35700851939 /* Birthdays */,
+				C445EF812179C34300851939 /* Designs */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -394,6 +483,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Calendarly/Pods-Calendarly-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BulletinBoard/BLTNBoard.framework",
+				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/PickColor/PickColor.framework",
@@ -401,6 +491,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BLTNBoard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PickColor.framework",
@@ -435,14 +526,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C445EF8A217A21A400851939 /* ContactListViewController.swift in Sources */,
 				C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */,
+				C445EF97217B40F800851939 /* ContactModel.swift in Sources */,
 				C4C086B9214E4BA80019F6B8 /* DesignViewController.swift in Sources */,
 				C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */,
 				C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */,
+				C445EF9D217B41D700851939 /* BirthdayCell.swift in Sources */,
+				C445EF9A217B413C00851939 /* BirthdayListViewController.swift in Sources */,
 				C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */,
+				C445EF8C217A410C00851939 /* ContactCell.swift in Sources */,
+				C445EF9F217B656900851939 /* BirthdaysPageViewController.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
+				C445EF8F217AF92900851939 /* FetchedResultController.swift in Sources */,
 				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
 				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
+				C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,
 				C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */,
@@ -451,10 +550,13 @@
 				C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */,
 				C4C1A0CB21663C13001CDEF8 /* TextFieldBulletinPage.swift in Sources */,
 				C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */,
+				C445EF842179C3D300851939 /* BirthdaysViewController.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
+				C445EF94217B1D8E00851939 /* CAAnimation+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
 				C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */,
 				C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */,
+				C445EFA2217B846900851939 /* ProfileImageView.swift in Sources */,
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
 				C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */,
 				C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */,

@@ -217,7 +217,6 @@ class CalendarView: UIView,
         comp.year = Int(design.year)
         comp.month = month
 
-        let primaryColor = (design.primaryColors as? [Int: UIColor])?[month] ?? UIColor.black
         let secondaryColor = (design.secondaryColors as? [Int: UIColor])?[month] ?? UIColor.darkGray
 
         // SET CORRECT MONTH NUMBER OR NAME

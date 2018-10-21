@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Birthday" representedClassName="Birthday" syncable="YES" codeGenerationType="class">
+        <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="birthday" inverseEntity="Contact" syncable="YES"/>
+    </entity>
+    <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
+        <attribute name="calendarIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="birthday" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Birthday" inverseName="contact" inverseEntity="Birthday" syncable="YES"/>
+    </entity>
     <entity name="Design" representedClassName="Design" syncable="YES" codeGenerationType="class">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateFontname" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,6 +34,8 @@
         <attribute name="year" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Birthday" positionX="-54" positionY="135" width="128" height="75"/>
         <element name="Design" positionX="-63" positionY="-18" width="128" height="330"/>
+        <element name="Contact" positionX="-36" positionY="144" width="128" height="135"/>
     </elements>
 </model>

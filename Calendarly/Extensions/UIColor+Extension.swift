@@ -6,6 +6,10 @@ extension UIColor {
         return UIColor(red: 0x99/0xFF, green: 0x99/0xFF, blue: 0x99/0xFF, alpha: 0xFF)
     }
 
+    static var boneContrastLighter: UIColor {
+        return UIColor(red: 0xFF/0xFF, green: 0xFE/0xFF, blue: 0xFB/0xFF, alpha: 0xFF)
+    }
+
     static var boneWhiteColor: UIColor {
         return UIColor(red: 0xE3/0xFF, green: 0xDA/0xFF, blue: 0xC9/0xFF, alpha: 0xFF)
     }
@@ -16,6 +20,10 @@ extension UIColor {
 
     static var boneConstrastDarkest: UIColor {
         return UIColor(red: 0xA1/0xFF, green: 0x90/0xFF, blue: 0x6F/0xFF, alpha: 0xFF)
+    }
+
+    static var complementary: UIColor {
+        return UIColor(red: 0x67/0xFF, green: 0x7C/0xFF, blue: 0x96/0xFF, alpha: 0xFF)
     }
 
     static var greenMatchingBone: UIColor {

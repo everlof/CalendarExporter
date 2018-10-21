@@ -10,6 +10,7 @@ target 'Calendarly' do
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'GBDeviceInfo', '~> 4.2'
   pod 'BulletinBoard'
+  pod 'DZNEmptyDataSet'
 	
   target 'CalendarlyTests' do
     inherit! :search_paths
