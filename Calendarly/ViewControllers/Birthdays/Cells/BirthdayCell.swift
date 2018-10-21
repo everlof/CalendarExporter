@@ -43,7 +43,7 @@ class BirthdayCell: FRCCell<Birthday> {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = UIColor.boneWhiteColor
+        backgroundColor = .boneWhiteColor
 
         contentView.addSubview(profileImageView)
         contentView.addSubview(nameLabel)
