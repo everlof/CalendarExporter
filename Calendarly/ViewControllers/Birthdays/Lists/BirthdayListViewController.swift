@@ -84,6 +84,7 @@ class BirthdayListViewController: PageViewControllerChild,
         frcDelegate = FetchedResultsControllerDelegate(controller: frc, tableView: tableView, delegate: self)
         frcDelegate.cellHeight = 80
         frcDelegate.preConfigureCellClosure = { cell, _ in
+            cell.presenter = self
             cell.persistentContainer = self.persistentContainer
         }
 

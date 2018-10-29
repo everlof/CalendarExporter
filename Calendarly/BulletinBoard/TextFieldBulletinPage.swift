@@ -60,7 +60,6 @@ extension TextFieldBulletinPage: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-
         if isInputValid(text: textField.text) {
             textInputHandler?(self, textField.text)
         } else {
@@ -68,7 +67,6 @@ extension TextFieldBulletinPage: UITextFieldDelegate {
             descriptionLabel!.text = "You must enter some text to continue."
             textField.backgroundColor = UIColor.red.withAlphaComponent(0.3)
         }
-
     }
 
 }

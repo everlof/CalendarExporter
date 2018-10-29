@@ -13,9 +13,20 @@ class CalendarlyTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testBirthdayEvent() {
+        let birthdayWOYear = BirthdayEvent(year: 0, month: 6, day: 30)
+        let birthdayWYear = BirthdayEvent(year: 1987, month: 6, day: 30)
+
+        let thirtiethBirthday = ISO8601DateFormatter().date(from: "2017-06-30T09:23:15+00:00")!
+
+        XCTAssertEqual(birthdayWYear.nbrYearsTurned(today: thirtiethBirthday), .years(30))
+        XCTAssertEqual(birthdayWOYear.nbrYearsTurned(today: thirtiethBirthday), .unknown)
+
+        XCTAssertEqual(birthdayWYear.daysUntilBirthday(today: thirtiethBirthday), 0)
+        XCTAssertEqual(birthdayWOYear.daysUntilBirthday(today: thirtiethBirthday), 0)
+
+        XCTAssertEqual(birthdayWYear.daysUntilBirthday(), 247)
+        XCTAssertEqual(birthdayWOYear.daysUntilBirthday(), 247)
     }
     
     func testPerformanceExample() {

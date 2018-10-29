@@ -23,6 +23,12 @@
 		C445EF9D217B41D700851939 /* BirthdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9C217B41D700851939 /* BirthdayCell.swift */; };
 		C445EF9F217B656900851939 /* BirthdaysPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */; };
 		C445EFA2217B846900851939 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA1217B846900851939 /* ProfileImageView.swift */; };
+		C445EFA4217DB86300851939 /* BasePersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA3217DB86300851939 /* BasePersonCell.swift */; };
+		C445EFA6217DB8C500851939 /* ContactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA5217DB8C500851939 /* ContactButton.swift */; };
+		C445EFA82183054400851939 /* Birthday+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA72183054400851939 /* Birthday+Extension.swift */; };
+		C445EFAA218305A600851939 /* BirthdayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA9218305A600851939 /* BirthdayEvent.swift */; };
+		C445EFAC2184D8DA00851939 /* Contact+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFAB2184D8DA00851939 /* Contact+Extension.swift */; };
+		C445EFB021871EFE00851939 /* DatePickerBLTItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */; };
 		C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */; };
 		C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CB215BDBED009EB4C4 /* StartViewController.swift */; };
 		C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */; };
@@ -38,7 +44,6 @@
 		C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */; };
 		C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E02152273D0019F6B8 /* String+Extension.swift */; };
 		C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */; };
-		C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */; };
 		C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */; };
 		C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */; };
 		C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */; };
@@ -84,6 +89,12 @@
 		C445EF9C217B41D700851939 /* BirthdayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayCell.swift; sourceTree = "<group>"; };
 		C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdaysPageViewController.swift; sourceTree = "<group>"; };
 		C445EFA1217B846900851939 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		C445EFA3217DB86300851939 /* BasePersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePersonCell.swift; sourceTree = "<group>"; };
+		C445EFA5217DB8C500851939 /* ContactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactButton.swift; sourceTree = "<group>"; };
+		C445EFA72183054400851939 /* Birthday+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Birthday+Extension.swift"; sourceTree = "<group>"; };
+		C445EFA9218305A600851939 /* BirthdayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayEvent.swift; sourceTree = "<group>"; };
+		C445EFAB2184D8DA00851939 /* Contact+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Extension.swift"; sourceTree = "<group>"; };
+		C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerBLTItem.swift; sourceTree = "<group>"; };
 		C46B63C9215BAF50009EB4C4 /* FontPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerViewController.swift; sourceTree = "<group>"; };
 		C46B63CB215BDBED009EB4C4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		C46B63CD215CBBEB009EB4C4 /* DesignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignsViewController.swift; sourceTree = "<group>"; };
@@ -103,7 +114,6 @@
 		C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		C4C086E02152273D0019F6B8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+PaperSizes.swift"; sourceTree = "<group>"; };
-		C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarPreviewController.swift; sourceTree = "<group>"; };
 		C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarStylerViewController.swift; sourceTree = "<group>"; };
 		C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalePickerViewController.swift; sourceTree = "<group>"; };
 		C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Extension.swift"; sourceTree = "<group>"; };
@@ -164,7 +174,6 @@
 				C4C1A107216A2457001CDEF8 /* Cells */,
 				C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */,
 				C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */,
-				C4C086EF21527BC70019F6B8 /* HTMLCalendarPreviewController.swift */,
 			);
 			path = CreateOrEdit;
 			sourceTree = "<group>";
@@ -223,6 +232,7 @@
 				C445EFA0217B844B00851939 /* Views */,
 				C445EF8B217A410C00851939 /* ContactCell.swift */,
 				C445EF9C217B41D700851939 /* BirthdayCell.swift */,
+				C445EFA3217DB86300851939 /* BasePersonCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -230,6 +240,7 @@
 		C445EFA0217B844B00851939 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C445EFA5217DB8C500851939 /* ContactButton.swift */,
 				C445EFA1217B846900851939 /* ProfileImageView.swift */,
 			);
 			path = Views;
@@ -310,8 +321,11 @@
 		C4C086E2215227760019F6B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
+				C445EFA72183054400851939 /* Birthday+Extension.swift */,
+				C445EFA9218305A600851939 /* BirthdayEvent.swift */,
 				C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */,
+				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
+				C445EFAB2184D8DA00851939 /* Contact+Extension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -340,10 +354,11 @@
 		C4C1A0C921663BFF001CDEF8 /* BulletinBoard */ = {
 			isa = PBXGroup;
 			children = (
-				C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */,
-				C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */,
 				C4C1A0CE21663C64001CDEF8 /* FeedbackPageBLTNItem.swift */,
 				C4C1A0D021663CCF001CDEF8 /* SelectionFeedbackGenerator.swift */,
+				C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */,
+				C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */,
+				C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */,
 			);
 			path = BulletinBoard;
 			sourceTree = "<group>";
@@ -541,16 +556,21 @@
 				C445EF8F217AF92900851939 /* FetchedResultController.swift in Sources */,
 				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
 				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
+				C445EFAA218305A600851939 /* BirthdayEvent.swift in Sources */,
 				C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,
 				C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */,
+				C445EFAC2184D8DA00851939 /* Contact+Extension.swift in Sources */,
 				C46B63D4215D00EC009EB4C4 /* DesignsCollectionView.swift in Sources */,
 				C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */,
+				C445EFB021871EFE00851939 /* DatePickerBLTItem.swift in Sources */,
 				C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */,
 				C4C1A0CB21663C13001CDEF8 /* TextFieldBulletinPage.swift in Sources */,
 				C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */,
 				C445EF842179C3D300851939 /* BirthdaysViewController.swift in Sources */,
+				C445EFA6217DB8C500851939 /* ContactButton.swift in Sources */,
+				C445EFA4217DB86300851939 /* BasePersonCell.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
 				C445EF94217B1D8E00851939 /* CAAnimation+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
@@ -558,12 +578,12 @@
 				C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */,
 				C445EFA2217B846900851939 /* ProfileImageView.swift in Sources */,
 				C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */,
-				C4C086F021527BC70019F6B8 /* HTMLCalendarPreviewController.swift in Sources */,
 				C41A90D921648DF100352940 /* NSManagedObjectContext+Extension.swift in Sources */,
 				C4C1A0CD21663C23001CDEF8 /* YearPickerBLTNItem.swift in Sources */,
 				C46B63D0215CF928009EB4C4 /* UIView+Extension.swift in Sources */,
 				C4C086BF214E4BA80019F6B8 /* Calendarly.xcdatamodeld in Sources */,
 				C4A53B402163E46600EE16FA /* Design+Extension.swift in Sources */,
+				C445EFA82183054400851939 /* Birthday+Extension.swift in Sources */,
 				C4C1A109216A248B001CDEF8 /* FontsizeCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -649,7 +669,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -703,7 +723,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -761,6 +781,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
 				INFOPLIST_FILE = CalendarlyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -783,6 +804,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
 				INFOPLIST_FILE = CalendarlyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

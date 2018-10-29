@@ -2,14 +2,94 @@ import UIKit
 import CoreData
 import MBProgressHUD
 
+//class CustomPresentation: UIPresentationController, UIViewControllerAnimatedTransitioning {
+//
+//    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+//        return 5.0
+//    }
+//
+//    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+//        ((transitionContext.viewController(forKey: .from) as! StartViewController).viewControllers!.first! as! DesignsNavigationController).viewControllers
+//        guard
+//            let fromVC = transitionContext.viewController(forKey: .from) as? StartViewController,
+//            let navigationController = fromVC.viewControllers?.first as? DesignsNavigationController,
+//            let designsViewController = navigationController.viewControllers.first,
+//            let toVC = transitionContext.viewController(forKey: .to) as? DesignNavigationController,
+//            let fromView = fromVC.view,
+//            let toView = toVC.view
+//        else {
+//            fatalError("Not enough data.")
+//        }
+//
+//        let containerView = transitionContext.containerView
+//        let duration = transitionDuration(using: transitionContext)
+//
+//        let calendarView: CalendarView = toVC.viewControllers[0].view.subviews[0] as! CalendarView
+//        calendarView.layoutIfNeeded()
+//        let image = calendarView.snapshot
+//        let imageView = UIImageView(image: image)
+//
+//        containerView.addSubview(imageView)
+//        imageView.frame.origin.x = 100
+//        imageView.frame.origin.y = 100
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            containerView.addSubview(toVC.view)
+//            transitionContext.completeTransition(true)
+//        }
+//
+//        guard let fromVC = transitionContext.viewController(forKey: .from),
+//            let toVC = transitionContext.viewController(forKey: .to) as? DesignNavigationController else {
+//                return transitionContext.completeTransition(false)
+//        }
+//
+//        let calendarView: CalendarView = toVC.viewControllers[0].view.subviews[0] as! CalendarView
+//
+//        let containerView = transitionContext.containerView
+//        containerView.addSubview(toVC.view)
+//
+//        let snapshowView = calendarView.snapshotView(afterScreenUpdates: true)!
+//        containerView.addSubview(snapshowView)
+//
+//        snapshowView.frame.origin = CGPoint(x: 100, y: 100)
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            transitionContext.completeTransition(true)
+//        }
+//    }
+//
+//    func animationEnded(_ transitionCompleted: Bool) {
+//        print("animationEnded")
+//    }
+//
+//}
+//
+//extension DesignNavigationController: UIViewControllerTransitioningDelegate {
+//
+//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+//        return CustomPresentation(presentedViewController: presented, presenting: presenting)
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return nil // return dismissed.presentationController as? CustomPresentation
+//    }
+//
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return presented.presentationController as? CustomPresentation
+//    }
+//
+//}
+
 class DesignNavigationController: UINavigationController {
 
     let designViewController: DesignViewController
 
-    init(design: Design) {
-        designViewController = DesignViewController(design: design)
+    init(design: Design, persistentContainer: NSPersistentContainer) {
+        designViewController = DesignViewController(design: design, persistentContainer: persistentContainer)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([designViewController], animated: false)
+//        modalPresentationStyle = .custom
+//        transitioningDelegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -54,11 +134,13 @@ class DesignViewController: UIViewController {
 
     let tapGesture = UITapGestureRecognizer()
 
-    init(design: Design) {
+    init(design: Design, persistentContainer: NSPersistentContainer) {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
         self.design = editingContext.object(with: design.objectID) as! Design
-        calendarView = CalendarView(design: self.design)
+        calendarView = CalendarView(design: self.design, persistentContainer: persistentContainer)
         super.init(nibName: nil, bundle: nil)
+
+
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                            target: self,
@@ -78,7 +160,7 @@ class DesignViewController: UIViewController {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.label.text = "Exporting PDF"
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            let calendar = CalendarBook(design: self.design, size: .A6)
+            let calendar = CalendarBook(design: self.design, size: .A3)
             calendar.export(completed: { url in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)

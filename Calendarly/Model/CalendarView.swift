@@ -75,6 +75,11 @@ class CalendarView: UIView,
         return cv
     }()
 
+    let persistentContainer: NSPersistentContainer?
+
+    var managedObjectContext: NSManagedObjectContext {
+        return persistentContainer?.viewContext ?? design.managedObjectContext!
+    }
 
     let isWatermarked: Bool
 
@@ -109,8 +114,30 @@ class CalendarView: UIView,
         return UIFont(name: design.headerFontname!, size: unit * CGFloat(design.headerFontsize))!
     }
 
-    init(design: Design, isWatermarked: Bool = true, frame: CGRect = .zero, fixedMonth: Int? = nil) {
+    enum Style {
+        case month
+        case header
+        case date
+    }
+
+    func aggregatedFont(size: CGFloat, style: Style) -> UIFont {
+        switch style {
+        case .month:
+            return UIFont(name: design.monthFontname!, size: unit * size)!
+        case .header:
+            return UIFont(name: design.headerFontname!, size: unit * size)!
+        case .date:
+            return UIFont(name: design.dateFontname!, size: unit * size)!
+        }
+    }
+
+    init(design: Design,
+         persistentContainer: NSPersistentContainer? = nil,
+         isWatermarked: Bool = true,
+         frame: CGRect = .zero,
+         fixedMonth: Int? = nil) {
         self.design = design
+        self.persistentContainer = persistentContainer
         self.isWatermarked = isWatermarked
         self.fixedMonth = fixedMonth
         margins = UIEdgeInsets(top: 5, left: 3, bottom: 7, right: 3)
@@ -121,9 +148,14 @@ class CalendarView: UIView,
 
         headingContainer.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(headingContainer)
         addSubview(contentContainer)
+
+        headingContainer.addSubview(titleLabel)
+        contentContainer.addSubview(collectionView)
 
         headingContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
 
@@ -147,13 +179,9 @@ class CalendarView: UIView,
         bottomConstraints = contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
         bottomConstraints.isActive = true
 
-        headingContainer.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerXAnchor.constraint(equalTo: headingContainer.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: headingContainer.centerYAnchor).isActive = true
 
-        contentContainer.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: contentContainer.topAnchor).isActive = true
         collectionView.leftAnchor.constraint(equalTo: contentContainer.leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: contentContainer.rightAnchor).isActive = true
@@ -164,12 +192,12 @@ class CalendarView: UIView,
             contentContainer.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         }
 
-        topConstraints.constant = self.unit * margins.top
-        bottomConstraints.constant = self.unit * -margins.bottom
-        leftHeadingConstraints.constant = self.unit * margins.left
-        leftContentConstraints.constant = self.unit * margins.left
-        rightHeadingConstraints.constant = self.unit * -margins.right
-        rightContentConstraints.constant = self.unit * -margins.right
+        topConstraints.constant = unit * margins.top
+        bottomConstraints.constant = unit * -margins.bottom
+        leftHeadingConstraints.constant = unit * margins.left
+        leftContentConstraints.constant = unit * margins.left
+        rightHeadingConstraints.constant = unit * -margins.right
+        rightContentConstraints.constant = unit * -margins.right
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(contextChanged),
@@ -197,7 +225,25 @@ class CalendarView: UIView,
         if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design { self.update() }
     }
 
+    var birthdayMap = [Int: [Birthday]]()
+
     func update() {
+        let fr = NSFetchRequest<Birthday>(entityName: Birthday.self.description())
+        fr.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [
+            NSPredicate(format: "%K == %d", #keyPath(Birthday.month_), month),
+            NSPredicate(format: "%K == %d", #keyPath(Birthday.contact.month), month)
+        ])
+        let birthdaysCurrentMonth = try! managedObjectContext.fetch(fr)
+        birthdayMap = [Int: [Birthday]]()
+
+        for birthday in birthdaysCurrentMonth {
+            if birthdayMap[birthday.day] == nil {
+                birthdayMap[birthday.day] = [birthday]
+            } else {
+                birthdayMap[birthday.day]?.append(birthday)
+            }
+        }
+
         matrix = Calendar.current.dateMatrixFor(month: month, year: Int(design.year), config: design.firstDayOfWeek)
 
         // GET ARRAY OF WEEKNAME
@@ -206,12 +252,12 @@ class CalendarView: UIView,
         // TAKE FIRST CHAR OF WEENKNAME
         weekdayPrefixes = weekdayPrefixes.map { String($0[0]) }
 
-        topConstraints.constant = self.unit * self.margins.top
-        bottomConstraints.constant = self.unit * -self.margins.bottom
-        leftHeadingConstraints.constant = self.unit * self.margins.left
-        leftContentConstraints.constant = self.unit * self.margins.left
-        rightHeadingConstraints.constant = self.unit * -self.margins.right
-        rightContentConstraints.constant = self.unit * -self.margins.right
+        topConstraints.constant = unit * margins.top
+        bottomConstraints.constant = unit * -margins.bottom
+        leftHeadingConstraints.constant = unit * margins.left
+        leftContentConstraints.constant = unit * margins.left
+        rightHeadingConstraints.constant = unit * -margins.right
+        rightContentConstraints.constant = unit * -margins.right
 
         var comp = DateComponents()
         comp.year = Int(design.year)
@@ -303,13 +349,26 @@ class CalendarView: UIView,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarCollectionViewCell
         let modifiedIndexPath = indexPath.row - 7
+        
         if indexPath.row < 7 {
-            cell.set(date: weekdayPrefixes[indexPath.row], design: design, indexPath: indexPath, calendarView: self)
+            cell.set(date: weekdayPrefixes[indexPath.row], fullDate: nil, design: design, indexPath: indexPath, calendarView: self)
+            cell.birthdays([])
         } else if let i = matrix[modifiedIndexPath / 7][modifiedIndexPath % 7], i > 0 {
-            cell.set(date: "\(i)", design: design, indexPath: indexPath, calendarView: self)
+            var calendar: Calendar = Calendar.current
+            calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+
+            let fullDate = calendar.date(from: DateComponents(calendar: calendar,
+                                                              year: Int(design.year),
+                                                              month: month,
+                                                              day: i))!
+
+            cell.set(date: "\(i)", fullDate: fullDate, design: design, indexPath: indexPath, calendarView: self)
+            cell.birthdays(birthdayMap[i] ?? [])
         } else {
-            cell.set(date: "", design: design, indexPath: indexPath, calendarView: self)
+            cell.set(date: "", fullDate: nil, design: design, indexPath: indexPath, calendarView: self)
+            cell.birthdays([])
         }
+
         return cell
     }
 

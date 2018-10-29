@@ -24,76 +24,17 @@ import UIKit
 import Contacts
 import CoreData
 
-extension Notification.Name {
-    static let moveImageNotification = Notification.Name(rawValue: "moveImageNotification")
-}
-
-class ContactButton: UIButton {
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = frame.height / 2
-    }
-
-    override var intrinsicContentSize: CGSize {
-        let s = super.intrinsicContentSize
-        return CGSize(width: s.width + 24, height: s.height + 6)
-    }
-
-}
-
-class ContactCell: FRCCell<Contact> {
-
-    let profileImageView = ProfileImageView()
-
-    let nameLabel = UILabel()
-
-    let descriptionlabel = UILabel()
-
-    let button = ContactButton(type: .custom)
-
-    lazy var store = CNContactStore()
+class ContactCell: BasePersonCell<Contact> {
 
     var contact: Contact?
 
-    var persistentContainer: NSPersistentContainer?
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        selectionStyle = .none
-        backgroundColor = UIColor.boneContrastLighter
-
-        contentView.addSubview(profileImageView)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(descriptionlabel)
-        contentView.addSubview(button)
-
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didPress), for: .touchUpInside)
-        button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -18).isActive = true
-        button.backgroundColor = UIColor.boneConstrastDarker
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-
         button.setTitleColor(UIColor.complementary, for: .normal)
         button.setTitleColor(UIColor.complementary.withAlphaComponent(0.5), for: .disabled)
-
         button.setTitle("Add", for: .normal)
         button.setTitle("Added", for: .disabled)
-
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionlabel.translatesAutoresizingMaskIntoConstraints = false
-
-        profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-
-        profileImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 18).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-
-        nameLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor).isActive = true
-        nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 9).isActive = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -114,9 +55,10 @@ class ContactCell: FRCCell<Contact> {
     }
 
     override func configure(for contact: Contact) {
+        super.configure(for: contact)
         button.isEnabled = contact.birthday == nil
         self.contact = contact
-        nameLabel.text = contact.name
+        nameLabel.text = contact.birthday?.name
         profileImageView.set(contact: contact, fromStore: store)
     }
 

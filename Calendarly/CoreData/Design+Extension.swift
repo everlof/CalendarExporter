@@ -143,7 +143,8 @@ extension Design {
     func snapshot(callback: @escaping ((UIImage?) -> Void)) {
         // HTMLCalendarRenderer(calendar: HTMLCalendar(design: self)).snap(completed: callback)
         let height: CGFloat = 300
-        let view = CalendarView(design: self, frame: CGRect(origin: .zero, size: CGSize(width: height*(1/sqrt(2)), height: height)))
+        let view = CalendarView(design: self,
+                                frame: CGRect(origin: .zero, size: CGSize(width: height*(1/sqrt(2)), height: height)))
         view.layoutIfNeeded()
         callback(view.snapshot)
         // view.cleanUp()

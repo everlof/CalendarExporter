@@ -152,7 +152,10 @@ class DesignsViewController: UIViewController {
 extension DesignsViewController: DesignsCollectionViewDelegate {
 
     func present(design: Design) {
-        present(DesignNavigationController(design: design), animated: true, completion: nil)
+        present(
+            DesignNavigationController(design: design, persistentContainer: persistentContainer),
+            animated: true,
+            completion: nil)
     }
 
 }

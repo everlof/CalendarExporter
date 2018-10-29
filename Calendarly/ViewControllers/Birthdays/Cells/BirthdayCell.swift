@@ -25,51 +25,16 @@ import UIKit
 import CoreData
 import Contacts
 
-class BirthdayCell: FRCCell<Birthday> {
+class BirthdayCell: BasePersonCell<Birthday> {
 
     var birthday: Birthday?
 
-    let profileImageView = ProfileImageView()
-
-    let nameLabel = UILabel()
-
-    let button = ContactButton(type: .system)
-
-    var persistentContainer: NSPersistentContainer?
-
-    lazy var store = CNContactStore()
+    weak var presenter: UIViewController?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        selectionStyle = .none
-        backgroundColor = .boneWhiteColor
-
-        contentView.addSubview(profileImageView)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(button)
-
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didPress), for: .touchUpInside)
-        button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -18).isActive = true
-        button.backgroundColor = UIColor.boneConstrastDarker
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        button.setTitleColor(UIColor.complementary, for: .normal)
-        button.setTitleColor(UIColor.complementary.withAlphaComponent(0.5), for: .disabled)
         button.setTitle("Remove", for: .normal)
-
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-
-        profileImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 18).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-
-        nameLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor).isActive = true
-        nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 9).isActive = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -77,22 +42,46 @@ class BirthdayCell: FRCCell<Birthday> {
     }
  
     @objc func didPress() {
-        guard let objectID = self.birthday?.objectID else { return }
-        profileImageView.takeOff(with: FlyingView.contact) {
+        guard let objectID = self.birthday?.objectID else { fatalError("No `objectID` for removed birthday") }
+
+        let performDelete = {
             self.persistentContainer?.performBackgroundTask { ctx in
                 ctx.delete(ctx.object(with: objectID))
                 try? ctx.save()
             }
         }
-        button.isEnabled = false
+
+        if birthday?.source == .some(.created) {
+            guard let name = self.birthday?.name else { fatalError("No `name` for removed birthday") }
+
+            let confirmController =
+                UIAlertController(title: "Delete \(name)'s birthday?",
+                    message: "Are you sure you want to permanently remove \(name)'s birthday?",
+                    preferredStyle: .alert)
+
+            confirmController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+                self.button.isEnabled = false
+                performDelete()
+            }))
+            confirmController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            presenter?.present(confirmController, animated: true, completion: nil)
+        } else {
+            self.button.isEnabled = false
+            profileImageView.takeOff(with: FlyingView.contact) {
+                performDelete()
+            }
+        }
     }
 
     override func configure(for birthday: Birthday) {
+        super.configure(for: birthday)
         button.isEnabled = true
         self.birthday = birthday
+        nameLabel.text = birthday.name
         if let contact = birthday.contact {
             profileImageView.set(contact: contact, fromStore: store)
-            nameLabel.text = contact.name
+        } else {
+            profileImageView.setPlaceholderImage()
         }
     }
 

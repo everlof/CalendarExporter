@@ -29,16 +29,32 @@ class CalendarCollectionViewCell: UICollectionViewCell {
 
     private let dateLabel = UILabel()
 
+    private let birthdayLabel = UILabel()
+
+    var calendarView: CalendarView?
+
+    var date: Date?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        birthdayLabel.translatesAutoresizingMaskIntoConstraints = false
+
         addSubview(dateLabel)
+        addSubview(birthdayLabel)
+
         dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+
+        birthdayLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        birthdayLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 
-    func set(date: String?, design: Design, indexPath: IndexPath, calendarView: CalendarView) {
+    func set(date: String?, fullDate: Date?, design: Design, indexPath: IndexPath, calendarView: CalendarView) {
+        self.calendarView = calendarView
+        self.date = fullDate
+
         if indexPath.row < 7 {
             dateLabel.font = calendarView.aggregatedHeaderFont
             dateLabel.textColor = indexPath.row % 7 == 0 ? design.secondaryColor(for: Int(design.previewMonth)) : design.primaryColor(for: Int(design.previewMonth))
@@ -49,6 +65,19 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             dateLabel.attributedText = NSAttributedString(string: date ?? "", attributes: [
                 NSAttributedString.Key.kern: calendarView.unit * CGFloat(design.dateKerning)
             ])
+        }
+    }
+
+    func birthdays(_ birthdays: [Birthday]) {
+        birthdayLabel.isHidden = birthdays.count == 0
+        birthdayLabel.font = calendarView?.aggregatedFont(size: 1.0, style: .date)
+
+        if let birthday = birthdays.first {
+            if let date = date, case .years(let year) = birthday.birthdayEvent.nbrYearsTurned(today: date) {
+                birthdayLabel.text = "\(birthday.name), \(year)"
+            } else {
+                birthdayLabel.text = birthday.name
+            }
         }
     }
 
