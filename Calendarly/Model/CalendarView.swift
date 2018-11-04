@@ -1,6 +1,40 @@
 import UIKit
 import CoreData
 
+class ScrollableCalendarView: UIScrollView,
+    UIScrollViewDelegate {
+
+    let calendarView: CalendarView
+
+    init(calendarView: CalendarView) {
+        self.calendarView = calendarView
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        addSubview(calendarView)
+
+        let zoomFactor: CGFloat = 4
+        calendarView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: zoomFactor).isActive = true
+        calendarView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: zoomFactor).isActive = true
+
+        maximumZoomScale = zoomFactor
+        minimumZoomScale = 1/zoomFactor
+
+        delegate = self
+        zoomScale = 1/zoomFactor
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - UIScrollViewDelegate
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return calendarView
+    }
+
+}
+
 class CalendarView: UIView,
     UICollectionViewDelegate,
     UICollectionViewDataSource,

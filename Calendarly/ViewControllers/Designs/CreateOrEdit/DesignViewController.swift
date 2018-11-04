@@ -2,84 +2,6 @@ import UIKit
 import CoreData
 import MBProgressHUD
 
-//class CustomPresentation: UIPresentationController, UIViewControllerAnimatedTransitioning {
-//
-//    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-//        return 5.0
-//    }
-//
-//    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-//        ((transitionContext.viewController(forKey: .from) as! StartViewController).viewControllers!.first! as! DesignsNavigationController).viewControllers
-//        guard
-//            let fromVC = transitionContext.viewController(forKey: .from) as? StartViewController,
-//            let navigationController = fromVC.viewControllers?.first as? DesignsNavigationController,
-//            let designsViewController = navigationController.viewControllers.first,
-//            let toVC = transitionContext.viewController(forKey: .to) as? DesignNavigationController,
-//            let fromView = fromVC.view,
-//            let toView = toVC.view
-//        else {
-//            fatalError("Not enough data.")
-//        }
-//
-//        let containerView = transitionContext.containerView
-//        let duration = transitionDuration(using: transitionContext)
-//
-//        let calendarView: CalendarView = toVC.viewControllers[0].view.subviews[0] as! CalendarView
-//        calendarView.layoutIfNeeded()
-//        let image = calendarView.snapshot
-//        let imageView = UIImageView(image: image)
-//
-//        containerView.addSubview(imageView)
-//        imageView.frame.origin.x = 100
-//        imageView.frame.origin.y = 100
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            containerView.addSubview(toVC.view)
-//            transitionContext.completeTransition(true)
-//        }
-//
-//        guard let fromVC = transitionContext.viewController(forKey: .from),
-//            let toVC = transitionContext.viewController(forKey: .to) as? DesignNavigationController else {
-//                return transitionContext.completeTransition(false)
-//        }
-//
-//        let calendarView: CalendarView = toVC.viewControllers[0].view.subviews[0] as! CalendarView
-//
-//        let containerView = transitionContext.containerView
-//        containerView.addSubview(toVC.view)
-//
-//        let snapshowView = calendarView.snapshotView(afterScreenUpdates: true)!
-//        containerView.addSubview(snapshowView)
-//
-//        snapshowView.frame.origin = CGPoint(x: 100, y: 100)
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            transitionContext.completeTransition(true)
-//        }
-//    }
-//
-//    func animationEnded(_ transitionCompleted: Bool) {
-//        print("animationEnded")
-//    }
-//
-//}
-//
-//extension DesignNavigationController: UIViewControllerTransitioningDelegate {
-//
-//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-//        return CustomPresentation(presentedViewController: presented, presenting: presenting)
-//    }
-//
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return nil // return dismissed.presentationController as? CustomPresentation
-//    }
-//
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return presented.presentationController as? CustomPresentation
-//    }
-//
-//}
-
 class DesignNavigationController: UINavigationController {
 
     let designViewController: DesignViewController
@@ -88,8 +10,6 @@ class DesignNavigationController: UINavigationController {
         designViewController = DesignViewController(design: design, persistentContainer: persistentContainer)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([designViewController], animated: false)
-//        modalPresentationStyle = .custom
-//        transitioningDelegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -101,6 +21,8 @@ class DesignNavigationController: UINavigationController {
 class DesignViewController: UIViewController {
 
     let calendarView: CalendarView
+
+    let scrollableCalendarView: ScrollableCalendarView
 
     lazy var styleController: HTMLCalendarStylerNavigationController = {
         return HTMLCalendarStylerNavigationController(design: self.design, editingContext: self.editingContext, calendarView: self.calendarView)
@@ -138,6 +60,7 @@ class DesignViewController: UIViewController {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
         self.design = editingContext.object(with: design.objectID) as! Design
         calendarView = CalendarView(design: self.design, persistentContainer: persistentContainer)
+        scrollableCalendarView = ScrollableCalendarView(calendarView: calendarView)
         super.init(nibName: nil, bundle: nil)
 
 
@@ -225,7 +148,7 @@ class DesignViewController: UIViewController {
 
         view.backgroundColor = .boneWhiteColor
 
-        view.addSubview(calendarView)
+        view.addSubview(scrollableCalendarView)
 
         addChild(styleController)
         view.addSubview(styleController.view)
@@ -237,20 +160,20 @@ class DesignViewController: UIViewController {
         styleController.view.translatesAutoresizingMaskIntoConstraints = false
 
         portraitConstraints.append(contentsOf: [
-            calendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
-            calendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85 * sqrt(2)),
+            scrollableCalendarView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
+            scrollableCalendarView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85 * sqrt(2)),
 
-            calendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            calendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            scrollableCalendarView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            scrollableCalendarView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         landscapeConstraints.append(contentsOf: [
-            calendarView.widthAnchor.constraint(equalTo: calendarView.heightAnchor, multiplier: 1/sqrt(2)),
-            calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            calendarView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollableCalendarView.widthAnchor.constraint(equalTo: scrollableCalendarView.heightAnchor, multiplier: 1/sqrt(2)),
+            scrollableCalendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollableCalendarView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            scrollableCalendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            calendarView.rightAnchor.constraint(equalTo: separatorView.leftAnchor),
+            scrollableCalendarView.rightAnchor.constraint(equalTo: separatorView.leftAnchor),
             separatorView.topAnchor.constraint(equalTo: view.topAnchor),
             separatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
