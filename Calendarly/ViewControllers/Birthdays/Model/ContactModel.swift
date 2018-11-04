@@ -77,13 +77,13 @@ class ContactModel {
 
                 ctx.performAndWait {
                     if case let localContact?? = try? ctx.fetch(fetchRequest).first {
-//                        print("Updating \(self.contactFormatter.string(from: contact)), identifier=\(contact.identifier)")
+                        print("Updating \(self.contactFormatter.string(from: contact)), identifier=\(contact.identifier)")
                         localContact.name = self.contactFormatter.string(from: contact)
                         localContact.day = Int16(contact.birthday?.day ?? 0)
                         localContact.month = Int16(contact.birthday?.month ?? 0)
                         localContact.year = Int16(contact.birthday?.year ?? 0)
                     } else {
-//                        print("Inserted \(self.contactFormatter.string(from: contact)), identifier=\(contact.identifier)")
+                        print("Inserted \(self.contactFormatter.string(from: contact)), identifier=\(contact.identifier)")
                         let localContact = NSEntityDescription.insertNewObject(forEntityName: Contact.self.description(), into: ctx) as! Contact
                         localContact.name = self.contactFormatter.string(from: contact)
                         localContact.day = Int16(contact.birthday?.day ?? 0)

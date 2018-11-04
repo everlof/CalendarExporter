@@ -170,7 +170,6 @@ class DesignViewController: UIViewController {
     }
 
     @objc func didPressSave() {
-//        calendarView.cleanUp()
         try? editingContext.save()
         try? editingContext.parent?.save()
         dismiss(animated: true, completion: nil)

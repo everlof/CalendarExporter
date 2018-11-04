@@ -84,8 +84,8 @@ class BirthdaysViewController: UIViewController {
         } catch { }
     }
 
-    lazy var bulletinManager: BLTNItemManager = {
-        let rootPage = FeedbackPageBLTNItem(title: "Add a birthday!")
+    func bulletinManager() -> BLTNItemManager {
+        let rootPage = CakeViewBLTNItem(title: "Add a birthday!")
         let nameBirthdayPage = TextFieldBulletinPage(title: "Who's birthday?")
         let selectDatePage = DatePickerBLTItem(title: "And when's this birthday?")
         var name: String!
@@ -94,7 +94,7 @@ class BirthdaysViewController: UIViewController {
         manager.backgroundViewStyle = .blurredDark
 
         // === FIRST ===
-        rootPage.image = UIImage(named: "ic_fireworks")
+//        rootPage.image = UIImage(named: "ic_birthdaycake")
 //        rootPage.descriptionText = "Add a birthday that will be shown in your calendars"
         rootPage.actionButtonTitle = "Let's go!"
         rootPage.actionHandler = { actionItem in
@@ -154,10 +154,10 @@ class BirthdaysViewController: UIViewController {
         }
 
         return manager
-    }()
+    }
 
     @objc func didPressAdd() {
-        bulletinManager.showBulletin(above: self, animated: true, completion: nil)
+        bulletinManager().showBulletin(above: self, animated: true, completion: nil)
     }
 
     override func viewDidLoad() {

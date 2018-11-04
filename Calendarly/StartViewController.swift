@@ -9,11 +9,21 @@ class StartViewController: UITabBarController {
     let createButton = UIButton(type: .system)
 
     lazy var designViewController: DesignsNavigationController = {
-        return DesignsNavigationController(persistentContainer: self.persistentContainer)
+        let designs = DesignsNavigationController(persistentContainer: self.persistentContainer)
+        designs.tabBarItem = UITabBarItem(title: "Designs", image: UIImage(named: "ic_tabbar_calendar"), selectedImage: nil)
+        return designs
     }()
 
     lazy var birthdaysViewController: BirthdaysNavigationController = {
-        return BirthdaysNavigationController(persistentContainer: self.persistentContainer)
+        let birthdays = BirthdaysNavigationController(persistentContainer: self.persistentContainer)
+        birthdays.tabBarItem = UITabBarItem(title: "Birthdays", image: UIImage(named: "ic_tabbar_birthday"), selectedImage: nil)
+        return birthdays
+    }()
+
+    lazy var eventsViewController: EventsNavigationController = {
+        let events = EventsNavigationController(persistentContainer: self.persistentContainer)
+        events.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "ic_tabbar_events"), selectedImage: nil)
+        return events
     }()
 
     let persistentContainer: NSPersistentContainer
@@ -23,7 +33,8 @@ class StartViewController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
         setViewControllers([
             designViewController,
-            birthdaysViewController
+            birthdaysViewController,
+            eventsViewController
         ], animated: false)
     }
     

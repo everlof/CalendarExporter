@@ -1,0 +1,37 @@
+{
+  "activeCanvasInfo" : 3,
+  "canvasInfos" : [
+    {
+      "presentationOptions" : {
+        "canvasScale" : 0,
+        "initialPlaybackDelay" : 0.5,
+        "cursor" : 1
+      },
+      "canvasSize" : "{128, 128}",
+      "name" : "Champagne",
+      "timelineManager" : {
+        "pointsPerSecond" : 260
+      },
+      "canvasID" : 2,
+      "uuid" : "4C6E5273-460E-4343-A693-D4293E6D5B70"
+    },
+    {
+      "presentationOptions" : {
+        "canvasScale" : 0,
+        "initialPlaybackDelay" : 0.5,
+        "cursor" : 1
+      },
+      "canvasSize" : "{128, 128}",
+      "name" : "Champage_NOFILL",
+      "timelineManager" : {
+        "pointsPerSecond" : 200
+      },
+      "canvasID" : 3,
+      "uuid" : "DABD9A92-4C18-49DE-B838-CE843E330BC7"
+    }
+  ],
+  "createdWithVersion" : "40",
+  "lastSavedWithVersion" : "40",
+  "creationDate" : "2018-11-01T16:22:19+01:00",
+  "uuid" : "17636ACC-FE95-4493-8378-756945EE243A"
+}

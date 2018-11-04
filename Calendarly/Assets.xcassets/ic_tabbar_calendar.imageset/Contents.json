@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "005-calendar.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "004-fireworks.png",
+      "filename" : "005-calendar-1.png",
       "scale" : "2x"
     },
     {
@@ -17,5 +18,8 @@
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }

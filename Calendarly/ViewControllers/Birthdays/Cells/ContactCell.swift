@@ -58,7 +58,7 @@ class ContactCell: BasePersonCell<Contact> {
         super.configure(for: contact)
         button.isEnabled = contact.birthday == nil
         self.contact = contact
-        nameLabel.text = contact.birthday?.name
+        nameLabel.text = contact.name
         profileImageView.set(contact: contact, fromStore: store)
     }
 

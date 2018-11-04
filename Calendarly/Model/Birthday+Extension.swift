@@ -63,7 +63,7 @@ extension Birthday {
     }
 
     var name: String {
-        if let name = name_ {
+        if let name = name_, !name.isEmpty {
             return name
         }
 
