@@ -36,6 +36,7 @@
 		C41B163A218EF694001C3E1E /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C41B161C218EF677001C3E1E /* Oswald-Medium.ttf */; };
 		C41B163B218EF694001C3E1E /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C41B1624218EF678001C3E1E /* Oswald-Regular.ttf */; };
 		C41B163C218EF694001C3E1E /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C41B161B218EF677001C3E1E /* Oswald-SemiBold.ttf */; };
+		C41B163E218F6B06001C3E1E /* Event+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B163D218F6B06001C3E1E /* Event+Extension.swift */; };
 		C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */; };
 		C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF792178779F00851939 /* ColorPickerViewController.swift */; };
 		C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */; };
@@ -50,10 +51,9 @@
 		C445EF9D217B41D700851939 /* BirthdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9C217B41D700851939 /* BirthdayCell.swift */; };
 		C445EF9F217B656900851939 /* BirthdaysPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */; };
 		C445EFA2217B846900851939 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA1217B846900851939 /* ProfileImageView.swift */; };
-		C445EFA4217DB86300851939 /* BasePersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA3217DB86300851939 /* BasePersonCell.swift */; };
 		C445EFA6217DB8C500851939 /* ContactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA5217DB8C500851939 /* ContactButton.swift */; };
 		C445EFA82183054400851939 /* Birthday+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA72183054400851939 /* Birthday+Extension.swift */; };
-		C445EFAA218305A600851939 /* BirthdayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA9218305A600851939 /* BirthdayEvent.swift */; };
+		C445EFAA218305A600851939 /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFA9218305A600851939 /* CalendarEvent.swift */; };
 		C445EFAC2184D8DA00851939 /* Contact+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFAB2184D8DA00851939 /* Contact+Extension.swift */; };
 		C445EFB021871EFE00851939 /* DatePickerBLTItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */; };
 		C445EFB22188691D00851939 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EFB12188691D00851939 /* EventsViewController.swift */; };
@@ -75,7 +75,7 @@
 		C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */; };
 		C4C086E12152273D0019F6B8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086E02152273D0019F6B8 /* String+Extension.swift */; };
 		C4C086ED215229B80019F6B8 /* CGSize+PaperSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */; };
-		C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */; };
+		C4C086F221527D610019F6B8 /* CalendarStylerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F121527D610019F6B8 /* CalendarStylerViewController.swift */; };
 		C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */; };
 		C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */; };
 		C4C086FD215A21680019F6B8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */; };
@@ -133,6 +133,7 @@
 		C41B1622218EF678001C3E1E /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
 		C41B1623218EF678001C3E1E /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
 		C41B1624218EF678001C3E1E /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		C41B163D218F6B06001C3E1E /* Event+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extension.swift"; sourceTree = "<group>"; };
 		C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStylePickerViewController.swift; sourceTree = "<group>"; };
 		C445EF792178779F00851939 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -147,10 +148,9 @@
 		C445EF9C217B41D700851939 /* BirthdayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayCell.swift; sourceTree = "<group>"; };
 		C445EF9E217B656900851939 /* BirthdaysPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdaysPageViewController.swift; sourceTree = "<group>"; };
 		C445EFA1217B846900851939 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
-		C445EFA3217DB86300851939 /* BasePersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePersonCell.swift; sourceTree = "<group>"; };
 		C445EFA5217DB8C500851939 /* ContactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactButton.swift; sourceTree = "<group>"; };
 		C445EFA72183054400851939 /* Birthday+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Birthday+Extension.swift"; sourceTree = "<group>"; };
-		C445EFA9218305A600851939 /* BirthdayEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayEvent.swift; sourceTree = "<group>"; };
+		C445EFA9218305A600851939 /* CalendarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
 		C445EFAB2184D8DA00851939 /* Contact+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Extension.swift"; sourceTree = "<group>"; };
 		C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerBLTItem.swift; sourceTree = "<group>"; };
 		C445EFB12188691D00851939 /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
@@ -176,7 +176,7 @@
 		C4C086DE215226CA0019F6B8 /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		C4C086E02152273D0019F6B8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		C4C086EC215229B80019F6B8 /* CGSize+PaperSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+PaperSizes.swift"; sourceTree = "<group>"; };
-		C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLCalendarStylerViewController.swift; sourceTree = "<group>"; };
+		C4C086F121527D610019F6B8 /* CalendarStylerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarStylerViewController.swift; sourceTree = "<group>"; };
 		C4C086F421529E0C0019F6B8 /* LocalePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalePickerViewController.swift; sourceTree = "<group>"; };
 		C4C086FA215A1D330019F6B8 /* Locale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Extension.swift"; sourceTree = "<group>"; };
 		C4C086FC215A21680019F6B8 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -235,7 +235,7 @@
 			children = (
 				C4C1A107216A2457001CDEF8 /* Cells */,
 				C4C086B8214E4BA80019F6B8 /* DesignViewController.swift */,
-				C4C086F121527D610019F6B8 /* HTMLCalendarStylerViewController.swift */,
+				C4C086F121527D610019F6B8 /* CalendarStylerViewController.swift */,
 			);
 			path = CreateOrEdit;
 			sourceTree = "<group>";
@@ -345,7 +345,6 @@
 				C445EFA0217B844B00851939 /* Views */,
 				C445EF8B217A410C00851939 /* ContactCell.swift */,
 				C445EF9C217B41D700851939 /* BirthdayCell.swift */,
-				C445EFA3217DB86300851939 /* BasePersonCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -443,11 +442,12 @@
 		C4C086E2215227760019F6B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C445EFAB2184D8DA00851939 /* Contact+Extension.swift */,
 				C445EFA72183054400851939 /* Birthday+Extension.swift */,
-				C445EFA9218305A600851939 /* BirthdayEvent.swift */,
+				C41B163D218F6B06001C3E1E /* Event+Extension.swift */,
+				C445EFA9218305A600851939 /* CalendarEvent.swift */,
 				C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */,
 				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
-				C445EFAB2184D8DA00851939 /* Contact+Extension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -701,16 +701,17 @@
 				C4C1A0CF21663C64001CDEF8 /* FeedbackPageBLTNItem.swift in Sources */,
 				C445EF9D217B41D700851939 /* BirthdayCell.swift in Sources */,
 				C445EF9A217B413C00851939 /* BirthdayListViewController.swift in Sources */,
-				C4C086F221527D610019F6B8 /* HTMLCalendarStylerViewController.swift in Sources */,
+				C4C086F221527D610019F6B8 /* CalendarStylerViewController.swift in Sources */,
 				C445EF8C217A410C00851939 /* ContactCell.swift in Sources */,
 				C445EF9F217B656900851939 /* BirthdaysPageViewController.swift in Sources */,
+				C41B163E218F6B06001C3E1E /* Event+Extension.swift in Sources */,
 				C46B63CA215BAF50009EB4C4 /* FontPickerViewController.swift in Sources */,
 				C41B15FD218D9263001C3E1E /* ChampagneView.swift in Sources */,
 				C445EF8F217AF92900851939 /* FetchedResultController.swift in Sources */,
 				C46B63CC215BDBED009EB4C4 /* StartViewController.swift in Sources */,
 				C445EFEE218A251100851939 /* CakeViewBLTNItem.swift in Sources */,
 				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
-				C445EFAA218305A600851939 /* BirthdayEvent.swift in Sources */,
+				C445EFAA218305A600851939 /* CalendarEvent.swift in Sources */,
 				C41B15FF218D92AB001C3E1E /* ChampagneViewBLTNItem.swift in Sources */,
 				C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
@@ -725,7 +726,6 @@
 				C4C1A0D121663CCF001CDEF8 /* SelectionFeedbackGenerator.swift in Sources */,
 				C445EF842179C3D300851939 /* BirthdaysViewController.swift in Sources */,
 				C445EFA6217DB8C500851939 /* ContactButton.swift in Sources */,
-				C445EFA4217DB86300851939 /* BasePersonCell.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
 				C445EF94217B1D8E00851939 /* CAAnimation+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,

@@ -29,8 +29,8 @@ class BirthdaysNavigationController: UINavigationController {
 
     let birthdayViewController: BirthdaysViewController
 
-    init(persistentContainer: NSPersistentContainer) {
-        birthdayViewController = BirthdaysViewController(persistentContainer: persistentContainer)
+    init(context: NSManagedObjectContext) {
+        birthdayViewController = BirthdaysViewController(style: .standalone, context: context)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([birthdayViewController], animated: false)
     }
@@ -43,22 +43,30 @@ class BirthdaysNavigationController: UINavigationController {
 
 class BirthdaysViewController: UIViewController {
 
+    enum Style {
+        case standalone
+        case inDesign(Design)
+    }
+
+    let style: Style
+
     let segmentedControl: UISegmentedControl
 
-    let persistentContainer: NSPersistentContainer
+    let context: NSManagedObjectContext
 
     let pageViewController: BirthdaysPageViewController
 
     let containerView = UIView()
 
-    init(persistentContainer: NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
+    init(style: Style, context: NSManagedObjectContext) {
+        self.style = style
+        self.context = context
         segmentedControl = UISegmentedControl(items: [
-            "Active",
+            "Calendarly",
             "Contacts",
             "Facebook"
         ])
-        self.pageViewController = BirthdaysPageViewController(persistentContainer: persistentContainer, segmentedControl: segmentedControl)
+        self.pageViewController = BirthdaysPageViewController(style: style, context: context, segmentedControl: segmentedControl)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -73,14 +81,20 @@ class BirthdaysViewController: UIViewController {
     func updateTitles() {
         let nbrActive = NSFetchRequest<Birthday>(entityName: Birthday.self.description())
         do {
-            let count = try persistentContainer.viewContext.count(for: nbrActive)
-            segmentedControl.setTitle("Active (\(count))", forSegmentAt: 0)
+            let count = try context.count(for: nbrActive)
+            segmentedControl.setTitle("Calendarly (\(count))", forSegmentAt: 0)
         } catch { }
 
         let nbrContacts = NSFetchRequest<Contact>(entityName: Contact.self.description())
         do {
-            let count = try persistentContainer.viewContext.count(for: nbrContacts)
+            let count = try context.count(for: nbrContacts)
             segmentedControl.setTitle("Contacts (\(count))", forSegmentAt: 1)
+        } catch { }
+
+        let nbrFacebook = NSFetchRequest<Contact>(entityName: FacebookFriend.self.description())
+        do {
+            let count = try context.count(for: nbrFacebook)
+            segmentedControl.setTitle("Facebook (\(count))", forSegmentAt: 2)
         } catch { }
     }
 
@@ -128,8 +142,8 @@ class BirthdaysViewController: UIViewController {
         selectDatePage.requiresCloseButton = false
         selectDatePage.actionButtonTitle = "Done"
         selectDatePage.actionHandler = { actionItem in
-            self.persistentContainer.performBackgroundTask({ ctx in
-                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: ctx) as! Birthday
+            self.context.performAndWait {
+                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: self.context) as! Birthday
                 birthday.name_ = name.replacingOccurrences(of: " ", with: "")
 
                 let group = DispatchGroup()
@@ -144,8 +158,8 @@ class BirthdaysViewController: UIViewController {
                 birthday.year_  = Int16(comp.year ?? 0)
                 birthday.month_ = Int16(comp.month ?? 1)
                 birthday.day_ = Int16(comp.day ?? 1)
-                try? ctx.save()
-            })
+                try? self.context.save()
+            }
             manager.dismissBulletin(animated: true)
         }
         selectDatePage.alternativeButtonTitle = "Cancel"
@@ -173,6 +187,7 @@ class BirthdaysViewController: UIViewController {
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
 
+        view.backgroundColor = UIColor.boneWhiteColor
         view.addSubview(segmentedControl)
         view.addSubview(containerView)
 
@@ -201,13 +216,7 @@ class BirthdaysViewController: UIViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(contextChanged),
                                                name: .NSManagedObjectContextObjectsDidChange,
-                                               object: persistentContainer.viewContext)
-
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(got(notification:)),
-//                                               name: .moveImageNotification,
-//                                               object: nil)
-
+                                               object: context)
 
         land(with: FlyingView.active, findLandingpoint: { () -> CGPoint in
             let segmentWidth = self.segmentedControl.frame.width / CGFloat(self.segmentedControl.numberOfSegments)

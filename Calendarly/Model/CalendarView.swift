@@ -1,6 +1,10 @@
 import UIKit
 import CoreData
 
+protocol CalendarEventProvider {
+    var calendarEvent: CalendarEvent { get }
+}
+
 class ScrollableCalendarView: UIScrollView,
     UIScrollViewDelegate {
 
@@ -259,24 +263,36 @@ class CalendarView: UIView,
         if let _ = updates.first(where: { $0.objectID == self.design.objectID }) as? Design { self.update() }
     }
 
-    var birthdayMap = [Int: [Birthday]]()
+    var eventMap = [Int: [CalendarEvent]]()
 
-    func update() {
-        let fr = NSFetchRequest<Birthday>(entityName: Birthday.self.description())
-        fr.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [
-            NSPredicate(format: "%K == %d", #keyPath(Birthday.month_), month),
-            NSPredicate(format: "%K == %d", #keyPath(Birthday.contact.month), month)
-        ])
-        let birthdaysCurrentMonth = try! managedObjectContext.fetch(fr)
-        birthdayMap = [Int: [Birthday]]()
+    func setupEventMap() {
+        eventMap = [Int: [CalendarEvent]]()
 
-        for birthday in birthdaysCurrentMonth {
-            if birthdayMap[birthday.day] == nil {
-                birthdayMap[birthday.day] = [birthday]
+        let addToMap: ((CalendarEventProvider) -> Void) = { provider in
+            let event = provider.calendarEvent
+            guard event.month == self.month else { return }
+            if self.eventMap[event.day] == nil {
+                self.eventMap[event.day] = [event]
             } else {
-                birthdayMap[birthday.day]?.append(birthday)
+                self.eventMap[event.day]?.append(event)
             }
         }
+
+        if let contacts = design.contacts?.allObjects as? [Contact] {
+            contacts.forEach { addToMap($0) }
+        }
+
+        if let birthdays = design.birthdays?.allObjects as? [Birthday] {
+            birthdays.forEach { addToMap($0) }
+        }
+
+        if let event = design.events?.allObjects as? [Event] {
+            print(event)
+        }
+    }
+
+    func update() {
+        setupEventMap()
 
         matrix = Calendar.current.dateMatrixFor(month: month, year: Int(design.year), config: design.firstDayOfWeek)
 
@@ -386,7 +402,7 @@ class CalendarView: UIView,
         
         if indexPath.row < 7 {
             cell.set(date: weekdayPrefixes[indexPath.row], fullDate: nil, design: design, indexPath: indexPath, calendarView: self)
-            cell.birthdays([])
+            cell.event([])
         } else if let i = matrix[modifiedIndexPath / 7][modifiedIndexPath % 7], i > 0 {
             var calendar: Calendar = Calendar.current
             calendar.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -397,10 +413,10 @@ class CalendarView: UIView,
                                                               day: i))!
 
             cell.set(date: "\(i)", fullDate: fullDate, design: design, indexPath: indexPath, calendarView: self)
-            cell.birthdays(birthdayMap[i] ?? [])
+            cell.event(eventMap[i] ?? [])
         } else {
             cell.set(date: "", fullDate: nil, design: design, indexPath: indexPath, calendarView: self)
-            cell.birthdays([])
+            cell.event([])
         }
 
         return cell

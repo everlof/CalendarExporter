@@ -24,8 +24,8 @@ class DesignViewController: UIViewController {
 
     let scrollableCalendarView: ScrollableCalendarView
 
-    lazy var styleController: HTMLCalendarStylerNavigationController = {
-        return HTMLCalendarStylerNavigationController(design: self.design, editingContext: self.editingContext, calendarView: self.calendarView)
+    lazy var styleController: CalendarStylerNavigationController = {
+        return CalendarStylerNavigationController(design: self.design, editingContext: self.editingContext, calendarView: self.calendarView)
     }()
 
     let tiltToPreviewView = UIStackView()

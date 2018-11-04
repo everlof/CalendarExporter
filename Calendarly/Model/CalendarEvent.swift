@@ -22,12 +22,16 @@
 
 import Foundation
 
-struct BirthdayEvent: Codable {
+struct CalendarEvent: Codable {
 
-    enum YearsTurned {
+    enum YearsSinceFirst {
         case unknown
         case years(Int)
     }
+
+    let text: String
+
+    let reoccurring: Bool
 
     let year: Int?
 
@@ -35,7 +39,7 @@ struct BirthdayEvent: Codable {
 
     let day: Int
 
-    func daysUntilBirthday(today _today: Date = Date()) -> Int {
+    func daysUntilEvent(today _today: Date = Date()) -> Int {
         var calendar: Calendar = Calendar.current
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
 
@@ -71,7 +75,7 @@ struct BirthdayEvent: Codable {
         }
     }
 
-    func nbrYearsTurned(today: Date = Date()) -> YearsTurned {
+    func yearsSince(today: Date = Date()) -> YearsSinceFirst {
         let calendar: Calendar = Calendar.current
 
         guard let year = year else { return .unknown }
@@ -103,9 +107,9 @@ struct BirthdayEvent: Codable {
 
 }
 
-extension BirthdayEvent.YearsTurned: Equatable {
+extension CalendarEvent.YearsSinceFirst: Equatable {
 
-    static func == (lhs: BirthdayEvent.YearsTurned, rhs: BirthdayEvent.YearsTurned) -> Bool {
+    static func == (lhs: CalendarEvent.YearsSinceFirst, rhs: CalendarEvent.YearsSinceFirst) -> Bool {
         switch (lhs, rhs) {
         case (.unknown, .unknown):
             return true
@@ -118,12 +122,12 @@ extension BirthdayEvent.YearsTurned: Equatable {
 
 }
 
-extension BirthdayEvent: CustomStringConvertible {
+extension CalendarEvent: CustomStringConvertible {
 
     var description: String {
-        switch nbrYearsTurned() {
+        switch yearsSince() {
         case .years(let years):
-            let days = daysUntilBirthday()
+            let days = daysUntilEvent()
             switch days {
             case 0:
                 return "Turns \(years) today!"
@@ -133,7 +137,7 @@ extension BirthdayEvent: CustomStringConvertible {
                 return "Turns \(years) in \(days) days."
             }
         case .unknown:
-            let days = daysUntilBirthday()
+            let days = daysUntilEvent()
             switch days {
             case 0:
                 return "Birthday today!"

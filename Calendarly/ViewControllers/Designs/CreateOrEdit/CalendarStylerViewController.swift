@@ -3,12 +3,12 @@ import CoreData
 import MBProgressHUD
 import PickColor
 
-class HTMLCalendarStylerNavigationController: UINavigationController {
+class CalendarStylerNavigationController: UINavigationController {
 
-    let viewController: HTMLCalendarStylerViewController
+    let viewController: CalendarStylerViewController
 
     init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
-        viewController = HTMLCalendarStylerViewController(design: design, editingContext: editingContext, calendarView: calendarView)
+        viewController = CalendarStylerViewController(design: design, editingContext: editingContext, calendarView: calendarView)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([viewController], animated: false)
     }
@@ -19,7 +19,7 @@ class HTMLCalendarStylerNavigationController: UINavigationController {
 
 }
 
-class HTMLCalendarStylerViewController: UIViewController,
+class CalendarStylerViewController: UIViewController,
     UITableViewDataSource,
     UITableViewDelegate,
     UITextFieldDelegate {
@@ -35,6 +35,8 @@ class HTMLCalendarStylerViewController: UIViewController,
         case sampleMonth
         case primaryColor
         case secondaryColor
+        case birthdays
+        case events
     }
 
     enum TitleRow: Int {
@@ -223,6 +225,16 @@ class HTMLCalendarStylerViewController: UIViewController,
         }
 
         if let section = Section(rawValue: indexPath.section), section == .general,
+            let row = GeneralRow(rawValue: indexPath.row), row == .birthdays {
+            navigationController?.pushViewController(BirthdaysViewController(style: .inDesign(self.design), context: editingContext), animated: true)
+        }
+
+        if let section = Section(rawValue: indexPath.section), section == .general,
+            let row = GeneralRow(rawValue: indexPath.row), row == .events {
+            navigationController?.pushViewController(EventsViewController(context: editingContext), animated: true)
+        }
+
+        if let section = Section(rawValue: indexPath.section), section == .general,
             let row = GeneralRow(rawValue: indexPath.row), row == .primaryColor {
             let colorPicker = ColorPickerViewController { color in
                 if var colors = self.design.primaryColors as? [Int: UIColor] {
@@ -291,6 +303,10 @@ class HTMLCalendarStylerViewController: UIViewController,
                 return primaryColorCell
             case .secondaryColor:
                 return secondaryColorCell
+            case .birthdays:
+                return birthdaysCell
+            case .events:
+                return eventsCell
             }
         case .title:
             switch TitleRow(rawValue: indexPath.row)! {
@@ -604,6 +620,22 @@ class HTMLCalendarStylerViewController: UIViewController,
         view.backgroundColor = (design.secondaryColors as? [Int: UIColor])?[Int(design.previewMonth)] ?? UIColor.darkGray
         view.layer.borderColor = UIColor.lightGray.cgColor
         cell.accessoryView = view
+        return cell
+    }()
+
+    // MARK: - Birthdays cell
+
+    lazy var birthdaysCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Birthdays"
+        return cell
+    }()
+
+    // MARK: - Events cell
+
+    lazy var eventsCell: UITableViewCell = {
+        let cell = UITableViewCell(frame: .zero)
+        cell.textLabel?.text = "Events"
         return cell
     }()
 

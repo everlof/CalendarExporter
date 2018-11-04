@@ -29,19 +29,22 @@ class BirthdayListViewController: PageViewControllerChild,
     UITableViewDelegate,
     DZNEmptyDataSetDelegate,
     DZNEmptyDataSetSource {
+
+    let style: BirthdaysViewController.Style
     
     lazy var tableView = UITableView()
 
     lazy var store = CNContactStore()
 
-    let persistentContainer: NSPersistentContainer
+    let context: NSManagedObjectContext
 
     var frc: NSFetchedResultsController<Birthday>!
 
     var frcDelegate: FetchedResultsControllerDelegate<Birthday, BirthdayCell>!
 
-    init(index: Int, persistentContainer: NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
+    init(style: BirthdaysViewController.Style, index: Int, context: NSManagedObjectContext) {
+        self.style = style
+        self.context = context
         super.init(index: index)
     }
 
@@ -73,19 +76,18 @@ class BirthdayListViewController: PageViewControllerChild,
 
         let fr = NSFetchRequest<Birthday>(entityName: Birthday.self.description())
         fr.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Birthday.contact?.name, ascending: true)
+            NSSortDescriptor(keyPath: \Birthday.name_, ascending: true)
         ]
 
         frc = NSFetchedResultsController(fetchRequest: fr,
-                                         managedObjectContext: persistentContainer.viewContext,
+                                         managedObjectContext: context,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
 
         frcDelegate = FetchedResultsControllerDelegate(controller: frc, tableView: tableView, delegate: self)
         frcDelegate.cellHeight = 80
         frcDelegate.preConfigureCellClosure = { cell, _ in
-            cell.presenter = self
-            cell.persistentContainer = self.persistentContainer
+            cell.style = self.style
         }
 
         do {
@@ -95,65 +97,45 @@ class BirthdayListViewController: PageViewControllerChild,
         }
     }
 
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized:
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        switch style {
+        case .inDesign:
+            return indexPath
+        case .standalone:
             return nil
-        case .denied:
-            return NSAttributedString(string: "No access", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
-        case .notDetermined:
-            return NSAttributedString(string: "Grant access", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
-        case .restricted:
-            return NSAttributedString(string: "Contacts restricted", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
         }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if case let .inDesign(design) = style {
+            let birthday = frc.object(at: indexPath)
+            if birthday.designs?.contains(design) == .some(true) {
+                birthday.removeFromDesigns(design)
+            } else {
+                birthday.addToDesigns(design)
+            }
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        return NSAttributedString(string: "Add a birthday", attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
+        ])
     }
 
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized:
-            return nil
-        case .denied:
-            return NSAttributedString(string: "It looks like you've denied access to contacts. If you want to use birthdays from your contacts, press the button below to go to settings.", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
-        case .notDetermined:
-            return NSAttributedString(string: "You've not yet granted access, press the button below to grant access.", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
-        case .restricted:
-            return NSAttributedString(string: "It appears that there are some restrictions on this device that that makes this app unable to grant access to your contacts.", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
-                ])
-        }
+        return NSAttributedString(string: "Add your first birthday by pressing the plus icon at the top of the screen.", attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest
+        ])
     }
 
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControl.State) -> NSAttributedString! {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized, .restricted:
-            return nil
-        case .denied, .notDetermined:
-            return NSAttributedString(string: "Grant access", attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.boneConstrastDarkest,
-                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)
-                ])
-        }
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "ic_tabbar_birthday_large")!
     }
 
-    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized, .restricted:
-            break
-        case .denied:
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
-        case .notDetermined:
-            store.requestAccess(for: .contacts) { (access, error) in self.tableView.reloadData() }
-        }
+    func imageTintColor(forEmptyDataSet scrollView: UIScrollView!) -> UIColor! {
+        return UIColor.boneConstrastDarkest
     }
 
 }

@@ -20,13 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import Foundation
 
-extension Contact {
+extension Contact: CalendarEventProvider {
 
-    var birthdayEvent: BirthdayEvent {
-        return BirthdayEvent(year: Int(year), month: Int(month), day: Int(day))
+    var calendarEvent: CalendarEvent {
+        return CalendarEvent(text: name ?? "!! NONAME !!",
+                             reoccurring: true,
+                             year: Int(year),
+                             month: Int(month),
+                             day: Int(day))
     }
 
 }

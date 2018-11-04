@@ -29,7 +29,7 @@ class ContactModel {
 
     lazy var store = CNContactStore()
 
-    let persistentContainer: NSPersistentContainer
+    let context: NSManagedObjectContext
 
     lazy var contactFormatter: CNContactFormatter = {
         let frm = CNContactFormatter()
@@ -37,8 +37,8 @@ class ContactModel {
         return frm
     }()
 
-    init(persistentContainer: NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 
     func update() {
@@ -55,7 +55,7 @@ class ContactModel {
             ])
 
         do {
-            let ctx = self.persistentContainer.newBackgroundContext()
+            let ctx = context.childContext(concurrencyType: .mainQueueConcurrencyType)
             try store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, isCompleted) in
 
                 // First - if there's no birthday, don't save.

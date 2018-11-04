@@ -68,15 +68,16 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func birthdays(_ birthdays: [Birthday]) {
-        birthdayLabel.isHidden = birthdays.count == 0
+    func event(_ events: [CalendarEvent]) {
+        birthdayLabel.isHidden = events.count == 0
         birthdayLabel.font = calendarView?.aggregatedFont(size: 1.0, style: .date)
 
-        if let birthday = birthdays.first {
-            if let date = date, case .years(let year) = birthday.birthdayEvent.nbrYearsTurned(today: date) {
-                birthdayLabel.text = "\(birthday.name), \(year)"
+        
+        if let event = events.first {
+            if let date = date, case .years(let year) = event.yearsSince(today: date) {
+                birthdayLabel.text = "\(event.text), \(year)"
             } else {
-                birthdayLabel.text = birthday.name
+                birthdayLabel.text = event.text
             }
         }
     }

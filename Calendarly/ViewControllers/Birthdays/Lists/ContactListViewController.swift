@@ -29,22 +29,25 @@ class ContactListViewController: PageViewControllerChild,
     UITableViewDelegate,
     DZNEmptyDataSetDelegate,
     DZNEmptyDataSetSource {
-    
+
+    let style: BirthdaysViewController.Style
+
     lazy var tableView = UITableView()
 
     lazy var store = CNContactStore()
 
     let model: ContactModel
 
-    let persistentContainer: NSPersistentContainer
+    let context: NSManagedObjectContext
 
     var frc: NSFetchedResultsController<Contact>!
 
     var frcDelegate: FetchedResultsControllerDelegate<Contact, ContactCell>!
 
-    init(index: Int, persistentContainer: NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
-        model = ContactModel(persistentContainer: persistentContainer)
+    init(style: BirthdaysViewController.Style, index: Int, context: NSManagedObjectContext) {
+        self.style = style
+        self.context = context
+        model = ContactModel(context: context)
         super.init(index: index)
         model.update()
     }
@@ -83,20 +86,41 @@ class ContactListViewController: PageViewControllerChild,
         ]
 
         frc = NSFetchedResultsController(fetchRequest: fr,
-                                         managedObjectContext: persistentContainer.viewContext,
+                                         managedObjectContext: context,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
 
         frcDelegate = FetchedResultsControllerDelegate(controller: frc, tableView: tableView, delegate: self)
-        frcDelegate.cellHeight = 80
+        frcDelegate.cellHeight = 60
         frcDelegate.preConfigureCellClosure = { cell, _ in
-            cell.persistentContainer = self.persistentContainer
+            cell.style = self.style
         }
 
         do {
             try frcDelegate.fetch()
         } catch {
             print(error.localizedDescription)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        switch style {
+        case .inDesign:
+            return indexPath
+        case .standalone:
+            return nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if case let .inDesign(design) = style {
+            let contact = frc.object(at: indexPath)
+            if contact.designs?.contains(design) == .some(true) {
+                contact.removeFromDesigns(design)
+            } else {
+                contact.addToDesigns(design)
+            }
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 

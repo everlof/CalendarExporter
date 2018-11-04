@@ -24,39 +24,62 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactCell: BasePersonCell<Contact> {
+class ContactCell: FRCCell<Contact> {
 
     var contact: Contact?
 
+    let profileImageView = ProfileImageView()
+
+    let nameLabel = UILabel()
+
+    let descriptionlabel = UILabel()
+
+    lazy var store = CNContactStore()
+
+    var style: BirthdaysViewController.Style = .standalone
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        button.addTarget(self, action: #selector(didPress), for: .touchUpInside)
-        button.setTitleColor(UIColor.complementary, for: .normal)
-        button.setTitleColor(UIColor.complementary.withAlphaComponent(0.5), for: .disabled)
-        button.setTitle("Add", for: .normal)
-        button.setTitle("Added", for: .disabled)
+
+        selectionStyle = .none
+        backgroundColor = .boneContrastLighter
+
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(descriptionlabel)
+
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionlabel.translatesAutoresizingMaskIntoConstraints = false
+
+        profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+
+        profileImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 18).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+
+        nameLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor).isActive = true
+        nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 9).isActive = true
+
+        descriptionlabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4).isActive = true
+        descriptionlabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
+
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func didPress() {
-        guard let objectID = self.contact?.objectID else { return }
-        profileImageView.takeOff(with: FlyingView.active) {
-            self.persistentContainer?.performBackgroundTask { ctx in
-                let contact = ctx.object(with: objectID) as! Contact
-                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: ctx) as! Birthday
-                contact.birthday = birthday
-                try? ctx.save()
-            }
-        }
-        button.isEnabled = false
-    }
-
     override func configure(for contact: Contact) {
-        super.configure(for: contact)
-        button.isEnabled = contact.birthday == nil
+        switch style {
+        case .inDesign(let design):
+            selectionStyle = .gray
+            accessoryType = contact.designs?.contains(design) == .some(true) ? .checkmark : .none
+        case .standalone:
+            selectionStyle = .none
+        }
+
+        descriptionlabel.text = contact.calendarEvent.description
         self.contact = contact
         nameLabel.text = contact.name
         profileImageView.set(contact: contact, fromStore: store)

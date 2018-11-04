@@ -29,10 +29,14 @@ class ProfileImageView: UIImageView {
     init() {
         super.init(frame: .zero)
         contentMode = .scaleAspectFill
-        layer.cornerRadius = 25
         layer.borderWidth = 1/UIScreen.main.scale
         layer.borderColor = UIColor.lightGray.cgColor
         layer.masksToBounds = true
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = frame.size.height / 2
     }
 
     required init?(coder aDecoder: NSCoder) {

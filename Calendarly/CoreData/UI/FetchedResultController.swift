@@ -91,6 +91,10 @@ public class FetchedResultsControllerDelegate<Item, Cell: FRCCell<Item>>: NSObje
         delegate?.tableView?(tableView, didSelectRowAt: indexPath)
     }
 
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return delegate?.tableView?(tableView, willSelectRowAt: indexPath)
+    }
+
     // MARK: NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

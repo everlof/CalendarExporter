@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Birthday" representedClassName="Birthday" parentEntity="Event" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Birthday" representedClassName="Birthday" syncable="YES" codeGenerationType="class">
+        <attribute name="day_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="month_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name_" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="birthday" inverseEntity="Contact" syncable="YES"/>
+        <attribute name="year_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="designs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Design" inverseName="birthdays" inverseEntity="Design" syncable="YES"/>
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
         <attribute name="calendarIdentifier" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,7 +14,7 @@
         <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="birthday" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Birthday" inverseName="contact" inverseEntity="Birthday" syncable="YES"/>
+        <relationship name="designs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Design" inverseName="contacts" inverseEntity="Design" syncable="YES"/>
     </entity>
     <entity name="Design" representedClassName="Design" syncable="YES" codeGenerationType="class">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -33,16 +36,24 @@
         <attribute name="snapshotFilename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weekStartSunday" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="birthdays" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Birthday" inverseName="designs" inverseEntity="Birthday" syncable="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="designs" inverseEntity="Contact" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="designs" inverseEntity="Event" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
         <attribute name="day_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="month_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="reoccurring" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="year_" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="designs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Design" inverseName="events" inverseEntity="Design" syncable="YES"/>
     </entity>
+    <entity name="FacebookFriend" representedClassName="FacebookFriend" syncable="YES" codeGenerationType="class"/>
     <elements>
-        <element name="Birthday" positionX="-54" positionY="135" width="128" height="90"/>
-        <element name="Contact" positionX="-36" positionY="144" width="128" height="135"/>
-        <element name="Design" positionX="-63" positionY="-18" width="128" height="330"/>
-        <element name="Event" positionX="-18" positionY="153" width="128" height="90"/>
+        <element name="Birthday" positionX="-72.58984375" positionY="-17.9375" width="128" height="135"/>
+        <element name="Contact" positionX="-2.4609375" positionY="231.42578125" width="128" height="135"/>
+        <element name="Design" positionX="-453.5234375" positionY="181.44140625" width="128" height="373"/>
+        <element name="Event" positionX="-211.28515625" positionY="198.5390625" width="128" height="135"/>
+        <element name="FacebookFriend" positionX="-252" positionY="135" width="128" height="45"/>
     </elements>
 </model>

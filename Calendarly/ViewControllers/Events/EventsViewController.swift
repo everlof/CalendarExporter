@@ -28,8 +28,8 @@ class EventsNavigationController: UINavigationController {
 
     let eventsViewController: EventsViewController
 
-    init(persistentContainer: NSPersistentContainer) {
-        eventsViewController = EventsViewController(persistentContainer: persistentContainer)
+    init(context: NSManagedObjectContext) {
+        eventsViewController = EventsViewController(context: context)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([eventsViewController], animated: false)
     }
@@ -42,10 +42,10 @@ class EventsNavigationController: UINavigationController {
 
 class EventsViewController: UIViewController {
 
-    let persistentContainer: NSPersistentContainer
+    let context: NSManagedObjectContext
 
-    init(persistentContainer: NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
+    init(context: NSManagedObjectContext) {
+        self.context = context
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -109,8 +109,8 @@ class EventsViewController: UIViewController {
         selectDatePage.requiresCloseButton = false
         selectDatePage.actionButtonTitle = "Done"
         selectDatePage.actionHandler = { actionItem in
-            self.persistentContainer.performBackgroundTask({ ctx in
-                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: ctx) as! Birthday
+            self.context.performAndWait {
+                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: self.context) as! Birthday
                 birthday.name_ = name.replacingOccurrences(of: " ", with: "")
 
                 let group = DispatchGroup()
@@ -125,8 +125,8 @@ class EventsViewController: UIViewController {
                 birthday.year_  = Int16(comp.year ?? 0)
                 birthday.month_ = Int16(comp.month ?? 1)
                 birthday.day_ = Int16(comp.day ?? 1)
-                try? ctx.save()
-            })
+                try? self.context.save()
+            }
             manager.dismissBulletin(animated: true)
         }
         selectDatePage.alternativeButtonTitle = "Cancel"
