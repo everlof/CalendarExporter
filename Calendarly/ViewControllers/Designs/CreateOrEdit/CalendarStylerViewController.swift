@@ -7,8 +7,14 @@ class CalendarStylerNavigationController: UINavigationController {
 
     let viewController: CalendarStylerViewController
 
-    init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
-        viewController = CalendarStylerViewController(design: design, editingContext: editingContext, calendarView: calendarView)
+    init(design: Design,
+         editingContext: NSManagedObjectContext,
+         persistentContainer: NSPersistentContainer,
+         calendarView: CalendarView) {
+        viewController = CalendarStylerViewController(design: design,
+                                                      editingContext: editingContext,
+                                                      persistentContainer: persistentContainer,
+                                                      calendarView: calendarView)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([viewController], animated: false)
     }
@@ -69,6 +75,8 @@ class CalendarStylerViewController: UIViewController,
 
     let calendarView: CalendarView
 
+    let persistentContainer: NSPersistentContainer
+
     @objc func tap() {
         let textField = UITextField(frame: .zero)
         textField.text = design.name?.trimmingCharacters(in: .whitespaces)
@@ -110,9 +118,10 @@ class CalendarStylerViewController: UIViewController,
         return titleButtonItem
     }()
 
-    init(design: Design, editingContext: NSManagedObjectContext, calendarView: CalendarView) {
+    init(design: Design, editingContext: NSManagedObjectContext, persistentContainer: NSPersistentContainer, calendarView: CalendarView) {
         self.design = design
         self.editingContext = editingContext
+        self.persistentContainer = persistentContainer
         self.calendarView = calendarView
         super.init(nibName: nil, bundle: nil)
     }
@@ -226,12 +235,20 @@ class CalendarStylerViewController: UIViewController,
 
         if let section = Section(rawValue: indexPath.section), section == .general,
             let row = GeneralRow(rawValue: indexPath.row), row == .birthdays {
-            navigationController?.pushViewController(BirthdaysViewController(style: .inDesign(self.design), context: editingContext), animated: true)
+            navigationController?.pushViewController(
+                BirthdaysViewController(style: .inDesign(self.design),
+                                        context: editingContext,
+                                        persistentContainer: self.persistentContainer),
+                animated: true)
         }
 
         if let section = Section(rawValue: indexPath.section), section == .general,
             let row = GeneralRow(rawValue: indexPath.row), row == .events {
-            navigationController?.pushViewController(EventsViewController(context: editingContext), animated: true)
+            navigationController?.pushViewController(
+                EventsViewController(style: .inDesign(self.design),
+                                     context: editingContext,
+                                     persistentContainer: persistentContainer),
+                animated: true)
         }
 
         if let section = Section(rawValue: indexPath.section), section == .general,
@@ -628,6 +645,7 @@ class CalendarStylerViewController: UIViewController,
     lazy var birthdaysCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
         cell.textLabel?.text = "Birthdays"
+        cell.accessoryType = .disclosureIndicator
         return cell
     }()
 
@@ -636,6 +654,7 @@ class CalendarStylerViewController: UIViewController,
     lazy var eventsCell: UITableViewCell = {
         let cell = UITableViewCell(frame: .zero)
         cell.textLabel?.text = "Events"
+        cell.accessoryType = .disclosureIndicator
         return cell
     }()
 

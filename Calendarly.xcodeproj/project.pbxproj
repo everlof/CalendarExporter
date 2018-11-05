@@ -37,6 +37,8 @@
 		C41B163B218EF694001C3E1E /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C41B1624218EF678001C3E1E /* Oswald-Regular.ttf */; };
 		C41B163C218EF694001C3E1E /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C41B161B218EF677001C3E1E /* Oswald-SemiBold.ttf */; };
 		C41B163E218F6B06001C3E1E /* Event+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B163D218F6B06001C3E1E /* Event+Extension.swift */; };
+		C41B1640218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B163F218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift */; };
+		C41B1642219052CF001C3E1E /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B1641219052CF001C3E1E /* EventCell.swift */; };
 		C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */; };
 		C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF792178779F00851939 /* ColorPickerViewController.swift */; };
 		C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */; };
@@ -134,6 +136,8 @@
 		C41B1623218EF678001C3E1E /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
 		C41B1624218EF678001C3E1E /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
 		C41B163D218F6B06001C3E1E /* Event+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extension.swift"; sourceTree = "<group>"; };
+		C41B163F218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccuranceSelectorBulletinPage.swift; sourceTree = "<group>"; };
+		C41B1641219052CF001C3E1E /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStylePickerViewController.swift; sourceTree = "<group>"; };
 		C445EF792178779F00851939 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				C445EFB12188691D00851939 /* EventsViewController.swift */,
+				C41B1641219052CF001C3E1E /* EventCell.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -484,6 +489,7 @@
 				C4C1A0CA21663C13001CDEF8 /* TextFieldBulletinPage.swift */,
 				C4C1A0CC21663C23001CDEF8 /* YearPickerBLTNItem.swift */,
 				C445EFAF21871EFE00851939 /* DatePickerBLTItem.swift */,
+				C41B163F218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift */,
 			);
 			path = BulletinBoard;
 			sourceTree = "<group>";
@@ -695,6 +701,7 @@
 				C445EF8A217A21A400851939 /* ContactListViewController.swift in Sources */,
 				C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */,
 				C445EFB52188FE5F00851939 /* CakeView.swift in Sources */,
+				C41B1640218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift in Sources */,
 				C445EF97217B40F800851939 /* ContactModel.swift in Sources */,
 				C4C086B9214E4BA80019F6B8 /* DesignViewController.swift in Sources */,
 				C4C086DF215226CA0019F6B8 /* Calendar+Extension.swift in Sources */,
@@ -713,6 +720,7 @@
 				C4C1A104216660E0001CDEF8 /* CalendarView.swift in Sources */,
 				C445EFAA218305A600851939 /* CalendarEvent.swift in Sources */,
 				C41B15FF218D92AB001C3E1E /* ChampagneViewBLTNItem.swift in Sources */,
+				C41B1642219052CF001C3E1E /* EventCell.swift in Sources */,
 				C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,

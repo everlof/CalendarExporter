@@ -25,7 +25,10 @@ class DesignViewController: UIViewController {
     let scrollableCalendarView: ScrollableCalendarView
 
     lazy var styleController: CalendarStylerNavigationController = {
-        return CalendarStylerNavigationController(design: self.design, editingContext: self.editingContext, calendarView: self.calendarView)
+        return CalendarStylerNavigationController(design: self.design,
+                                                  editingContext: self.editingContext,
+                                                  persistentContainer: self.persistentContainer,
+                                                  calendarView: self.calendarView)
     }()
 
     let tiltToPreviewView = UIStackView()
@@ -56,8 +59,11 @@ class DesignViewController: UIViewController {
 
     let tapGesture = UITapGestureRecognizer()
 
+    let persistentContainer: NSPersistentContainer
+
     init(design: Design, persistentContainer: NSPersistentContainer) {
         editingContext = design.managedObjectContext!.childContext(concurrencyType: .mainQueueConcurrencyType)
+        self.persistentContainer = persistentContainer
         self.design = editingContext.object(with: design.objectID) as! Design
         calendarView = CalendarView(design: self.design, persistentContainer: persistentContainer)
         scrollableCalendarView = ScrollableCalendarView(calendarView: calendarView)

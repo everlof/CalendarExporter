@@ -25,14 +25,14 @@ import UIKit
 import CoreData
 import Contacts
 
-class BirthdayCell: FRCCell<Birthday> {
+class EventCell: FRCCell<Event> {
 
-    var birthday: Birthday?
+    var event: Event?
 
     let nameLabel = UILabel()
 
     let descriptionlabel = UILabel()
-    
+
     var style: BirthdaysViewController.Style = .standalone
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -60,18 +60,18 @@ class BirthdayCell: FRCCell<Birthday> {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func configure(for birthday: Birthday) {
+    override func configure(for event: Event) {
         switch style {
         case .inDesign(let design):
             selectionStyle = .gray
-            accessoryType = birthday.designs?.contains(design) == .some(true) ? .checkmark : .none
+            accessoryType = event.designs?.contains(design) == .some(true) ? .checkmark : .none
         case .standalone:
             selectionStyle = .none
         }
 
-        descriptionlabel.text = birthday.calendarEvent.description
-        self.birthday = birthday
-        nameLabel.text = birthday.name_
+        descriptionlabel.text = event.calendarEvent.description
+        self.event = event
+        nameLabel.text = event.text
     }
 
 }

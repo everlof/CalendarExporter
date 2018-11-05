@@ -10,9 +10,10 @@
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
         <attribute name="calendarIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="customName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name_" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="designs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Design" inverseName="contacts" inverseEntity="Design" syncable="YES"/>
     </entity>
@@ -51,7 +52,7 @@
     <entity name="FacebookFriend" representedClassName="FacebookFriend" syncable="YES" codeGenerationType="class"/>
     <elements>
         <element name="Birthday" positionX="-72.58984375" positionY="-17.9375" width="128" height="135"/>
-        <element name="Contact" positionX="-2.4609375" positionY="231.42578125" width="128" height="135"/>
+        <element name="Contact" positionX="-2.4609375" positionY="231.42578125" width="128" height="150"/>
         <element name="Design" positionX="-453.5234375" positionY="181.44140625" width="128" height="373"/>
         <element name="Event" positionX="-211.28515625" positionY="198.5390625" width="128" height="135"/>
         <element name="FacebookFriend" positionX="-252" positionY="135" width="128" height="45"/>

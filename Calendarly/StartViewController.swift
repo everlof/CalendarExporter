@@ -15,13 +15,16 @@ class StartViewController: UITabBarController {
     }()
 
     lazy var birthdaysViewController: BirthdaysNavigationController = {
-        let birthdays = BirthdaysNavigationController(context: self.persistentContainer.viewContext)
+        let birthdays = BirthdaysNavigationController(context: self.persistentContainer.viewContext,
+                                                      persistentContainer: self.persistentContainer)
         birthdays.tabBarItem = UITabBarItem(title: "Birthdays", image: UIImage(named: "ic_tabbar_birthday"), selectedImage: nil)
         return birthdays
     }()
 
     lazy var eventsViewController: EventsNavigationController = {
-        let events = EventsNavigationController(context: self.persistentContainer.viewContext)
+        let events = EventsNavigationController(style: .standalone,
+                                                context: self.persistentContainer.viewContext,
+                                                persistentContainer: persistentContainer)
         events.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "ic_tabbar_events"), selectedImage: nil)
         return events
     }()

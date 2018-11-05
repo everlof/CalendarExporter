@@ -29,8 +29,8 @@ class BirthdaysNavigationController: UINavigationController {
 
     let birthdayViewController: BirthdaysViewController
 
-    init(context: NSManagedObjectContext) {
-        birthdayViewController = BirthdaysViewController(style: .standalone, context: context)
+    init(context: NSManagedObjectContext, persistentContainer: NSPersistentContainer) {
+        birthdayViewController = BirthdaysViewController(style: .standalone, context: context, persistentContainer: persistentContainer)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([birthdayViewController], animated: false)
     }
@@ -54,19 +54,25 @@ class BirthdaysViewController: UIViewController {
 
     let context: NSManagedObjectContext
 
+    let persistentContainer: NSPersistentContainer
+
     let pageViewController: BirthdaysPageViewController
 
     let containerView = UIView()
 
-    init(style: Style, context: NSManagedObjectContext) {
+    init(style: Style, context: NSManagedObjectContext, persistentContainer: NSPersistentContainer) {
         self.style = style
         self.context = context
+        self.persistentContainer = persistentContainer
         segmentedControl = UISegmentedControl(items: [
             "Calendarly",
             "Contacts",
             "Facebook"
         ])
-        self.pageViewController = BirthdaysPageViewController(style: style, context: context, segmentedControl: segmentedControl)
+        self.pageViewController = BirthdaysPageViewController(style: style,
+                                                              context: context,
+                                                              persistentContainer: persistentContainer,
+                                                              segmentedControl: segmentedControl)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -82,19 +88,25 @@ class BirthdaysViewController: UIViewController {
         let nbrActive = NSFetchRequest<Birthday>(entityName: Birthday.self.description())
         do {
             let count = try context.count(for: nbrActive)
-            segmentedControl.setTitle("Calendarly (\(count))", forSegmentAt: 0)
+            DispatchQueue.main.async {
+                self.segmentedControl.setTitle("Calendarly (\(count))", forSegmentAt: 0)
+            }
         } catch { }
 
         let nbrContacts = NSFetchRequest<Contact>(entityName: Contact.self.description())
         do {
             let count = try context.count(for: nbrContacts)
-            segmentedControl.setTitle("Contacts (\(count))", forSegmentAt: 1)
+            DispatchQueue.main.async {
+                self.segmentedControl.setTitle("Contacts (\(count))", forSegmentAt: 1)
+            }
         } catch { }
 
         let nbrFacebook = NSFetchRequest<Contact>(entityName: FacebookFriend.self.description())
         do {
             let count = try context.count(for: nbrFacebook)
-            segmentedControl.setTitle("Facebook (\(count))", forSegmentAt: 2)
+            DispatchQueue.main.async {
+                self.segmentedControl.setTitle("Facebook (\(count))", forSegmentAt: 2)
+            }
         } catch { }
     }
 

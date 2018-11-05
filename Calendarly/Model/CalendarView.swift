@@ -286,8 +286,8 @@ class CalendarView: UIView,
             birthdays.forEach { addToMap($0) }
         }
 
-        if let event = design.events?.allObjects as? [Event] {
-            print(event)
+        if let events = design.events?.allObjects as? [Event] {
+            events.forEach { addToMap($0) }
         }
     }
 

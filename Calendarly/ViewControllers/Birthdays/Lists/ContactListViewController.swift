@@ -40,13 +40,16 @@ class ContactListViewController: PageViewControllerChild,
 
     let context: NSManagedObjectContext
 
+    let persistentContainer: NSPersistentContainer
+
     var frc: NSFetchedResultsController<Contact>!
 
     var frcDelegate: FetchedResultsControllerDelegate<Contact, ContactCell>!
 
-    init(style: BirthdaysViewController.Style, index: Int, context: NSManagedObjectContext) {
+    init(style: BirthdaysViewController.Style, index: Int, context: NSManagedObjectContext, persistentContainer: NSPersistentContainer) {
         self.style = style
         self.context = context
+        self.persistentContainer = persistentContainer
         model = ContactModel(context: context)
         super.init(index: index)
         model.update()
@@ -79,10 +82,9 @@ class ContactListViewController: PageViewControllerChild,
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
-
         let fr = NSFetchRequest<Contact>(entityName: Contact.self.description())
         fr.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Contact.name, ascending: true)
+            NSSortDescriptor(keyPath: \Contact.name_, ascending: true)
         ]
 
         frc = NSFetchedResultsController(fetchRequest: fr,
@@ -94,6 +96,8 @@ class ContactListViewController: PageViewControllerChild,
         frcDelegate.cellHeight = 60
         frcDelegate.preConfigureCellClosure = { cell, _ in
             cell.style = self.style
+            cell.presenter = self
+            cell.persistentContainer = self.persistentContainer
         }
 
         do {

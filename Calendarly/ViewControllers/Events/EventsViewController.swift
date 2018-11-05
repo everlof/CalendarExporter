@@ -23,13 +23,16 @@
 import BLTNBoard
 import CoreData
 import UIKit
+import DZNEmptyDataSet
 
 class EventsNavigationController: UINavigationController {
 
     let eventsViewController: EventsViewController
 
-    init(context: NSManagedObjectContext) {
-        eventsViewController = EventsViewController(context: context)
+    init(style: BirthdaysViewController.Style, context: NSManagedObjectContext, persistentContainer: NSPersistentContainer) {
+        eventsViewController = EventsViewController(style: style,
+                                                    context: context,
+                                                    persistentContainer: persistentContainer)
         super.init(nibName: nil, bundle: nil)
         setViewControllers([eventsViewController], animated: false)
     }
@@ -40,11 +43,28 @@ class EventsNavigationController: UINavigationController {
 
 }
 
-class EventsViewController: UIViewController {
+class EventsViewController: UIViewController,
+    UITableViewDelegate,
+    DZNEmptyDataSetDelegate,
+    DZNEmptyDataSetSource {
 
     let context: NSManagedObjectContext
 
-    init(context: NSManagedObjectContext) {
+    let persistentContainer: NSPersistentContainer
+
+    let style: BirthdaysViewController.Style
+
+    lazy var tableView = UITableView()
+
+    var frc: NSFetchedResultsController<Event>!
+
+    var frcDelegate: FetchedResultsControllerDelegate<Event, EventCell>!
+
+    init(style: BirthdaysViewController.Style,
+         context: NSManagedObjectContext,
+         persistentContainer: NSPersistentContainer) {
+        self.style = style
+        self.persistentContainer = persistentContainer
         self.context = context
         super.init(nibName: nil, bundle: nil)
     }
@@ -53,12 +73,51 @@ class EventsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
+        view.backgroundColor = UIColor.boneWhiteColor
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(didPressAdd))
+
+        tableView.separatorColor = .boneConstrastDarkest
+        tableView.backgroundColor = .boneWhiteColor
+        tableView.separatorInset = .zero
+        tableView.emptyDataSetDelegate = self
+        tableView.emptyDataSetSource = self
+        tableView.tableFooterView = UIView()
+
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+
+        let fr = NSFetchRequest<Event>(entityName: Event.self.description())
+        fr.sortDescriptors = [
+            NSSortDescriptor(keyPath: \Event.text, ascending: true)
+        ]
+
+        frc = NSFetchedResultsController(fetchRequest: fr,
+                                         managedObjectContext: context,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
+
+        frcDelegate = FetchedResultsControllerDelegate(controller: frc, tableView: tableView, delegate: self)
+        frcDelegate.cellHeight = 60
+        frcDelegate.preConfigureCellClosure = { cell, _ in
+            cell.style = self.style
+        }
+
+        do {
+            try frcDelegate.fetch()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 
     @objc func didPressAdd() {
@@ -66,20 +125,20 @@ class EventsViewController: UIViewController {
     }
 
     func bulletinManager() -> BLTNItemManager {
-        let rootPage = ChampagneViewBLTNItem(title: "Add a birthday!")
-        let nameBirthdayPage = TextFieldBulletinPage(title: "Who's birthday?")
-        let selectDatePage = DatePickerBLTItem(title: "And when's this birthday?")
+        let rootPage = ChampagneViewBLTNItem(title: "Add something to celebrate!")
+        let occurancePage = OccuranceSelectorBulletinPage(title: "")
+        let nameBirthdayPage = TextFieldBulletinPage(title: "What")
+        nameBirthdayPage.placeholder = "What to celebrate"
+        let selectDatePage = DatePickerBLTItem(title: "And when is it?")
         var name: String!
 
         let manager = BLTNItemManager(rootItem: rootPage)
         manager.backgroundViewStyle = .blurredDark
 
         // === FIRST ===
-        //        rootPage.image = UIImage(named: "ic_birthdaycake")
-        //        rootPage.descriptionText = "Add a birthday that will be shown in your calendars"
         rootPage.actionButtonTitle = "Let's go!"
         rootPage.actionHandler = { actionItem in
-            manager.push(item: nameBirthdayPage)
+            manager.push(item: occurancePage)
         }
 
         rootPage.alternativeButtonTitle = "Oh, I mistapped"
@@ -88,9 +147,19 @@ class EventsViewController: UIViewController {
         }
         rootPage.requiresCloseButton = false
 
-        // === SECOND -> SELECT NAME ===
+        // === SECOND -> SELECT ONCE/RECURRING ===
+        occurancePage.actionButtonTitle = "Next"
+        occurancePage.descriptionText = "Does the event happen once, like a graduation or is it recurring like a wedding anniversary?"
+        occurancePage.isDismissable = false
+        occurancePage.requiresCloseButton = false
+        occurancePage.next = nameBirthdayPage
+        occurancePage.actionHandler = { _ in
+            manager.push(item: nameBirthdayPage)
+        }
+
+        // === THIRD -> SELECT YEAR ===
         nameBirthdayPage.isDismissable = false
-        nameBirthdayPage.descriptionText = "Write the name of the person you'd like to add to your calendars."
+        nameBirthdayPage.descriptionText = "What whould you like to celebrate? This text will appear in the calendar."
         nameBirthdayPage.textInputHandler = { (item, text) in
             name = text
         }
@@ -105,13 +174,14 @@ class EventsViewController: UIViewController {
         }
 
         // === THIRD -> SELECT YEAR ===
-        selectDatePage.descriptionText = "Choose the year you'd like to create a calendar for"
+        selectDatePage.descriptionText = "Choose the date the event occur"
         selectDatePage.requiresCloseButton = false
         selectDatePage.actionButtonTitle = "Done"
         selectDatePage.actionHandler = { actionItem in
-            self.context.performAndWait {
-                let birthday = NSEntityDescription.insertNewObject(forEntityName: Birthday.self.description(), into: self.context) as! Birthday
-                birthday.name_ = name.replacingOccurrences(of: " ", with: "")
+            self.persistentContainer.performBackgroundTask { context in
+                let event = NSEntityDescription.insertNewObject(forEntityName: Event.self.description(), into: self.context) as! Event
+                event.text = name.replacingOccurrences(of: " ", with: "")
+                event.reoccurring = !(occurancePage.isOnce ?? true)
 
                 let group = DispatchGroup()
                 var comp = DateComponents()
@@ -122,9 +192,9 @@ class EventsViewController: UIViewController {
                 }
                 group.wait()
 
-                birthday.year_  = Int16(comp.year ?? 0)
-                birthday.month_ = Int16(comp.month ?? 1)
-                birthday.day_ = Int16(comp.day ?? 1)
+                event.year_  = Int16(comp.year ?? 0)
+                event.month_ = Int16(comp.month ?? 1)
+                event.day_ = Int16(comp.day ?? 1)
                 try? self.context.save()
             }
             manager.dismissBulletin(animated: true)
@@ -135,6 +205,27 @@ class EventsViewController: UIViewController {
         }
 
         return manager
+    }
+
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        switch style {
+        case .inDesign:
+            return indexPath
+        case .standalone:
+            return nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if case let .inDesign(design) = style {
+            let event = frc.object(at: indexPath)
+            if event.designs?.contains(design) == .some(true) {
+                event.removeFromDesigns(design)
+            } else {
+                event.addToDesigns(design)
+            }
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
 
 }

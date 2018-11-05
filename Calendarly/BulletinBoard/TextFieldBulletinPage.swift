@@ -15,12 +15,14 @@ import BLTNBoard
 
 class TextFieldBulletinPage: FeedbackPageBLTNItem {
 
+    @objc public var placeholder: String?
+
     @objc public var textField: UITextField!
 
     @objc public var textInputHandler: ((BLTNActionItem, String?) -> Void)? = nil
 
     override func makeViewsUnderDescription(with interfaceBuilder: BLTNInterfaceBuilder) -> [UIView]? {
-        textField = interfaceBuilder.makeTextField(placeholder: "Name", returnKey: .done, delegate: self)
+        textField = interfaceBuilder.makeTextField(placeholder: placeholder ?? "Name", returnKey: .done, delegate: self)
         return [textField]
     }
 

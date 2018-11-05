@@ -32,19 +32,25 @@ class BirthdaysPageViewController: UIPageViewController,
 
     let context: NSManagedObjectContext
 
+    let persistentContainer: NSPersistentContainer
+
     let segmentedControl: UISegmentedControl
 
     lazy var viewControllerList: [PageViewControllerChild] = {
         return [
             BirthdayListViewController(style: self.style, index: 0, context: self.context),
-            ContactListViewController(style: self.style, index: 1, context: self.context),
+            ContactListViewController(style: self.style, index: 1, context: self.context, persistentContainer: self.persistentContainer),
             BirthdayListViewController(style: self.style, index: 2, context: self.context)
         ]
     }()
 
-    init(style: BirthdaysViewController.Style, context: NSManagedObjectContext, segmentedControl: UISegmentedControl) {
+    init(style: BirthdaysViewController.Style,
+         context: NSManagedObjectContext,
+         persistentContainer: NSPersistentContainer,
+         segmentedControl: UISegmentedControl) {
         self.style = style
         self.context = context
+        self.persistentContainer = persistentContainer
         self.segmentedControl = segmentedControl
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         dataSource = self

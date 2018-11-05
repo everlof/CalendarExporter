@@ -25,11 +25,15 @@ import Foundation
 extension Contact: CalendarEventProvider {
 
     var calendarEvent: CalendarEvent {
-        return CalendarEvent(text: name ?? "!! NONAME !!",
+        return CalendarEvent(text: name,
                              reoccurring: true,
                              year: Int(year),
                              month: Int(month),
                              day: Int(day))
+    }
+
+    var name: String {
+        return customName ?? name_ ?? "!! NO_NAME !!"
     }
 
 }
