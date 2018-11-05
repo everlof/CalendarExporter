@@ -39,6 +39,9 @@
 		C41B163E218F6B06001C3E1E /* Event+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B163D218F6B06001C3E1E /* Event+Extension.swift */; };
 		C41B1640218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B163F218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift */; };
 		C41B1642219052CF001C3E1E /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B1641219052CF001C3E1E /* EventCell.swift */; };
+		C41B164521905B8A001C3E1E /* CalendarEventFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B164421905B8A001C3E1E /* CalendarEventFormatter.swift */; };
+		C41B164821905BD8001C3E1E /* EventCellFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B164721905BD8001C3E1E /* EventCellFormatter.swift */; };
+		C41B164A21905BF5001C3E1E /* BirthdayCellFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41B164921905BF5001C3E1E /* BirthdayCellFormatter.swift */; };
 		C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */; };
 		C445EF7A2178779F00851939 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF792178779F00851939 /* ColorPickerViewController.swift */; };
 		C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */; };
@@ -138,6 +141,9 @@
 		C41B163D218F6B06001C3E1E /* Event+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+Extension.swift"; sourceTree = "<group>"; };
 		C41B163F218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccuranceSelectorBulletinPage.swift; sourceTree = "<group>"; };
 		C41B1641219052CF001C3E1E /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		C41B164421905B8A001C3E1E /* CalendarEventFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventFormatter.swift; sourceTree = "<group>"; };
+		C41B164721905BD8001C3E1E /* EventCellFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCellFormatter.swift; sourceTree = "<group>"; };
+		C41B164921905BF5001C3E1E /* BirthdayCellFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayCellFormatter.swift; sourceTree = "<group>"; };
 		C445EF772178766E00851939 /* HeaderStylePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStylePickerViewController.swift; sourceTree = "<group>"; };
 		C445EF792178779F00851939 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -295,6 +301,25 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		C41B164321905B77001C3E1E /* CalendarEvent */ = {
+			isa = PBXGroup;
+			children = (
+				C445EFA9218305A600851939 /* CalendarEvent.swift */,
+				C41B164421905B8A001C3E1E /* CalendarEventFormatter.swift */,
+				C41B164621905BD0001C3E1E /* Formatters */,
+			);
+			path = CalendarEvent;
+			sourceTree = "<group>";
+		};
+		C41B164621905BD0001C3E1E /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				C41B164721905BD8001C3E1E /* EventCellFormatter.swift */,
+				C41B164921905BF5001C3E1E /* BirthdayCellFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
 		C445EF812179C34300851939 /* Designs */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,10 +472,10 @@
 		C4C086E2215227760019F6B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C41B164321905B77001C3E1E /* CalendarEvent */,
 				C445EFAB2184D8DA00851939 /* Contact+Extension.swift */,
 				C445EFA72183054400851939 /* Birthday+Extension.swift */,
 				C41B163D218F6B06001C3E1E /* Event+Extension.swift */,
-				C445EFA9218305A600851939 /* CalendarEvent.swift */,
 				C445EF7F21799E5000851939 /* CalendarCollectionViewCell.swift */,
 				C4C1A103216660E0001CDEF8 /* CalendarView.swift */,
 			);
@@ -700,6 +725,7 @@
 			files = (
 				C445EF8A217A21A400851939 /* ContactListViewController.swift in Sources */,
 				C445EF8021799E5000851939 /* CalendarCollectionViewCell.swift in Sources */,
+				C41B164821905BD8001C3E1E /* EventCellFormatter.swift in Sources */,
 				C445EFB52188FE5F00851939 /* CakeView.swift in Sources */,
 				C41B1640218F89D9001C3E1E /* OccuranceSelectorBulletinPage.swift in Sources */,
 				C445EF97217B40F800851939 /* ContactModel.swift in Sources */,
@@ -722,6 +748,7 @@
 				C41B15FF218D92AB001C3E1E /* ChampagneViewBLTNItem.swift in Sources */,
 				C41B1642219052CF001C3E1E /* EventCell.swift in Sources */,
 				C445EF88217A091100851939 /* PageViewControllerChild.swift in Sources */,
+				C41B164521905B8A001C3E1E /* CalendarEventFormatter.swift in Sources */,
 				C4C086F521529E0C0019F6B8 /* LocalePickerViewController.swift in Sources */,
 				C46B63CE215CBBEB009EB4C4 /* DesignsViewController.swift in Sources */,
 				C445EF782178766E00851939 /* HeaderStylePickerViewController.swift in Sources */,
@@ -735,6 +762,7 @@
 				C445EF842179C3D300851939 /* BirthdaysViewController.swift in Sources */,
 				C445EFA6217DB8C500851939 /* ContactButton.swift in Sources */,
 				C4C086FB215A1D330019F6B8 /* Locale+Extension.swift in Sources */,
+				C41B164A21905BF5001C3E1E /* BirthdayCellFormatter.swift in Sources */,
 				C445EF94217B1D8E00851939 /* CAAnimation+Extension.swift in Sources */,
 				C4C086B7214E4BA80019F6B8 /* AppDelegate.swift in Sources */,
 				C4C1A1062167D690001CDEF8 /* Environment.swift in Sources */,

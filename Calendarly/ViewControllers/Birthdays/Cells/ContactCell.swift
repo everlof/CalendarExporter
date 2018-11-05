@@ -167,7 +167,7 @@ class ContactCell: FRCCell<Contact> {
             selectionStyle = .none
         }
 
-        descriptionlabel.text = contact.calendarEvent.description
+        descriptionlabel.text = BirthdayCellFormatter().stringFor(event: contact.calendarEvent)
         self.contact = contact
         nameLabel.text = contact.name
         profileImageView.set(contact: contact, fromStore: store)

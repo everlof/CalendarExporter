@@ -69,7 +69,7 @@ class BirthdayCell: FRCCell<Birthday> {
             selectionStyle = .none
         }
 
-        descriptionlabel.text = birthday.calendarEvent.description
+        descriptionlabel.text = BirthdayCellFormatter().stringFor(event: birthday.calendarEvent)
         self.birthday = birthday
         nameLabel.text = birthday.name_
     }
