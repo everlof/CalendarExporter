@@ -25,6 +25,9 @@ class ScrollableCalendarView: UIScrollView,
 
         delegate = self
         zoomScale = 1/zoomFactor
+
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
 
     required init?(coder aDecoder: NSCoder) {
