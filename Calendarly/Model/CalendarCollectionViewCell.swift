@@ -44,8 +44,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         addSubview(dateLabel)
         addSubview(birthdayLabel)
 
-        dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        dateLabel.textAlignment = .center
         dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        dateLabel.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
 
         birthdayLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         birthdayLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -72,7 +74,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         birthdayLabel.isHidden = events.count == 0
         birthdayLabel.font = calendarView?.aggregatedFont(size: 1.0, style: .date)
 
-        
         if let event = events.first {
             if let date = date, case .years(let year) = event.yearsSince(today: date) {
                 birthdayLabel.text = "\(event.text), \(year)"
